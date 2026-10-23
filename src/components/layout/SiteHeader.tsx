@@ -135,8 +135,9 @@ export function SiteHeader({ className }: { className?: string }) {
         </div>
       </div>
 
-      <div className="border-t-4 border-orange bg-teal-900">
-        <div className="mx-auto flex min-h-[60px] max-w-[calc(1440*var(--u))] flex-wrap items-center justify-between gap-3 px-10">
+      {/* Nav shares the page/footer container (1240 px, 24 px gutters); only the banner art is wider */}
+      <div className="border-t-4 border-orange bg-teal-900 px-6">
+        <div className="mx-auto flex min-h-[60px] max-w-content flex-wrap items-center justify-between gap-3">
           <MainNav />
         </div>
       </div>

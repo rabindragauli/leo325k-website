@@ -47,7 +47,10 @@ Breakpoints: theme words hide < 1440 px · curtains + mountains hide < 1100 px �
 - **Theme words** show from 1440 px: they were designed for the 1440 layout and collide with the badges in anything narrower.
   - **Follow-up:** Theme words are hidden 1301–1439px, including 1366px laptops. Revisit with a smaller theme-word size when the 2x artwork arrives.
 - **Nav bar:** always 60 px (fixed 24 px line height); link text 15 px up to 1440, `clamp(15px, 100cqw × 15 / 1440, 18px)` above
-  (18 px from 1728); content width follows the banner.
+  (18 px from 1728).
+- **Alignment:** nav bar content, page content and footer content share one centred container (`max-w-content` 1240 px inside
+  24 px gutters) at every desktop width; the “Home” text starts on its left edge and “Contact us” ends on its right edge
+  (`tests/e2e/alignment.spec.ts`). Only the banner art is wider.
 - **Badges below 1101 px** (no curtains): 16 px from the right, height `clamp(48px, (100cqw − 632px) / 4.72, 74px)` so they stay
   right of the swoosh (x ≈ 590) and the Leo emblem. `tests/e2e/header.spec.ts` checks emblem, swoosh and theme-word overlaps,
   wrapping, text sizes and heights from 861 to 2560 px.

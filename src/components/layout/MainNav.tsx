@@ -15,7 +15,8 @@ export function MainNav() {
 
   return (
     <>
-      <nav aria-label="Main" className="flex flex-wrap gap-1">
+      {/* -ml-3.5 cancels the first link's padding so "Home" lines up with the content edge */}
+      <nav aria-label="Main" className="-ml-3.5 flex flex-wrap gap-1">
         {mainNav.map((item) => {
           const active = isActivePath(pathname, item.href);
           return (
