@@ -10,7 +10,7 @@ export function SiteFooterMobile({ className }: { className?: string }) {
   return (
     <footer
       className={cn(
-        "flex min-h-[600px] flex-col gap-[22px] border-t-4 border-orange bg-teal-900 px-4 pt-9 pb-6 text-on-dark",
+        "flex flex-col gap-[22px] border-t-4 border-orange bg-teal-900 px-4 pt-9 pb-6 text-on-dark",
         className,
       )}
     >
@@ -59,7 +59,7 @@ export function SiteFooterMobile({ className }: { className?: string }) {
 
       <SocialLinks pillClassName="border-teal-500 px-[13px] text-[13px]" />
 
-      <div className="mt-auto flex flex-col gap-1 border-t border-teal-600 pt-4 text-xs text-on-dark-muted">
+      <div className="flex flex-col gap-1 border-t border-teal-600 pt-4 text-xs text-on-dark-muted">
         <span>
           © {site.copyrightYear} {site.name}
         </span>

@@ -100,7 +100,11 @@ export function MobileMenu() {
           </nav>
 
           <div className="mt-auto flex flex-col items-center gap-3 bg-badges-band px-4 py-[18px]">
-            <ThemeBadges height={58} className="items-center justify-center gap-2.5" />
+            <ThemeBadges
+              height={58}
+              className="items-center justify-center gap-2.5"
+              imageClassName="h-[58px]"
+            />
             <p className="flex flex-wrap items-center justify-center gap-2 font-heading text-[13px] font-black tracking-[0.5px]">
               <span>{site.theme.quote}</span>
               <span className="rounded-[3px] bg-gold-band px-[9px] py-1 [text-shadow:0_1px_2px_rgba(0,0,0,0.35)]">

@@ -53,9 +53,23 @@ export const socialLinks: SocialLink[] = [
   { label: "YouTube", url: null },
 ];
 
+// Desktop banner: laid out at 1440 × 216, scales with the width above 1440 px up to a
+// 270 px tall banner (scale 1.25, reached at 1800 px). See SiteHeader and docs/05.
+export const banner = { width: 1440, height: 216, maxHeight: 270, maxScale: 270 / 216 } as const;
+
 /** Width/height props for showing an image at a fixed CSS height (next/image then serves 1× and 2×). */
 export function atHeight(img: { width: number; height: number }, height: number) {
   return { width: Math.round((img.width * height) / img.height), height };
+}
+
+/**
+ * Width/height props for a banner image shown at `height` design px (CSS sets the real size).
+ * Sized ≥ 2 px above the largest scaled size on both axes, so the srcset covers it and CSS
+ * always changes both dimensions (next/image warns when only one differs from the attributes).
+ */
+export function atBannerHeight(img: { width: number; height: number }, height: number) {
+  const largest = height * banner.maxScale;
+  return atHeight(img, Math.ceil(largest + 2 * Math.max(1, img.height / img.width)));
 }
 
 // Intrinsic sizes of public/brand/* (1× artwork; 2× originals requested, docs/05)

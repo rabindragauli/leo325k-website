@@ -2,7 +2,10 @@ import Image from "next/image";
 import { cn } from "@/lib/cn";
 import { atHeight, site, themeBadges } from "@/lib/site";
 
-/** The five LY theme badges at a fixed height (74 desktop banner, 46 mobile header, 58 menu). */
+/**
+ * The five LY theme badges. `height` is the largest height they are shown at (it sizes the
+ * srcset); the shown height comes from `imageClassName` (e.g. `h-[46px]`), width stays auto.
+ */
 export function ThemeBadges({
   height,
   className,
@@ -20,7 +23,7 @@ export function ThemeBadges({
             src={badge.src}
             alt={badge.alt}
             {...atHeight(badge, height)}
-            className={cn("block", imageClassName)}
+            className={cn("block w-auto", imageClassName)}
           />
         </li>
       ))}

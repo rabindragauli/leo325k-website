@@ -18,6 +18,7 @@ Thumbs.db
 !.vscode/extensions.json
 # tests
 playwright-report/
+review-shots/
 test-results/
 coverage/
 # next.js / typescript

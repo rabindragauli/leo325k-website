@@ -24,7 +24,8 @@ export function MainNav() {
               href={item.href}
               aria-current={active ? "page" : undefined}
               className={cn(
-                "border-b-[3px] px-3.5 pt-[18px] pb-[15px] text-[15px] font-bold tracking-[0.3px] no-underline",
+                // 15 px up to 1440 px wide, then grows with the header, max 18 px; fixed 24 px line keeps the bar 60 px
+                "border-b-[3px] px-3.5 pt-[18px] pb-[15px] text-[length:clamp(15px,calc(100cqw*15/1440),18px)] leading-6 font-bold tracking-[0.3px] no-underline",
                 active
                   ? "border-yellow text-white"
                   : "border-transparent text-nav hover:text-white",

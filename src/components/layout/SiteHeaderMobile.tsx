@@ -30,6 +30,7 @@ export function SiteHeaderMobile({ className }: { className?: string }) {
       <ThemeBadges
         height={46}
         className="h-[60px] items-center justify-center gap-2.5 bg-badges-band"
+        imageClassName="h-[46px]"
       />
       <div className="h-[3px] bg-orange" />
     </header>

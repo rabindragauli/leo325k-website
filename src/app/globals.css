@@ -47,7 +47,7 @@
   --breakpoint-desk: 53.8125rem; /* 861px */
   --breakpoint-leo: 56.3125rem; /* 901px: Leo emblem in banner */
   --breakpoint-art: 68.8125rem; /* 1101px: curtains + mountains */
-  --breakpoint-theme: 81.3125rem; /* 1301px: theme words */
+  --breakpoint-theme: 90rem; /* 1440px: theme words (designed for the 1440 banner) */
 
   --radius-btn: 10px;
   --radius-card: 18px;
