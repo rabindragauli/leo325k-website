@@ -7,6 +7,7 @@ export function SectionHeading({
   title,
   lead,
   as: Heading = "h2",
+  id,
   tone = "light",
   align = "left",
   className,
@@ -15,6 +16,8 @@ export function SectionHeading({
   title: ReactNode;
   lead?: ReactNode;
   as?: "h1" | "h2";
+  /** For `aria-labelledby` on the surrounding section. */
+  id?: string;
   tone?: "light" | "dark";
   align?: "left" | "center";
   className?: string;
@@ -39,6 +42,7 @@ export function SectionHeading({
         </p>
       )}
       <Heading
+        id={id}
         className={cn(
           "font-heading",
           Heading === "h1"

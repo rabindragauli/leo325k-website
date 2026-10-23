@@ -2,7 +2,13 @@ import Link from "next/link";
 import type { ComponentProps } from "react";
 import { cn } from "@/lib/cn";
 
-export type ButtonVariant = "primary" | "secondary" | "outline" | "text";
+export type ButtonVariant =
+  | "primary"
+  | "secondary"
+  | "outline"
+  | "outline-dark"
+  | "outline-strong"
+  | "text";
 export type ButtonSize = "md" | "lg";
 
 type StyleProps = { variant?: ButtonVariant; size?: ButtonSize; className?: string };
@@ -11,6 +17,10 @@ const variants: Record<ButtonVariant, string> = {
   primary: "bg-yellow text-teal-900 hover:brightness-105",
   secondary: "bg-teal-900 text-white hover:bg-teal-700",
   outline: "border border-line bg-white text-teal-900 hover:border-teal-400",
+  /** On dark/gradient bands (404 hero) */
+  "outline-dark": "border border-on-dark-muted text-white hover:bg-teal-700",
+  /** On yellow panels (About CTA) */
+  "outline-strong": "border-2 border-teal-900 text-teal-900 hover:bg-white/30",
   text: "text-teal-900 underline underline-offset-4 hover:text-teal-700",
 };
 

@@ -122,6 +122,11 @@
   );
 }
 
+/* 404 hero (design/source/public/NotFound.dc.html) */
+@utility bg-hero-404 {
+  background-image: linear-gradient(120deg, #1b3a4b 0%, #1b3a4b 45%, #4b3f86 80%, #762b94 100%);
+}
+
 @layer base {
   /* Keep skip-link and anchor targets clear of the sticky mobile header (138 px) */
   @media (width < 53.8125rem) {

@@ -32,6 +32,20 @@ Seed files as **records without uploaded files** (resources start `published=fal
 | `[date of launch]` | Privacy |
 | Cabinet Treasurer's home club (2025–26) | Leadership |
 | Verify Our Pride titles (“MDP 325 B”, “DP 325 B”) | Our Pride |
+| `[If analytics is added at launch, name it here.]` | Privacy (Security and cookies) |
+| Resource file sizes and update dates (`[size] · Updated [date]`), the files themselves, and the URLs of the 2 official links | Resources |
+| `[Map: District office location — embedded Google Map]` | Contact |
+
+## Wording changes that need council approval
+| Change | Where | Status |
+|---|---|---|
+| “What we collect”: *“Officers’ phone numbers and membership IDs are kept for district records and are never shown on the website.”* → *“Officers’ personal phone numbers and email addresses are shown only if the officer chooses to make them public. Membership IDs are kept for district records and are never shown on the website.”* (matches the phone/email public toggles) | Privacy | **Needs council approval** |
+
+## Sprint 2 static data (`src/data/*`)
+Typed records shaped like the Prisma models; `src/server/queries/public.ts` returns public fields only. Sprint 2 publishes the 12
+“ready” resources (buttons disabled until a file/URL is attached) so the page matches the design; the **Sprint 3 seed follows the rule
+above** (files `published=false` until a real file is attached, except the 2 external links). People have no `consentAt` yet: Sprint 3
+must decide how existing officers' consent is recorded before profiles are filtered on it.
 
 ## Old URLs → 301 redirects
 `/leo.html` → `/leadership` · `/index.html` → `/` · (Rabindra to send the rest of the old `public_html` file list)
