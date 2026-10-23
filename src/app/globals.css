@@ -1,26 +1,149 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/* Design tokens: docs/05_DESIGN_SYSTEM.md (LY 2026–27 theme) */
+@theme {
+  /* Only design colours exist, so off-palette classes can't slip in */
+  --color-*: initial;
+  --color-white: #ffffff;
+  --color-black: #000000;
+
+  --color-teal-900: #1b3a4b; /* brand: nav bar, dark sections, headings */
+  --color-teal-800: #1a4359; /* banner left */
+  --color-teal-700: #244d63; /* cards on dark sections */
+  --color-teal-600: #2b5266; /* dividers on dark */
+  --color-teal-500: #3f6a80; /* pill borders on dark */
+  --color-teal-400: #4f7a90; /* borders on dark */
+  --color-purple: #762b94;
+  --color-yellow: #fccc0a;
+  --color-orange: #f6961e;
+  --color-blue: #2b6f96; /* banner swoosh */
+  --color-blue-bright: #156fac; /* mobile header line */
+
+  --color-gold-text: #8a6100; /* eyebrows on white */
+  --color-gold-tint: #fbefd3;
+  --color-gold-ink: #6b4b00;
+  --color-gold-band: #c28b19; /* theme ribbon */
+
+  --color-ink: #14213d;
+  --color-slate: #4a5568;
+  --color-mist: #f4f6fa;
+  --color-line: #e1e6ef;
+
+  --color-on-dark: #d3dcec;
+  --color-on-dark-2: #c9d3e6;
+  --color-on-dark-3: #b9c5dc;
+  --color-on-dark-muted: #9fb0d0;
+  --color-nav: #cfe0e8; /* inactive nav links */
+
+  --color-ok: #1e6b3a;
+  --color-ok-tint: #e3f4ea;
+  --color-warn: #6b4b00;
+  --color-warn-tint: #fbefd3;
+  --color-error: #8a1f11;
+  --color-error-tint: #fbe4e1;
+  --color-form-error: #a3261a;
+
+  /* Header breakpoints (min-width). Mobile header/footer at ≤ 860 px. */
+  --breakpoint-desk: 53.8125rem; /* 861px */
+  --breakpoint-leo: 56.3125rem; /* 901px: Leo emblem in banner */
+  --breakpoint-art: 68.8125rem; /* 1101px: curtains + mountains */
+  --breakpoint-theme: 81.3125rem; /* 1301px: theme words */
+
+  --radius-btn: 10px;
+  --radius-card: 18px;
+  --radius-panel: 24px;
+
+  --container-content: 1240px;
+  --container-banner: 1440px;
+
+  --text-display: 3.5rem;
+  --text-display--line-height: 1.1;
+  --text-h2: 2.375rem;
+  --text-h2--line-height: 1.2;
+  --text-card-title: 1.25rem;
+  --text-card-title--line-height: 1.3;
+  --text-eyebrow: 0.8125rem;
+  --text-eyebrow--line-height: 1.4;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-sans: var(--font-public-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-heading: var(--font-lato), ui-sans-serif, system-ui, sans-serif;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+/* Banner and theme gradients (design/source/public/SiteHeader*.dc.html, MobileMenu.dc.html) */
+@utility bg-banner-outer {
+  background-image: linear-gradient(90deg, #244d63 0%, #244d63 45%, #762b94 55%, #762b94 100%);
+}
+@utility bg-banner {
+  background-image: linear-gradient(
+    90deg,
+    #1a4359 0%,
+    #1a4359 42%,
+    #234569 46%,
+    #2e4a7a 50%,
+    #3d4581 54%,
+    #4b3f86 58%,
+    #5b3889 62%,
+    #6a3290 66%,
+    #712e92 70%,
+    #762b94 74%,
+    #762b94 100%
+  );
+}
+@utility bg-bar-mobile {
+  background-image: linear-gradient(
+    90deg,
+    #244d63 0%,
+    #244d63 35%,
+    #2e4a7a 52%,
+    #4b3f86 70%,
+    #6a3290 88%,
+    #762b94 100%
+  );
+}
+@utility bg-badges-band {
+  background-image: linear-gradient(
+    90deg,
+    #1a4359 0%,
+    #2e4a7a 22%,
+    #4b3f86 45%,
+    #6a3290 70%,
+    #762b94 90%
+  );
+}
+@utility bg-theme-ribbon {
+  background-image: linear-gradient(
+    90deg,
+    rgba(71, 64, 102, 0) 0%,
+    #7e5e43 9%,
+    #c28b19 22%,
+    #cb8d10 100%
+  );
+}
+
+@layer base {
+  /* Keep skip-link and anchor targets clear of the sticky mobile header (138 px) */
+  @media (width < 53.8125rem) {
+    html {
+      scroll-padding-top: 138px;
+    }
   }
-}
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  body {
+    @apply bg-white font-sans text-ink antialiased;
+    line-height: 1.6;
+  }
+
+  /* Focus ring: 3 px yellow outside a 2 px teal ring, visible on white, dark and yellow */
+  :focus-visible {
+    outline: 3px solid var(--color-yellow);
+    outline-offset: 2px;
+    box-shadow: 0 0 0 2px var(--color-teal-900);
+  }
+
+  /* Mobile menu open: lock page scroll behind the dialog */
+  body:has(dialog[open]) {
+    overflow: hidden;
+  }
 }

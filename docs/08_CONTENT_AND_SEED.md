@@ -28,7 +28,7 @@ Seed files as **records without uploaded files** (resources start `published=fal
 | Hero photo, About photo, portraits (800 × 800) | Home, About, Leadership |
 | Official district logo (PNG + SVG); 2× banner artwork and badges | Header, footer, favicon |
 | 2026–27 district team (after installation) | Leadership |
-| Social media URLs (Facebook, Instagram, YouTube) | Footer, mobile menu |
+| Social media URLs (Facebook, Instagram, YouTube): pills stay hidden until set (`socialLinks` in `src/lib/site.ts`) | Footer, mobile menu |
 | `[date of launch]` | Privacy |
 | Cabinet Treasurer's home club (2025–26) | Leadership |
 | Verify Our Pride titles (“MDP 325 B”, “DP 325 B”) | Our Pride |

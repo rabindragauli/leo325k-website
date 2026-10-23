@@ -39,6 +39,18 @@ Breakpoints: theme words hide < 1300 px · curtains + mountains hide < 1100 px �
 ## Shape & spacing
 Radius: buttons 10–12 px · cards 16–20 px · feature panels 24 px · chips/avatars full. Content width 1240 px. Section padding 80–104 px desktop, 32–56 px mobile. Tap targets ≥ 44 px. Focus ring: 3 px `#FCCC0A`.
 
+## Tailwind tokens (`src/app/globals.css`, Tailwind v4 `@theme`)
+The default Tailwind palette is cleared (`--color-*: initial`); only these colours exist (`inherit`, `transparent`, `current` still work).
+- Colours: `teal-900/800/700/600/500/400` (800 = `#1A4359` banner left, 500 = `#3F6A80` pill borders), `purple`, `yellow`, `orange`, `blue` (`#2B6F96` swoosh), `blue-bright` (`#156FAC` mobile line), `gold-text`, `gold-tint`, `gold-ink`, `gold-band` (`#C28B19`), `ink`, `slate`, `mist`, `line`, `on-dark`, `on-dark-2`, `on-dark-3`, `on-dark-muted` (`#9FB0D0`), `nav` (`#CFE0E8` inactive nav), `ok`/`ok-tint`, `warn`/`warn-tint`, `error`/`error-tint`, `form-error`
+- Fonts: `font-heading` (Lato 400/700/900), `font-sans` (Public Sans, default), both via `next/font/google` (self-hosted)
+- Breakpoints (min-width): `desk` 861 px (desktop header/footer; `max-desk:` = mobile ≤ 860), `leo` 901 px, `art` 1101 px, `theme` 1301 px. Tailwind's `sm`/`md`/`lg`/`xl` remain for page layouts.
+- Radius: `rounded-btn` 10 px, `rounded-card` 18 px, `rounded-panel` 24 px · Width: `max-w-content` 1240 px, `max-w-banner` 1440 px
+- Text: `text-display` 56, `text-h2` 38, `text-card-title` 20, `text-eyebrow` 13
+- Gradients: `bg-banner`, `bg-banner-outer`, `bg-bar-mobile`, `bg-badges-band`, `bg-theme-ribbon`
+- Focus: global `:focus-visible` = 2 px teal-900 inner ring + 3 px yellow outline
+
+Dev-only gallery of the UI components: `/style-guide` (404 in production).
+
 ## Brand assets (`assets/brand/` → `public/brand/`)
 lions-international-logo, leo-emblem (shown with `filter: brightness(1.9)` on dark), mountains-flag, curtain-left/right, badge-1…5.
 The supplied badges are 160 px tall and curtains 176 px — **ask the council for 2× originals** (banner artwork 2880 × 432) before launch.
