@@ -30,7 +30,7 @@ export function publicContact(person: {
   };
 }
 
-/** "2025–26" → "2025-26" (the `?year=` value). */
+/** "2025–26" → "2025-26" (the /leadership/<slug> path segment). */
 export function leoYearSlug(label: string): string {
   return label.replace(/[–—]/g, "-");
 }

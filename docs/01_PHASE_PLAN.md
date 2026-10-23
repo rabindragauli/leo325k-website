@@ -61,6 +61,7 @@ Estimates assume part-time work (evenings + Saturdays) with an AI agent doing mo
 - Screens in `docs/04_ROUTES_AND_SCREENS.md`: Dashboard, Leadership (+ publish year), Person editor (find-first flow), Our Pride, Clubs + Edit club (+ Club PVST), Resources, Site content (incl. Leo Year theme uploads), Users & roles, Activity log
 - Uploads: type + size checks (images ≤ 5 MB, docs ≤ 20 MB, allow-list of MIME/extension), random file names, sharp resize (portraits 800×800, logos 1000 px, hero 1920 px) → WebP
 - Every mutation: Zod → `requireRole` → Prisma → `ActivityLog` entry → `revalidatePath`
+- Leadership pages are prerendered (`/leadership`, `/leadership/[year]` via `generateStaticParams`): publishing/archiving a Leo Year or editing a team must call `revalidatePath("/leadership")` and `revalidatePath("/leadership/[year]", "page")`, and Home (`/`) for the coming-soon card
 - **Done when:** a non-technical Editor can publish the 2026–27 team, add a club with logo, upload a PDF, and see it live within a minute.
 
 ## Sprint 6 — Contact form, messages, email

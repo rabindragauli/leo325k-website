@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 import {
+  getArchivedYearSlugs,
   getClubs,
   getLeadershipView,
   getPrideEntries,
@@ -95,6 +96,17 @@ describe("getLeadershipView (seed data)", () => {
     expect(view.years.map((y) => y.slug)).toEqual(["2026-27"]);
     expect(view.comingSoon).toBe(true);
     expect(view.team).toBeNull();
+  });
+});
+
+describe("getArchivedYearSlugs", () => {
+  it("lists published past years only (current year lives at /leadership)", async () => {
+    expect(await getArchivedYearSlugs()).toEqual(["2025-26"]);
+    const db: DataSource = {
+      ...staticSource,
+      leoYears: staticSource.leoYears.map((y) => (y.isCurrent ? { ...y, published: true } : { ...y, published: false })),
+    };
+    expect(await getArchivedYearSlugs(db)).toEqual([]);
   });
 });
 

@@ -116,3 +116,36 @@ export const notFoundLinks = [
   { title: "Resources", text: "Forms, templates and logos.", href: "/resources" },
   { title: "About", text: "Who we are and how we serve.", href: "/about" },
 ];
+
+export const home = {
+  heroLead:
+    "Young people across Nepal serving their communities through Leo clubs — blood drives, environment campaigns, education and leadership training, all in one district.",
+  heroPhoto: null as string | null, // [Photo: district-wide service event, Leos in uniform]
+  // Numbers band: council supplies the values (docs/08)
+  stats: [
+    { value: "[##]", label: "Leo clubs in District 325 K" },
+    { value: "[###]", label: "Active Leo members" },
+    { value: "[##]", label: "Service projects this Leo Year" },
+    { value: "[#]", label: "Regions across the district" },
+  ],
+  explore: [
+    {
+      title: "Club directory",
+      text: "Find approved Leo clubs by region and connect with one near you.",
+      cta: "Browse clubs",
+      href: "/clubs",
+    },
+    {
+      title: "Resources",
+      text: "Forms, templates, logos, guides and official district documents.",
+      cta: "Open resources",
+      href: "/resources",
+    },
+    {
+      title: "Get in touch",
+      text: "Questions, partnerships or starting a new club? The district office is here to help.",
+      cta: "Contact the district",
+      href: "/contact",
+    },
+  ],
+};

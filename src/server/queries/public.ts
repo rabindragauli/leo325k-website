@@ -159,7 +159,15 @@ export async function getCurrentLeoYear(db: DataSource = staticSource) {
   return current ? { ...yearRef(current), published: current.published } : null;
 }
 
-/** `yearSlug` comes from `?year=`; anything unknown falls back to the default (current) view. */
+/** Published past years, each prerendered at /leadership/<slug> (generateStaticParams). */
+export async function getArchivedYearSlugs(db: DataSource = staticSource): Promise<string[]> {
+  return db.leoYears
+    .filter((y) => y.published && !y.isCurrent)
+    .sort(newestFirst)
+    .map((y) => leoYearSlug(y.label));
+}
+
+/** No slug (or an unknown one) gives the default (current year) view; /leadership/[year] 404s unknown years itself. */
 export async function getLeadershipView(
   yearSlug?: string | null,
   db: DataSource = staticSource,
