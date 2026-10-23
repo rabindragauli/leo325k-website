@@ -1,0 +1,12 @@
+.next/
+node_modules/
+deploy/
+design/
+docs/
+assets/
+starter/
+public/
+playwright-report/
+test-results/
+*.md
+package-lock.json

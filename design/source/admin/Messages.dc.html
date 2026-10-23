@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Messages — Leo 325 K Admin</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&amp;family=Public+Sans:wght@400;500;600;700&amp;display=swap">
+<style>
+body{margin:0}
+a{color:#1D5C80}a:hover{color:#1B3A4B}
+button,select{font-family:inherit;cursor:pointer}
+select:focus,button:focus-visible{outline:3px solid #FCCC0A;outline-offset:1px}
+</style>
+</helmet>
+<div style="font-family: 'Public Sans', sans-serif; color: #14213D; background: #F4F6FA; min-height: 100%; display: flex; flex-wrap: wrap; align-items: stretch">
+
+<div style="flex: 1 1 100%; min-width: 0"><dc-import name="AdminBanner" variant="compact" hint-size="100%,64px"></dc-import></div>
+
+<div style="flex: 1 1 264px; background: #1B3A4B">
+<dc-import name="Sidebar" active="messages" hint-size="264px,900px"></dc-import>
+</div>
+
+<main style="flex: 999 1 640px; min-width: 0; padding: 28px 32px 48px; box-sizing: border-box; display: flex; flex-direction: column; gap: 20px">
+<div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 16px">
+<div style="display: flex; flex-direction: column; gap: 4px">
+<h1 style="margin: 0; font-family: 'Lato', sans-serif; font-weight: 700; font-size: 32px; color: #1B3A4B">Messages</h1>
+<span style="font-size: 15px; color: #4A5568">From the Contact us form on the website · sample data</span>
+</div>
+<div role="group" aria-label="Filter messages" style="display: flex; gap: 4px; background: #FFFFFF; border: 1px solid #E1E6EF; padding: 4px; border-radius: 12px">
+<sc-for list="{{filters}}" as="f" hint-placeholder-count="4">
+<button type="button" onClick="{{f.pick}}" aria-pressed="{{f.pressed}}" style="min-height: 40px; padding: 0 14px; border: none; border-radius: 9px; font-size: 14px; font-weight: 700; background: {{f.bg}}; color: {{f.fg}}">{{f.label}} ({{f.n}})</button>
+</sc-for>
+</div>
+</div>
+
+<div style="display: flex; flex-wrap: wrap; gap: 20px; align-items: flex-start">
+<div style="flex: 1 1 340px; min-width: 0; background: #FFFFFF; border: 1px solid #E1E6EF; border-radius: 18px; overflow: hidden">
+<sc-for list="{{list}}" as="m" hint-placeholder-count="5">
+<button type="button" onClick="{{m.pick}}" aria-current="{{m.current}}" style="width: 100%; text-align: left; border: none; border-bottom: 1px solid #EEF1F6; background: {{m.bg}}; padding: 16px 18px; display: flex; gap: 12px; align-items: flex-start">
+<span style="flex: 0 0 38px; height: 38px; border-radius: 50%; background: #E1EAFB; color: #1D5C80; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 800">{{m.ini}}</span>
+<span style="flex: 1 1 auto; min-width: 0; display: flex; flex-direction: column; gap: 4px">
+<span style="display: flex; justify-content: space-between; gap: 8px"><span style="font-size: 15px; font-weight: 700; color: #14213D">{{m.name}}</span><span style="font-size: 12px; color: #4A5568; white-space: nowrap">{{m.date}}</span></span>
+<span style="font-size: 13px; font-weight: 600; color: #4A5568">{{m.topic}}</span>
+<span style="font-size: 13px; color: #4A5568; white-space: nowrap; overflow: hidden; text-overflow: ellipsis">{{m.body}}</span>
+<span style="align-self: flex-start; font-size: 11px; font-weight: 800; padding: 3px 8px; border-radius: 999px; background: {{m.chipBg}}; color: {{m.chipFg}}">{{m.status}}</span>
+</span>
+</button>
+</sc-for>
+<sc-if value="{{empty}}" hint-placeholder-val="{{ false }}"><div style="padding: 32px; text-align: center; font-size: 15px; color: #4A5568">No messages here.</div></sc-if>
+</div>
+
+<sc-if value="{{hasSel}}" hint-placeholder-val="{{ true }}">
+<article style="flex: 999 1 480px; min-width: 0; background: #FFFFFF; border: 1px solid #E1E6EF; border-radius: 18px; padding: 28px; display: flex; flex-direction: column; gap: 20px">
+<div style="display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; align-items: flex-start">
+<div style="display: flex; flex-direction: column; gap: 6px">
+<span style="align-self: flex-start; font-size: 12px; font-weight: 700; padding: 4px 10px; border-radius: 999px; background: #FBEFD3; color: #6B4B00">{{sel.topic}}</span>
+<h2 style="margin: 0; font-size: 24px; font-weight: 700; color: #1B3A4B">{{sel.name}}</h2>
+<span style="font-size: 14px; color: #4A5568">Received {{sel.date}}</span>
+</div>
+<span style="font-size: 12px; font-weight: 800; padding: 5px 10px; border-radius: 999px; background: {{sel.chipBg}}; color: {{sel.chipFg}}">{{sel.status}}</span>
+</div>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px">
+<div style="background: #F4F6FA; border-radius: 12px; padding: 12px 14px; display: flex; flex-direction: column; gap: 2px"><span style="font-size: 12px; font-weight: 700; color: #4A5568">Email</span><span style="font-size: 15px; font-weight: 600">{{sel.email}}</span></div>
+<div style="background: #F4F6FA; border-radius: 12px; padding: 12px 14px; display: flex; flex-direction: column; gap: 2px"><span style="font-size: 12px; font-weight: 700; color: #4A5568">Phone</span><span style="font-size: 15px; font-weight: 600">{{sel.phone}}</span></div>
+</div>
+<p style="margin: 0; font-size: 16px; line-height: 1.7; color: #14213D; white-space: pre-line">{{sel.body}}</p>
+<div style="display: flex; flex-wrap: wrap; gap: 12px; align-items: flex-end; padding-top: 16px; border-top: 1px solid #EEF1F6">
+<div style="display: flex; flex-direction: column; gap: 6px">
+<label for="assign" style="font-size: 13px; font-weight: 700">Assigned to</label>
+<select id="assign" style="height: 44px; border: 1px solid #C9D3E6; border-radius: 10px; padding: 0 12px; font-size: 14px; background: #FFFFFF; color: #14213D"><option>District Secretary</option><option>District President’s office</option><option>Membership &amp; new clubs</option></select>
+</div>
+<a href="mailto:{{sel.email}}" style="display: inline-flex; align-items: center; gap: 8px; min-height: 44px; padding: 0 18px; border-radius: 10px; background: #1B3A4B; color: #FFFFFF; text-decoration: none; font-size: 14px; font-weight: 700"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 14L4 9l5-5M4 9h11a5 5 0 0 1 5 5v6"></path></svg>Reply by email</a>
+<button type="button" onClick="{{markReplied}}" style="min-height: 44px; padding: 0 16px; border: 1px solid #C9D3E6; border-radius: 10px; background: #FFFFFF; color: #1B3A4B; font-size: 14px; font-weight: 700">Mark as replied</button>
+<button type="button" onClick="{{archive}}" style="min-height: 44px; padding: 0 16px; border: 1px solid #C9D3E6; border-radius: 10px; background: #FFFFFF; color: #1B3A4B; font-size: 14px; font-weight: 700">Archive</button>
+</div>
+</article>
+</sc-if>
+</div>
+</main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":964}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = {
+      sel: 0,
+      filter: 'All',
+      status: { 0: 'New', 1: 'New', 2: 'New', 3: 'Replied', 4: 'Archived' }
+    };
+  }
+  renderVals() {
+    const msgs = [
+      { ini: 'AT', name: 'Anisha T.', email: 'anisha.t@example.com', phone: '98XXXXXXXX', topic: 'Join or start a club', date: '19 Oct, 9:12 AM', body: 'Hello, our college group in Butwal wants to start a Leo club.\nCould you tell us how to find a sponsoring Lions club and what the next steps are?' },
+      { ini: 'RG', name: 'Rohan G.', email: 'rohan.g@example.com', phone: 'Not given', topic: 'General inquiry', date: '18 Oct, 4:40 PM', body: 'Where can I find the membership form for new Leos? I could not find it on the Resources page.' },
+      { ini: 'SK', name: 'Sabina K.', email: 'sabina.k@example.com', phone: '98XXXXXXXX', topic: 'Partnership & sponsorship', date: '18 Oct, 11:05 AM', body: 'Our organization would like to support a district blood donation drive. Who should we talk to?' },
+      { ini: 'BP', name: 'Bikash P.', email: 'bikash.p@example.com', phone: 'Not given', topic: 'Website feedback', date: '16 Oct, 2:18 PM', body: 'The new site looks great on my phone. Will the club directory include contact details later?' },
+      { ini: 'MN', name: 'Manisha N.', email: 'manisha.n@example.com', phone: 'Not given', topic: 'Media & press', date: '12 Oct, 10:30 AM', body: 'We are writing a story on youth volunteering and would like a short interview.' }
+    ];
+    const C = { New: ['#E1EAFB', '#1D5C80'], Replied: ['#E3F4EA', '#1E6B3A'], Archived: ['#EEF1F6', '#4A5568'] };
+    const st = this.state.status, f = this.state.filter, sel = this.state.sel;
+    const all = msgs.map((m, i) => Object.assign({}, m, { i: i, status: st[i], chipBg: C[st[i]][0], chipFg: C[st[i]][1] }));
+    const list = all.filter((m) => f === 'All' || m.status === f).map((m) => Object.assign({}, m, {
+      current: m.i === sel ? 'true' : 'false',
+      bg: m.i === sel ? '#FFF8E6' : '#FFFFFF',
+      pick: () => this.setState({ sel: m.i })
+    }));
+    const setStatus = (s) => { const n = Object.assign({}, this.state.status); n[sel] = s; this.setState({ status: n }); };
+    return {
+      list: list,
+      empty: list.length === 0,
+      hasSel: true,
+      sel: all[sel],
+      markReplied: () => setStatus('Replied'),
+      archive: () => setStatus('Archived'),
+      filters: ['All', 'New', 'Replied', 'Archived'].map((k) => ({
+        label: k,
+        n: k === 'All' ? all.length : all.filter((m) => m.status === k).length,
+        pressed: k === f ? 'true' : 'false',
+        bg: k === f ? '#1B3A4B' : 'transparent',
+        fg: k === f ? '#FFFFFF' : '#14213D',
+        pick: () => this.setState({ filter: k })
+      }))
+    };
+  }
+}
+</script>
+</body>
+</html>

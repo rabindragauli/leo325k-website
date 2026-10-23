@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Dashboard mobile — Leo 325 K Admin</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&amp;family=Public+Sans:wght@400;500;600;700&amp;display=swap">
+<style>
+body{margin:0}
+a{color:#1D5C80}
+</style>
+</helmet>
+<div style="width: 390px; min-height: 1570px; box-sizing: border-box; font-family: 'Public Sans', sans-serif; color: #14213D; background: #F4F6FA; display: flex; flex-direction: column">
+
+<header style="color: #FFFFFF">
+<div style="height: 68px; box-sizing: border-box; background: linear-gradient(90deg, #244D63 0%, #244D63 35%, #2E4A7A 52%, #4B3F86 70%, #6A3290 88%, #762B94 100%); padding: 0 12px 0 14px; display: flex; align-items: center; gap: 10px">
+<a href="Main.dc.html" style="flex: 1 1 auto; min-width: 0; display: flex; align-items: center; gap: 10px; text-decoration: none; color: #FFFFFF">
+<img src="/brand/lions-international-logo.png" alt="Lions International" style="height: 42px; width: auto">
+<span style="display: flex; flex-direction: column; min-width: 0">
+<span style="font-family: 'Lato', sans-serif; font-weight: 900; font-size: 15px; line-height: 1.2">Leo 325 K Admin</span>
+<span style="font-family: 'Lato', sans-serif; font-weight: 700; font-size: 12px; color: #FCCC0A">Nepal · LY 2026–27</span>
+</span>
+</a>
+<button type="button" aria-label="Open admin menu" style="width: 44px; height: 44px; border-radius: 10px; border: 1px solid #4F7A90; background: transparent; color: #FFFFFF; display: flex; align-items: center; justify-content: center"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"></path></svg></button>
+</div>
+<div style="height: 4px; background: #FCCC0A"></div>
+<div style="height: 3px; background: #156FAC"></div>
+<div role="list" aria-label="LY 2026–27 theme badges" style="height: 60px; box-sizing: border-box; background: linear-gradient(90deg, #1A4359 0%, #2E4A7A 22%, #4B3F86 45%, #6A3290 70%, #762B94 90%); display: flex; align-items: center; justify-content: center; gap: 10px">
+<img role="listitem" src="/brand/badge-1-we-serve.png" alt="We Serve — Rooted in Service" style="height: 46px; width: auto">
+<img role="listitem" src="/brand/badge-2-lions-325k-round.png" alt="Lions District 325 K: Leading with Purpose (round)" style="height: 46px; width: auto">
+<img role="listitem" src="/brand/badge-3-lions-325k-quatrefoil.png" alt="Lions District 325 K: Leading with Purpose (quatrefoil)" style="height: 46px; width: auto">
+<img role="listitem" src="/brand/badge-4-leo-md325.png" alt="Leo Multiple District 325: Every Step Inspires" style="height: 46px; width: auto">
+<img role="listitem" src="/brand/badge-5-ldc325k-execution.png" alt="Leo District Council 325 K: Execution with Excellence" style="height: 46px; width: auto">
+</div>
+<div style="height: 3px; background: #F6961E"></div>
+</header>
+
+<div style="padding: 20px 16px 32px; display: flex; flex-direction: column; gap: 16px">
+<div style="display: flex; flex-direction: column; gap: 2px">
+<h1 style="margin: 0; font-family: 'Lato', sans-serif; font-weight: 700; font-size: 28px; color: #1B3A4B">Dashboard</h1>
+<span style="font-size: 14px; color: #4A5568">Leo Year 2026–27</span>
+</div>
+
+<section style="background: #1B3A4B; color: #FFFFFF; border-radius: 18px; padding: 20px; display: flex; flex-direction: column; gap: 12px">
+<div style="display: flex; justify-content: space-between; align-items: baseline"><span style="font-size: 16px; font-weight: 700">Launch readiness</span><span style="font-family: 'Lato', sans-serif; font-weight: 800; font-size: 26px">2 / 13</span></div>
+<div role="progressbar" aria-valuemin="0" aria-valuemax="13" aria-valuenow="2" aria-label="Launch readiness" style="height: 8px; border-radius: 999px; background: #2B5266; overflow: hidden"><div style="width: 17%; height: 100%; background: #FCCC0A"></div></div>
+<span style="font-size: 13px; color: #C9D3E6">Next: official emails, office address, district logo</span>
+<a href="Main.dc.html" style="color: #FCCC0A; font-size: 14px; font-weight: 700">See full checklist →</a>
+</section>
+
+<div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px">
+<sc-for list="{{kpis}}" as="k" hint-placeholder-count="4">
+<a href="{{k.href}}" style="text-decoration: none; color: #14213D; background: #FFFFFF; border: 1px solid #E1E6EF; border-radius: 14px; padding: 14px; display: flex; flex-direction: column; gap: 4px">
+<span style="font-size: 13px; font-weight: 600; color: #4A5568">{{k.label}}</span>
+<span style="font-family: 'Lato', sans-serif; font-weight: 800; font-size: 28px; color: #1B3A4B">{{k.value}}</span>
+<span style="font-size: 12px; font-weight: 600; color: #6B4B00">{{k.note}}</span>
+</a>
+</sc-for>
+</div>
+
+<section style="background: #FFFFFF; border: 1px solid #E1E6EF; border-radius: 18px; padding: 16px; display: flex; flex-direction: column">
+<div style="display: flex; justify-content: space-between; align-items: center; padding-bottom: 8px"><span style="font-size: 16px; font-weight: 700; color: #1B3A4B">New messages</span><a href="Messages.dc.html" style="font-size: 14px; font-weight: 700">Inbox →</a></div>
+<sc-for list="{{messages}}" as="m" hint-placeholder-count="3">
+<a href="Messages.dc.html" style="text-decoration: none; color: #14213D; display: flex; gap: 12px; padding: 12px 0; border-top: 1px solid #EEF1F6">
+<span style="flex: 0 0 36px; height: 36px; border-radius: 50%; background: #E1EAFB; color: #1D5C80; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 800">{{m.ini}}</span>
+<span style="display: flex; flex-direction: column; gap: 2px; min-width: 0"><span style="font-size: 14px; font-weight: 700">{{m.name}}</span><span style="font-size: 13px; color: #4A5568">{{m.topic}}</span></span>
+</a>
+</sc-for>
+</section>
+
+<section style="display: flex; flex-direction: column; gap: 10px">
+<span style="font-size: 16px; font-weight: 700; color: #1B3A4B">Quick actions</span>
+<sc-for list="{{actions}}" as="a" hint-placeholder-count="4">
+<a href="{{a.href}}" style="min-height: 52px; box-sizing: border-box; text-decoration: none; color: #1B3A4B; background: #FFFFFF; border: 1px solid #E1E6EF; border-radius: 12px; padding: 0 14px; display: flex; align-items: center; gap: 12px; font-size: 15px; font-weight: 700"><span style="width: 28px; height: 28px; border-radius: 8px; background: #FCCC0A; display: flex; align-items: center; justify-content: center; font-size: 18px; font-weight: 800">+</span>{{a.label}}</a>
+</sc-for>
+</section>
+</div>
+
+<nav aria-label="Admin sections" style="margin-top: auto; background: #FFFFFF; border-top: 1px solid #E1E6EF; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr))">
+<sc-for list="{{tabs}}" as="t" hint-placeholder-count="4">
+<a href="{{t.href}}" style="min-height: 64px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; text-decoration: none; font-size: 12px; font-weight: 700; color: {{t.fg}}"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="{{t.icon}}"></path></svg>{{t.label}}</a>
+</sc-for>
+</nav>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":1570}}'>
+class Component extends DCLogic {
+  renderVals() {
+    return {
+      kpis: [
+        { label: 'New messages', value: '3', note: 'Sample data', href: 'Messages.dc.html' },
+        { label: 'Clubs', value: '4', note: '4 need details', href: 'Clubs.dc.html' },
+        { label: 'Resources', value: '15', note: '3 coming soon', href: 'Resources.dc.html' },
+        { label: 'Leo Years', value: '2', note: '2026–27 unpublished', href: 'Leadership.dc.html' }
+      ],
+      messages: [
+        { ini: 'AT', name: 'Anisha T.', topic: 'Join or start a club' },
+        { ini: 'RG', name: 'Rohan G.', topic: 'General inquiry' },
+        { ini: 'SK', name: 'Sabina K.', topic: 'Partnership & sponsorship' }
+      ],
+      actions: [
+        { label: 'Add a club', href: 'Clubs.dc.html' },
+        { label: 'Upload a resource', href: 'Resources.dc.html' },
+        { label: 'Add team member', href: 'PersonEditor.dc.html' }
+      ],
+      tabs: [
+        { label: 'Home', href: 'Main.dc.html', fg: '#1B3A4B', icon: 'M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z' },
+        { label: 'Messages', href: 'Messages.dc.html', fg: '#4A5568', icon: 'M3 7l9 6 9-6 M5 5h14a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2z' },
+        { label: 'Clubs', href: 'Clubs.dc.html', fg: '#4A5568', icon: 'M3 21h18 M5 21V8l7-5 7 5v13 M9 21v-6h6v6' },
+        { label: 'Files', href: 'Resources.dc.html', fg: '#4A5568', icon: 'M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z M14 2v6h6' }
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>

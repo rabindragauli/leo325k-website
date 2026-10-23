@@ -1,0 +1,22 @@
+# dependencies / build
+node_modules/
+.next/
+out/
+deploy/
+*.zip
+# env & secrets
+.env
+.env.*
+!.env.example
+# local uploads & logs
+uploads/
+*.log
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/*
+!.vscode/extensions.json
+# tests
+playwright-report/
+test-results/
+coverage/

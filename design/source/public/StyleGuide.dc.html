@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Style guide — Leo District Council 325 K</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&amp;family=Public+Sans:wght@400;500;600;700&amp;display=swap">
+<style>
+body{margin:0}
+a{color:#1B3A4B}a:hover{color:#244D63}
+</style>
+</helmet>
+<div style="width: 1200px; height: 1150px; box-sizing: border-box; padding: 56px; font-family: 'Public Sans', sans-serif; color: #14213D; background: #FFFFFF; display: flex; flex-direction: column; gap: 44px">
+
+<div style="display: flex; flex-direction: column; gap: 6px">
+<span style="font-size: 13px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: #8A6100">Website UI v2 · LY 2026–27 theme</span>
+<h1 style="margin: 0; font-family: 'Lato', sans-serif; font-weight: 800; font-size: 44px; color: #1B3A4B">Style guide</h1>
+</div>
+
+<div style="display: flex; flex-direction: column; gap: 16px">
+<h2 style="margin: 0; font-size: 18px; font-weight: 700">Colors</h2>
+<div style="display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 14px">
+<sc-for list="{{colors}}" as="c" hint-placeholder-count="7">
+<div style="display: flex; flex-direction: column; gap: 8px">
+<div style="height: 84px; border-radius: 14px; background: {{c.hex}}; border: 1px solid #E1E6EF"></div>
+<span style="font-size: 14px; font-weight: 700">{{c.name}}</span>
+<span style="font-size: 13px; color: #4A5568">{{c.hex}} · {{c.use}}</span>
+</div>
+</sc-for>
+</div>
+</div>
+
+<div style="display: flex; gap: 56px">
+<div style="flex: 1 1 0; display: flex; flex-direction: column; gap: 14px">
+<h2 style="margin: 0; font-size: 18px; font-weight: 700">Typography</h2>
+<span style="font-family: 'Lato', sans-serif; font-weight: 800; font-size: 56px; line-height: 1; color: #1B3A4B">Display 56</span>
+<span style="font-family: 'Lato', sans-serif; font-weight: 700; font-size: 38px; color: #1B3A4B">Heading 38</span>
+<span style="font-size: 20px; font-weight: 700">Card title 20 · Public Sans Bold</span>
+<span style="font-size: 16px; line-height: 1.6; color: #4A5568">Body 16 / 1.6 — Public Sans Regular. Used for descriptions, messages and reports.</span>
+<span style="font-size: 13px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: #8A6100">Eyebrow 13 · uppercase</span>
+<span style="font-size: 13px; color: #4A5568">Headings: Lato · Body: Public Sans (both free on Google Fonts) · LY 2026–27 theme</span>
+</div>
+
+<div style="flex: 1 1 0; display: flex; flex-direction: column; gap: 18px">
+<h2 style="margin: 0; font-size: 18px; font-weight: 700">Buttons &amp; chips</h2>
+<div style="display: flex; gap: 12px; flex-wrap: wrap; align-items: center">
+<a href="#p" style="color: #1B3A4B; background: #FCCC0A; text-decoration: none; font-size: 15px; font-weight: 700; padding: 13px 20px; border-radius: 12px">Primary</a>
+<a href="#s" style="color: #FFFFFF; background: #1B3A4B; text-decoration: none; font-size: 15px; font-weight: 700; padding: 13px 20px; border-radius: 12px">Secondary</a>
+<a href="#o" style="color: #1B3A4B; text-decoration: none; font-size: 15px; font-weight: 700; padding: 12px 20px; border: 1px solid #C9D3E6; border-radius: 12px">Outline</a>
+<a href="#l" style="font-size: 15px; font-weight: 700">Text link →</a>
+</div>
+<div style="display: flex; gap: 8px; flex-wrap: wrap">
+<span style="font-size: 12px; font-weight: 700; padding: 4px 10px; border-radius: 999px; background: #E7ECF4; color: #1B3A4B">District</span>
+<span style="font-size: 12px; font-weight: 700; padding: 4px 10px; border-radius: 999px; background: #FBEFD3; color: #6B4B00">Service</span>
+<span style="font-size: 12px; font-weight: 700; padding: 4px 10px; border-radius: 999px; background: #E7ECF4; color: #1B3A4B">Region</span>
+<span style="font-size: 12px; font-weight: 700; padding: 4px 10px; border-radius: 999px; background: #FBEFD3; color: #6B4B00">Training</span>
+</div>
+<h2 style="margin: 12px 0 0; font-size: 18px; font-weight: 700">Cards</h2>
+<div style="display: flex; gap: 16px">
+<article style="flex: 1 1 0; border: 1px solid #E1E6EF; border-radius: 18px; padding: 20px; display: flex; flex-direction: column; gap: 8px">
+<div style="width: 60px; height: 60px; border-radius: 50%; background: #E7ECF4; border: 3px solid #FCCC0A; display: flex; align-items: center; justify-content: center; font-family: 'Lato', sans-serif; font-weight: 700; color: #1B3A4B">AB</div>
+<span style="font-size: 12px; font-weight: 700; text-transform: uppercase; color: #8A6100">Role</span>
+<span style="font-size: 17px; font-weight: 700; color: #1B3A4B">Person card</span>
+<span style="font-size: 13px; color: #4A5568">Home club only — no phone numbers</span>
+</article>
+<article style="flex: 1 1 0; border: 1px solid #E1E6EF; border-radius: 18px; padding: 20px; display: flex; gap: 14px">
+<div style="flex: 0 0 60px; height: 72px; border-radius: 12px; background: #1B3A4B; color: #FFFFFF; display: flex; flex-direction: column; align-items: center; justify-content: center">
+<span style="font-size: 11px; font-weight: 700; color: #FCCC0A">NOV</span>
+<span style="font-family: 'Lato', sans-serif; font-weight: 800; font-size: 24px">15</span>
+</div>
+<div style="display: flex; flex-direction: column; gap: 6px">
+<span style="font-size: 12px; font-weight: 700; color: #6B4B00">District · Service</span>
+<span style="font-size: 16px; font-weight: 700; color: #1B3A4B">Event card</span>
+<span style="font-size: 13px; color: #4A5568">Date badge + chips</span>
+</div>
+</article>
+</div>
+</div>
+</div>
+
+<div style="display: flex; flex-direction: column; gap: 12px">
+<h2 style="margin: 0; font-size: 18px; font-weight: 700">Shape &amp; spacing</h2>
+<span style="font-size: 15px; color: #4A5568; line-height: 1.6">Radius: 10–12 px buttons · 18 px cards · 24 px feature panels · full round for chips and avatars. Content width 1240 px. Section padding 80–104 px desktop, 48 px mobile. Minimum tap target 44 px.</span>
+</div>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1200,"height":1150}}'>
+class Component extends DCLogic {
+  renderVals() {
+    return {
+      colors: [
+        { name: 'Theme Teal', hex: '#1B3A4B', use: 'nav bar, headings, dark bands' },
+        { name: 'Banner Teal', hex: '#244D63', use: 'cards on dark bands' },
+        { name: 'Theme Purple', hex: '#762B94', use: 'banner, accents' },
+        { name: 'Theme Yellow', hex: '#FCCC0A', use: 'primary buttons, active page' },
+        { name: 'Theme Orange', hex: '#F6961E', use: 'divider lines' },
+        { name: 'Ink', hex: '#14213D', use: 'body text' },
+        { name: 'Slate', hex: '#4A5568', use: 'secondary text' }
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>

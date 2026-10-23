@@ -1,0 +1,184 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Site content — Leo 325 K Admin</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&amp;family=Public+Sans:wght@400;500;600;700&amp;display=swap">
+<style>
+body{margin:0}
+a{color:#1D5C80}a:hover{color:#1B3A4B}
+button,input,textarea{font-family:inherit}
+input:focus,textarea:focus{outline:3px solid #FCCC0A;outline-offset:1px}
+</style>
+</helmet>
+<div style="font-family: 'Public Sans', sans-serif; color: #14213D; background: #F4F6FA; min-height: 100%; display: flex; flex-wrap: wrap; align-items: stretch">
+
+<div style="flex: 1 1 100%; min-width: 0"><dc-import name="AdminBanner" variant="compact" hint-size="100%,64px"></dc-import></div>
+
+<div style="flex: 1 1 264px; background: #1B3A4B">
+<dc-import name="Sidebar" active="content" hint-size="264px,900px"></dc-import>
+</div>
+
+<main style="flex: 999 1 640px; min-width: 0; padding: 28px 32px 48px; box-sizing: border-box; display: flex; flex-direction: column; gap: 22px">
+<div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 16px">
+<div style="display: flex; flex-direction: column; gap: 4px">
+<h1 style="margin: 0; font-family: 'Lato', sans-serif; font-weight: 700; font-size: 32px; color: #1B3A4B">Site content</h1>
+<span style="font-size: 15px; color: #4A5568">Text, images and contact details used across the public website.</span>
+</div>
+<div style="display: flex; flex-wrap: wrap; gap: 10px; align-items: center">
+<span style="font-size: 13px; font-weight: 700; color: #6B4B00">Unsaved changes</span>
+<button type="button" style="min-height: 44px; padding: 0 16px; border: 1px solid #C9D3E6; border-radius: 10px; background: #FFFFFF; color: #1B3A4B; font-size: 14px; font-weight: 700; cursor: pointer">Preview</button>
+<button type="button" style="min-height: 44px; padding: 0 18px; border: none; border-radius: 10px; background: #1B3A4B; color: #FFFFFF; font-size: 14px; font-weight: 700; cursor: pointer">Save &amp; publish</button>
+</div>
+</div>
+
+<nav aria-label="Sections" style="display: flex; flex-wrap: wrap; gap: 8px">
+<sc-for list="{{jump}}" as="j" hint-placeholder-count="6">
+<a href="#{{j.id}}" style="display: inline-flex; align-items: center; gap: 8px; min-height: 40px; padding: 0 14px; border-radius: 999px; background: #FFFFFF; border: 1px solid #E1E6EF; text-decoration: none; color: #1B3A4B; font-size: 14px; font-weight: 700">{{j.label}}<span style="width: 8px; height: 8px; border-radius: 50%; background: {{j.dot}}"></span></a>
+</sc-for>
+</nav>
+
+<section id="branding" style="background: #FFFFFF; border: 1px solid #E1E6EF; border-radius: 18px; padding: 24px; display: flex; flex-direction: column; gap: 16px">
+<h2 style="margin: 0; font-size: 19px; font-weight: 700; color: #1B3A4B">Branding &amp; photos</h2>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px">
+<sc-for list="{{images}}" as="i" hint-placeholder-count="3">
+<div style="display: flex; flex-direction: column; gap: 8px">
+<span style="font-size: 14px; font-weight: 700">{{i.label}}</span>
+<div style="height: 140px; border-radius: 14px; border: 2px dashed #FCCC0A; background: #FFF8E6; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; color: #6B4B00; font-size: 13px; font-weight: 700"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M12 16V4m0 0l-5 5m5-5l5 5M4 16v3a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-3"></path></svg>Upload</div>
+<span style="font-size: 12px; color: #4A5568">{{i.hint}}</span>
+</div>
+</sc-for>
+</div>
+
+<div style="border-top: 1px solid #E1E6EF; padding-top: 16px; display: flex; flex-direction: column; gap: 14px">
+<div style="display: flex; flex-direction: column; gap: 4px"><span style="font-size: 16px; font-weight: 700; color: #1B3A4B">Leo Year theme · LY 2026–27</span><span style="font-size: 13px; color: #4A5568">Change these each July. The header on every page updates automatically.</span></div>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px">
+<div style="display: flex; flex-direction: column; gap: 6px"><span style="font-size: 14px; font-weight: 700">Theme banner artwork</span><div style="height: 72px; border-radius: 12px; background: linear-gradient(90deg, #1A4359 0%, #2E4A7A 45%, #762B94 100%); display: flex; align-items: center; justify-content: center; color: #FFFFFF; font-size: 13px; font-weight: 700">Uploaded · Replace</div></div>
+<div style="display: flex; flex-direction: column; gap: 6px"><span style="font-size: 14px; font-weight: 700">Theme badges (up to 5)</span><div style="height: 72px; border-radius: 12px; border: 1px solid #E1E6EF; display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 13px; font-weight: 700; color: #1E6B3A">5 of 5 uploaded · Manage</div></div>
+<div style="display: flex; flex-direction: column; gap: 6px"><label for="t-words1" style="font-size: 14px; font-weight: 700">Theme line 1</label><input id="t-words1" type="text" value="“LEADING WITH PURPOSE”" style="height: 46px; box-sizing: border-box; border: 1px solid #C9D3E6; border-radius: 10px; padding: 0 12px; font-family: inherit; font-size: 15px"></div>
+<div style="display: flex; flex-direction: column; gap: 6px"><label for="t-words2" style="font-size: 14px; font-weight: 700">Theme line 2</label><input id="t-words2" type="text" value="EXECUTION WITH EXCELLENCE" style="height: 46px; box-sizing: border-box; border: 1px solid #C9D3E6; border-radius: 10px; padding: 0 12px; font-family: inherit; font-size: 15px"></div>
+</div>
+</div>
+</section>
+
+<section id="home" style="background: #FFFFFF; border: 1px solid #E1E6EF; border-radius: 18px; padding: 24px; display: flex; flex-direction: column; gap: 16px">
+<h2 style="margin: 0; font-size: 19px; font-weight: 700; color: #1B3A4B">Home page</h2>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px">
+<div style="display: flex; flex-direction: column; gap: 6px"><label for="h-eyebrow" style="font-size: 14px; font-weight: 700">Small label above headline</label><input id="h-eyebrow" type="text" value="Leo Year 2026–27" style="height: 46px; box-sizing: border-box; border: 1px solid #C9D3E6; border-radius: 10px; padding: 0 12px; font-size: 15px"></div>
+<div style="display: flex; flex-direction: column; gap: 6px"><label for="h-head" style="font-size: 14px; font-weight: 700">Headline</label><input id="h-head" type="text" value="Leadership. Experience. Opportunity." style="height: 46px; box-sizing: border-box; border: 1px solid #C9D3E6; border-radius: 10px; padding: 0 12px; font-size: 15px"></div>
+</div>
+<div style="display: flex; flex-direction: column; gap: 6px"><label for="h-intro" style="font-size: 14px; font-weight: 700">Intro text</label><textarea id="h-intro" rows="3" style="box-sizing: border-box; border: 1px solid #C9D3E6; border-radius: 10px; padding: 12px; font-size: 15px; line-height: 1.6; resize: vertical">Young people across Nepal serving their communities through Leo clubs — blood drives, environment campaigns, education and leadership training, all in one district.</textarea></div>
+<div style="display: flex; flex-direction: column; gap: 10px">
+<span style="font-size: 14px; font-weight: 700">Numbers band</span>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 10px">
+<sc-for list="{{stats}}" as="s" hint-placeholder-count="4">
+<div style="display: grid; grid-template-columns: 90px minmax(0, 1fr); gap: 8px">
+<input type="text" aria-label="Number" value="{{s.v}}" style="height: 44px; box-sizing: border-box; border: 1px solid #C9D3E6; border-radius: 10px; padding: 0 10px; font-size: 15px; font-weight: 700">
+<input type="text" aria-label="Label" value="{{s.l}}" style="height: 44px; box-sizing: border-box; border: 1px solid #C9D3E6; border-radius: 10px; padding: 0 10px; font-size: 14px">
+</div>
+</sc-for>
+</div>
+</div>
+<div style="display: flex; gap: 12px; align-items: flex-start; background: #F4F6FA; border-radius: 12px; padding: 14px 16px"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1B3A4B" stroke-width="2" stroke-linecap="round" aria-hidden="true" style="flex: 0 0 auto; margin-top: 2px"><circle cx="12" cy="12" r="9"></circle><path d="M12 8h.01M11 12h1v5h1"></path></svg><span style="font-size: 14px; line-height: 1.55; color: #4A5568">The President’s message section is automatic: it shows “coming soon” until the 2026–27 team is published under <a href="Leadership.dc.html" style="font-weight: 700">Leadership</a>.</span></div>
+</section>
+
+<section id="about" style="background: #FFFFFF; border: 1px solid #E1E6EF; border-radius: 18px; padding: 24px; display: flex; flex-direction: column; gap: 16px">
+<h2 style="margin: 0; font-size: 19px; font-weight: 700; color: #1B3A4B">About page</h2>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px">
+<div style="display: flex; flex-direction: column; gap: 6px"><label for="a-mission" style="font-size: 14px; font-weight: 700">Mission statement <span style="color: #8A1F11">· missing</span></label><textarea id="a-mission" rows="3" placeholder="One or two sentences approved by the council" style="box-sizing: border-box; border: 2px solid #FCCC0A; border-radius: 10px; padding: 12px; font-size: 15px; resize: vertical"></textarea></div>
+<div style="display: flex; flex-direction: column; gap: 6px"><label for="a-vision" style="font-size: 14px; font-weight: 700">Vision statement <span style="color: #8A1F11">· missing</span></label><textarea id="a-vision" rows="3" placeholder="Where the district wants to be" style="box-sizing: border-box; border: 2px solid #FCCC0A; border-radius: 10px; padding: 12px; font-size: 15px; resize: vertical"></textarea></div>
+</div>
+<div style="display: flex; flex-direction: column; gap: 10px">
+<span style="font-size: 14px; font-weight: 700">Service focus areas</span>
+<div style="display: flex; flex-wrap: wrap; gap: 8px">
+<sc-for list="{{focus}}" as="f" hint-placeholder-count="6">
+<span style="display: inline-flex; align-items: center; gap: 8px; min-height: 38px; padding: 0 6px 0 14px; border-radius: 999px; background: #E7ECF4; color: #1B3A4B; font-size: 14px; font-weight: 700">{{f}}<button type="button" aria-label="Remove {{f}}" style="width: 28px; height: 28px; border: none; border-radius: 50%; background: transparent; color: #4A5568; font-size: 16px; cursor: pointer">×</button></span>
+</sc-for>
+<button type="button" style="min-height: 38px; padding: 0 14px; border: 1px dashed #A9C1CC; border-radius: 999px; background: #FFFFFF; color: #1B3A4B; font-size: 14px; font-weight: 700; cursor: pointer">+ Add area</button>
+</div>
+</div>
+</section>
+
+<section id="contact" style="background: #FFFFFF; border: 1px solid #E1E6EF; border-radius: 18px; padding: 24px; display: flex; flex-direction: column; gap: 16px">
+<h2 style="margin: 0; font-size: 19px; font-weight: 700; color: #1B3A4B">Contact &amp; office details</h2>
+<span style="font-size: 14px; color: #4A5568; margin-top: -8px">Shown on Contact us, in the footer and in the mobile menu. Use official role emails, not personal ones.</span>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px">
+<sc-for list="{{fields}}" as="f" hint-placeholder-count="8">
+<div style="display: flex; flex-direction: column; gap: 6px"><label for="{{f.id}}" style="font-size: 14px; font-weight: 700">{{f.label}}</label><input id="{{f.id}}" type="{{f.type}}" value="{{f.v}}" placeholder="{{f.ph}}" style="height: 46px; box-sizing: border-box; border: {{f.bd}}; border-radius: 10px; padding: 0 12px; font-size: 15px"></div>
+</sc-for>
+</div>
+</section>
+
+<section id="social" style="background: #FFFFFF; border: 1px solid #E1E6EF; border-radius: 18px; padding: 24px; display: flex; flex-direction: column; gap: 16px">
+<h2 style="margin: 0; font-size: 19px; font-weight: 700; color: #1B3A4B">Social media links</h2>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px">
+<sc-for list="{{social}}" as="s" hint-placeholder-count="3">
+<div style="display: flex; flex-direction: column; gap: 6px"><label for="s-{{s.n}}" style="font-size: 14px; font-weight: 700">{{s.n}}</label><input id="s-{{s.n}}" type="url" placeholder="{{s.ph}}" style="height: 46px; box-sizing: border-box; border: 2px solid #FCCC0A; border-radius: 10px; padding: 0 12px; font-size: 15px"></div>
+</sc-for>
+</div>
+</section>
+
+<section id="form" style="background: #FFFFFF; border: 1px solid #E1E6EF; border-radius: 18px; padding: 24px; display: flex; flex-wrap: wrap; gap: 16px; align-items: center; justify-content: space-between">
+<div style="flex: 1 1 320px; display: flex; flex-direction: column; gap: 6px">
+<h2 style="margin: 0; font-size: 19px; font-weight: 700; color: #1B3A4B">Contact form</h2>
+<span style="font-size: 14px; line-height: 1.55; color: #4A5568">Website messages are sent to the General email above and saved in the Messages inbox. Send a test after changing the email.</span>
+</div>
+<div style="display: flex; align-items: center; gap: 10px">
+<span style="font-size: 12px; font-weight: 800; padding: 4px 10px; border-radius: 999px; background: #FBE4E1; color: #8A1F11">Not tested</span>
+<button type="button" style="min-height: 46px; padding: 0 18px; border: 1px solid #C9D3E6; border-radius: 10px; background: #FFFFFF; color: #1B3A4B; font-size: 14px; font-weight: 700; cursor: pointer">Send a test message</button>
+</div>
+</section>
+</main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":2193}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const OK = '1px solid #C9D3E6', MISS = '2px solid #FCCC0A';
+    return {
+      jump: [
+        { id: 'branding', label: 'Branding & photos', dot: '#FCCC0A' },
+        { id: 'home', label: 'Home page', dot: '#1E6B3A' },
+        { id: 'about', label: 'About page', dot: '#FCCC0A' },
+        { id: 'contact', label: 'Contact & office', dot: '#FCCC0A' },
+        { id: 'social', label: 'Social links', dot: '#FCCC0A' },
+        { id: 'form', label: 'Contact form', dot: '#FCCC0A' }
+      ],
+      images: [
+        { label: 'Official district logo', hint: 'SVG or PNG, transparent background, 1000 px wide' },
+        { label: 'Home page main photo', hint: 'Landscape, at least 1920 × 1080 px' },
+        { label: 'About page photo', hint: 'Leos from several clubs together' }
+      ],
+      stats: [
+        { v: '[##]', l: 'Leo clubs in District 325 K' },
+        { v: '[###]', l: 'Active Leo members' },
+        { v: '[##]', l: 'Service projects this Leo Year' },
+        { v: '[#]', l: 'Regions across the district' }
+      ],
+      focus: ['Blood donation', 'Environment', 'Education', 'Health & vision', 'Hunger relief', 'Youth leadership'],
+      fields: [
+        { id: 'c-gen', label: 'General email', type: 'email', v: '', ph: 'info@[official-domain]', bd: MISS },
+        { id: 'c-pres', label: 'President’s office email', type: 'email', v: '', ph: 'president@[official-domain]', bd: MISS },
+        { id: 'c-sec', label: 'Secretary email', type: 'email', v: '', ph: 'secretary@[official-domain]', bd: MISS },
+        { id: 'c-mem', label: 'Membership & new clubs email', type: 'email', v: '', ph: 'membership@[official-domain]', bd: MISS },
+        { id: 'c-hours', label: 'Office hours', type: 'text', v: 'Sunday – Friday, 10:00 AM – 5:00 PM', ph: '', bd: OK },
+        { id: 'c-reply', label: 'Promised reply time', type: 'text', v: '', ph: 'e.g. 2 working days', bd: MISS },
+        { id: 'c-addr', label: 'Office address', type: 'text', v: '', ph: 'Street, city', bd: MISS },
+        { id: 'c-map', label: 'Google Maps link', type: 'url', v: '', ph: 'https://maps.google.com/…', bd: MISS }
+      ],
+      social: [
+        { n: 'Facebook', ph: 'https://facebook.com/…' },
+        { n: 'Instagram', ph: 'https://instagram.com/…' },
+        { n: 'YouTube', ph: 'https://youtube.com/@…' }
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>

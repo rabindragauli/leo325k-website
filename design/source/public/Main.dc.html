@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Home — Leo District Council 325 K</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&amp;family=Public+Sans:wght@400;500;600;700&amp;display=swap">
+<style>
+body{margin:0}
+a{color:#1B3A4B}a:hover{color:#244D63}
+.menu-btn{display:none}
+@media (max-width:1100px){.nav-desk{display:none !important}.menu-btn{display:flex !important}}
+@media (max-width:600px){h1{font-size:40px !important}h2{font-size:28px !important}section:not(#top){padding-top:56px !important;padding-bottom:56px !important}.cta-desk{display:none !important}}
+</style>
+</helmet>
+<div style="font-family: 'Public Sans', sans-serif; color: #14213D; background: #FFFFFF; min-height: 100%">
+
+<dc-import name="SiteHeader" active="home" hint-size="100%,280px"></dc-import>
+
+<section id="top" style="background: #1B3A4B; color: #FFFFFF; padding: 72px 24px 120px">
+<div style="max-width: 1240px; margin: 0 auto; display: flex; flex-wrap: wrap; align-items: center; gap: 56px">
+<div style="flex: 1 1 520px; min-width: 0; display: flex; flex-direction: column; gap: 24px">
+<span style="align-self: flex-start; font-size: 14px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: {{gold}}; border: 1px solid {{gold}}; border-radius: 999px; padding: 6px 14px">Leo Year 2026–27</span>
+<h1 style="margin: 0; font-family: 'Lato', sans-serif; font-weight: 800; font-size: 64px; line-height: 1.02; letter-spacing: -1px">Leadership.<br>Experience.<br>Opportunity.</h1>
+<p style="margin: 0; font-size: 19px; line-height: 1.6; color: #C9D3E6; max-width: 560px">Young people across Nepal serving their communities through Leo clubs — blood drives, environment campaigns, education and leadership training, all in one district.</p>
+<div style="display: flex; flex-wrap: wrap; gap: 12px; margin-top: 8px">
+<a href="Clubs.dc.html" style="color: #1B3A4B; background: {{gold}}; text-decoration: none; font-size: 16px; font-weight: 700; padding: 15px 24px; border-radius: 12px">Find a club near you</a>
+<a href="About.dc.html" style="color: #FFFFFF; text-decoration: none; font-size: 16px; font-weight: 600; padding: 14px 24px; border: 1px solid #4F7A90; border-radius: 12px">About the district →</a>
+</div>
+</div>
+<div style="flex: 1 1 440px; min-width: 0; height: 420px; border-radius: 24px; background: #244D63; border: 1px solid #3F6A80; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; color: #9FB0D0">
+<svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"></rect><circle cx="9" cy="10" r="2"></circle><path d="M21 17l-5-5-9 8"></path></svg>
+<span style="font-size: 15px; font-weight: 600">[Photo: district-wide service event, Leos in uniform]</span>
+</div>
+</div>
+</section>
+
+<section style="padding: 0 24px">
+<div style="max-width: 1240px; margin: -64px auto 0; background: #FFFFFF; border: 1px solid #E1E6EF; border-radius: 20px; padding: 32px; display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 24px">
+<sc-for list="{{stats}}" as="s" hint-placeholder-count="4">
+<div style="display: flex; flex-direction: column; gap: 6px; padding: 4px 8px">
+<span style="font-family: 'Lato', sans-serif; font-weight: 800; font-size: 44px; color: #1B3A4B; line-height: 1">{{s.value}}</span>
+<span style="font-size: 15px; color: #4A5568; font-weight: 500">{{s.label}}</span>
+</div>
+</sc-for>
+</div>
+</section>
+
+<section id="about" style="padding: 104px 24px">
+<div style="max-width: 1240px; margin: 0 auto; background: #F4F6FA; border: 1px solid #E1E6EF; border-radius: 24px; padding: 48px; display: flex; flex-wrap: wrap; gap: 40px; align-items: center">
+<div style="flex: 0 0 140px; height: 140px; border-radius: 50%; background: #1B3A4B; border: 4px solid #FCCC0A; display: flex; flex-direction: column; align-items: center; justify-content: center; color: #FFFFFF">
+<span style="font-size: 12px; font-weight: 700; letter-spacing: 1px; color: #FCCC0A">LEO YEAR</span>
+<span style="font-family: 'Lato', sans-serif; font-weight: 800; font-size: 28px">2026–27</span>
+</div>
+<div style="flex: 1 1 520px; min-width: 0; display: flex; flex-direction: column; gap: 14px">
+<span style="font-size: 14px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: #8A6100">Coming soon</span>
+<h2 style="margin: 0; font-family: 'Lato', sans-serif; font-weight: 700; font-size: 36px; color: #1B3A4B; line-height: 1.2">Our new district team will be announced soon</h2>
+<p style="margin: 0; font-size: 17px; line-height: 1.65; color: #4A5568; max-width: 640px">The District President’s message and the 2026–27 team will appear here once the district leadership is officially installed.</p>
+<div style="display: flex; flex-wrap: wrap; gap: 12px; margin-top: 6px">
+<a href="Leadership.dc.html" style="color: #FFFFFF; background: #1B3A4B; text-decoration: none; font-size: 15px; font-weight: 700; padding: 13px 20px; border-radius: 12px">See past district teams</a>
+<a href="#social" style="color: #1B3A4B; text-decoration: none; font-size: 15px; font-weight: 700; padding: 12px 20px; border: 1px solid #C9D3E6; border-radius: 12px">Follow us for the announcement</a>
+</div>
+</div>
+</div>
+</section>
+
+<section id="clubs" style="padding: 0 24px 96px">
+<div style="max-width: 1240px; margin: 0 auto; background: #1B3A4B; border-radius: 24px; padding: 48px; display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 24px">
+<sc-for list="{{explore}}" as="x" hint-placeholder-count="3">
+<a href="{{x.href}}" style="text-decoration: none; color: #FFFFFF; background: #244D63; border: 1px solid #3F6A80; border-radius: 18px; padding: 28px; display: flex; flex-direction: column; gap: 12px">
+<span style="width: 44px; height: 44px; border-radius: 12px; background: {{gold}}; color: #1B3A4B; display: flex; align-items: center; justify-content: center; font-family: 'Lato', sans-serif; font-weight: 800; font-size: 18px">{{x.n}}</span>
+<span style="font-family: 'Lato', sans-serif; font-size: 24px; font-weight: 700">{{x.title}}</span>
+<span style="font-size: 15px; line-height: 1.5; color: #C9D3E6">{{x.desc}}</span>
+<span style="font-size: 15px; font-weight: 700; color: {{gold}}">{{x.cta}} →</span>
+</a>
+</sc-for>
+</div>
+</section>
+
+<section style="background: #F4F6FA; padding: 96px 24px">
+<div style="max-width: 1240px; margin: 0 auto; display: flex; flex-direction: column; gap: 40px">
+<div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 16px">
+<div style="display: flex; flex-direction: column; gap: 8px">
+<span style="font-size: 14px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: #8A6100">Our Pride</span>
+<h2 style="margin: 0; font-family: 'Lato', sans-serif; font-weight: 700; font-size: 40px; color: #1B3A4B">Our District, Our Pride</h2>
+</div>
+<a href="Leadership.dc.html" style="font-size: 16px; font-weight: 700">All past leaders →</a>
+</div>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px">
+<sc-for list="{{honors}}" as="h" hint-placeholder-count="5">
+<div style="background: #FFFFFF; border: 1px solid #E1E6EF; border-radius: 18px; padding: 24px; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 10px">
+<div style="width: 88px; height: 88px; border-radius: 50%; background: #E7ECF4; border: 3px solid {{gold}}; display: flex; align-items: center; justify-content: center; font-family: 'Lato', sans-serif; font-weight: 700; font-size: 26px; color: #1B3A4B">{{h.ini}}</div>
+<span style="font-size: 16px; font-weight: 700; color: #1B3A4B">{{h.name}}</span>
+<span style="font-size: 13px; font-weight: 700; color: #6B4B00; background: #FBEFD3; padding: 4px 10px; border-radius: 999px">{{h.post}}</span>
+</div>
+</sc-for>
+</div>
+</div>
+</section>
+
+<dc-import name="SiteFooter" hint-size="100%,420px"></dc-import>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"gold":{"editor":"color","default":"#FCCC0A","options":["#FCCC0A","#FFD84D","#E0B000"]},"$preview":{"width":1440,"height":2804}}'>
+class Component extends DCLogic {
+  renderVals() {
+    return {
+      gold: this.props.gold ?? '#FCCC0A',
+      stats: [
+        { value: '[##]', label: 'Leo clubs in District 325 K' },
+        { value: '[###]', label: 'Active Leo members' },
+        { value: '[##]', label: 'Service projects this Leo Year' },
+        { value: '[#]', label: 'Regions across the district' }
+      ],
+      explore: [
+        { n: '01', title: 'Club directory', desc: 'Find approved Leo clubs by region and connect with one near you.', cta: 'Browse clubs', href: 'Clubs.dc.html' },
+        { n: '02', title: 'Resources', desc: 'Forms, templates, logos, guides and official district documents.', cta: 'Open resources', href: 'Resources.dc.html' },
+        { n: '03', title: 'Get in touch', desc: 'Questions, partnerships or starting a new club? The district office is here to help.', cta: 'Contact the district', href: 'Contact.dc.html' }
+      ],
+      honors: [
+        { ini: 'SK', name: 'Lion Shekhar Karki', post: 'MDP 2010–11' },
+        { ini: 'RB', name: 'Leo-Lion Rajendra Baral', post: 'MDP 325 B 2017–18' },
+        { ini: 'BP', name: 'Leo-Lion Binayak Poudel', post: 'DP 325 B 2019–20' },
+        { ini: 'DN', name: 'Leo Deepti Neupane', post: 'DP 325 K 2022–23' },
+        { ini: 'PS', name: 'Leo Prativa Shrestha', post: 'DP 325 K 2025–26' }
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>

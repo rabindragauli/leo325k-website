@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Page not found — Leo District Council 325 K</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&amp;family=Public+Sans:wght@400;500;600;700&amp;display=swap">
+<style>
+body{margin:0}
+a{color:#1B3A4B}a:hover{color:#244D63}
+@media (max-width:600px){h1{font-size:36px !important}}
+</style>
+</helmet>
+<div style="font-family: 'Public Sans', sans-serif; color: #14213D; background: #FFFFFF; min-height: 100%">
+
+<dc-import name="SiteHeader" active="none" hint-size="100%,280px"></dc-import>
+
+<section style="background: linear-gradient(120deg, #1B3A4B 0%, #1B3A4B 45%, #4B3F86 80%, #762B94 100%); color: #FFFFFF; padding: 96px 24px 104px">
+<div style="max-width: 760px; margin: 0 auto; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 18px">
+<span style="font-family: 'Lato', sans-serif; font-weight: 900; font-size: 96px; line-height: 1; color: #FCCC0A">404</span>
+<h1 style="margin: 0; font-family: 'Lato', sans-serif; font-weight: 900; font-size: 44px; line-height: 1.1">This page has moved or no longer exists</h1>
+<p style="margin: 0; font-size: 18px; line-height: 1.6; color: #D3DCEC; max-width: 560px">Our website was renewed for Leo Year 2026–27, so some old links changed. Try one of these instead.</p>
+<div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; margin-top: 8px">
+<a href="Main.dc.html" style="color: #1B3A4B; background: #FCCC0A; text-decoration: none; font-size: 16px; font-weight: 800; padding: 15px 24px; border-radius: 12px">Go to the home page</a>
+<a href="Contact.dc.html" style="color: #FFFFFF; text-decoration: none; font-size: 16px; font-weight: 700; padding: 14px 24px; border: 1px solid #9DB8C6; border-radius: 12px">Tell us about a broken link</a>
+</div>
+</div>
+</section>
+
+<section style="padding: 64px 24px 80px">
+<div style="max-width: 1040px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px">
+<sc-for list="{{links}}" as="l" hint-placeholder-count="4">
+<a href="{{l.href}}" style="text-decoration: none; color: #14213D; border: 1px solid #E1E6EF; border-radius: 16px; padding: 20px; display: flex; flex-direction: column; gap: 6px">
+<span style="font-family: 'Lato', sans-serif; font-weight: 900; font-size: 19px; color: #1B3A4B">{{l.t}} →</span>
+<span style="font-size: 14px; line-height: 1.5; color: #4A5568">{{l.d}}</span>
+</a>
+</sc-for>
+</div>
+</section>
+
+<dc-import name="SiteFooter" hint-size="100%,420px"></dc-import>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1445}}'>
+class Component extends DCLogic {
+  renderVals() {
+    return {
+      links: [
+        { t: 'Leadership', d: 'The district team and our sponsoring Lions.', href: 'Leadership.dc.html' },
+        { t: 'Clubs', d: 'Find a Leo club near you.', href: 'Clubs.dc.html' },
+        { t: 'Resources', d: 'Forms, templates and logos.', href: 'Resources.dc.html' },
+        { t: 'About', d: 'Who we are and how we serve.', href: 'About.dc.html' }
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>

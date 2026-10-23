@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Clubs — Leo 325 K Admin</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&amp;family=Public+Sans:wght@400;500;600;700&amp;display=swap">
+<style>
+body{margin:0}
+a{color:#1D5C80}a:hover{color:#1B3A4B}
+button,input,select{font-family:inherit}
+button{cursor:pointer}
+input:focus,select:focus{outline:3px solid #FCCC0A;outline-offset:1px}
+</style>
+</helmet>
+<div style="font-family: 'Public Sans', sans-serif; color: #14213D; background: #F4F6FA; min-height: 100%; display: flex; flex-wrap: wrap; align-items: stretch">
+
+<div style="flex: 1 1 100%; min-width: 0"><dc-import name="AdminBanner" variant="compact" hint-size="100%,64px"></dc-import></div>
+
+<div style="flex: 1 1 264px; background: #1B3A4B">
+<dc-import name="Sidebar" active="clubs" hint-size="264px,900px"></dc-import>
+</div>
+
+<main style="flex: 999 1 640px; min-width: 0; padding: 28px 32px 48px; box-sizing: border-box; display: flex; flex-direction: column; gap: 22px">
+<div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 16px">
+<div style="display: flex; flex-direction: column; gap: 4px">
+<h1 style="margin: 0; font-family: 'Lato', sans-serif; font-weight: 700; font-size: 32px; color: #1B3A4B">Clubs</h1>
+<span style="font-size: 15px; color: #4A5568">Each club’s logo, details and Club PVST. Missing details show “coming soon” on the public site.</span>
+</div>
+<div style="display: flex; flex-wrap: wrap; gap: 10px">
+<a href="ClubEditor.dc.html" style="min-height: 44px; box-sizing: border-box; display: inline-flex; align-items: center; padding: 0 18px; border-radius: 10px; background: #1B3A4B; color: #FFFFFF; text-decoration: none; font-size: 14px; font-weight: 700">+ Add club</a>
+</div>
+</div>
+
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px">
+<sc-for list="{{stats}}" as="s" hint-placeholder-count="4">
+<div style="background: #FFFFFF; border: 1px solid #E1E6EF; border-radius: 14px; padding: 14px 16px; display: flex; align-items: center; gap: 12px">
+<span style="font-family: 'Lato', sans-serif; font-weight: 800; font-size: 26px; color: #1B3A4B">{{s.n}}</span>
+<span style="font-size: 13px; font-weight: 600; color: #4A5568">{{s.label}}</span>
+</div>
+</sc-for>
+</div>
+
+<section style="background: #FFFFFF; border: 1px solid #E1E6EF; border-radius: 18px; overflow: hidden">
+<div style="display: flex; flex-wrap: wrap; gap: 10px; padding: 16px 18px; border-bottom: 1px solid #E1E6EF">
+<label for="c-search" style="position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0)">Search clubs</label>
+<input id="c-search" type="search" placeholder="Search clubs…" style="flex: 1 1 220px; height: 44px; box-sizing: border-box; border: 1px solid #C9D3E6; border-radius: 10px; padding: 0 14px; font-size: 15px">
+<label for="c-city" style="position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0)">City</label>
+<select id="c-city" style="height: 44px; border: 1px solid #C9D3E6; border-radius: 10px; padding: 0 12px; font-size: 14px; background: #FFFFFF; color: #14213D"><option>All regions</option><option>[Region names]</option></select>
+<label for="c-city2" style="position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0)">City</label>
+<select id="c-city2" style="height: 44px; border: 1px solid #C9D3E6; border-radius: 10px; padding: 0 12px; font-size: 14px; background: #FFFFFF; color: #14213D"><option>All cities</option><option>Kathmandu</option><option>Pokhara</option><option>Baglung</option></select>
+<label for="c-status" style="position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0)">Status</label>
+<select id="c-status" style="height: 44px; border: 1px solid #C9D3E6; border-radius: 10px; padding: 0 12px; font-size: 14px; background: #FFFFFF; color: #14213D"><option>All statuses</option><option>Complete</option><option>Needs details</option><option>Hidden</option></select>
+</div>
+<div style="overflow-x: auto">
+<div style="min-width: 780px">
+<div style="display: grid; grid-template-columns: 72px 2.2fr 1fr 1.3fr 1fr 0.7fr; gap: 12px; padding: 12px 18px; background: #F8FAFC; font-size: 12px; font-weight: 800; letter-spacing: 0.5px; text-transform: uppercase; color: #4A5568"><span>Logo</span><span>Club</span><span>Region · City</span><span>Club PVST 2026–27</span><span>Status</span><span style="text-align: right">Action</span></div>
+<sc-for list="{{clubs}}" as="k" hint-placeholder-count="4">
+<div style="display: grid; grid-template-columns: 72px 2.2fr 1fr 1.3fr 1fr 0.7fr; gap: 12px; align-items: center; padding: 14px 18px; border-top: 1px solid #EEF1F6; font-size: 14px">
+<a href="ClubEditor.dc.html" aria-label="Upload logo for {{k.name}}" style="width: 52px; height: 52px; box-sizing: border-box; border-radius: 50%; border: 2px dashed #FCCC0A; background: #FFF8E6; color: #6B4B00; display: flex; align-items: center; justify-content: center; text-decoration: none; font-size: 20px; font-weight: 800">+</a>
+<span style="display: flex; flex-direction: column; gap: 2px"><span style="font-weight: 700; color: #1B3A4B">{{k.name}}</span><span style="font-size: 12px; color: #8A1F11; font-weight: 600">Logo missing</span></span>
+<span>[Region] · {{k.city}}</span>
+<span style="display: flex; align-items: center; gap: 8px"><span style="display: flex"><sc-for list="{{k.slots}}" as="x" hint-placeholder-count="4"><span style="width: 26px; height: 26px; margin-right: -6px; border-radius: 50%; border: 2px solid #FFFFFF; background: #EEF1F6"></span></sc-for></span><span style="margin-left: 8px; font-weight: 700; color: #8A1F11">0 / 4</span></span>
+<span style="justify-self: start; font-size: 12px; font-weight: 800; padding: 4px 10px; border-radius: 999px; background: #FBEFD3; color: #6B4B00">Needs details</span>
+<a href="ClubEditor.dc.html" style="justify-self: end; font-weight: 700">Edit</a>
+</div>
+</sc-for>
+</div>
+</div>
+<div style="padding: 14px 18px; border-top: 1px solid #E1E6EF; font-size: 13px; color: #4A5568">4 clubs · 0 logos uploaded · 0 of 16 Club PVST positions filled</div>
+</section>
+</main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":964}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const slots = [1, 2, 3, 4];
+    return {
+      stats: [
+        { n: '4', label: 'Clubs listed' },
+        { n: '0', label: 'Logos uploaded' },
+        { n: '0 / 16', label: 'Club PVST filled' },
+        { n: '4', label: 'Need details' }
+      ],
+      clubs: [
+        { name: 'Leo Club of Kathmandu Machhapokhari', city: 'Kathmandu', slots: slots },
+        { name: 'Leo Club of Kathmandu Rainbow City', city: 'Kathmandu', slots: slots },
+        { name: 'Leo Club of Pokhara Silver Mountains', city: 'Pokhara', slots: slots },
+        { name: 'Leo Club of Baglung Kaligandaki', city: 'Baglung', slots: slots }
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>

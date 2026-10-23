@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Users &amp; roles — Leo 325 K Admin</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&amp;family=Public+Sans:wght@400;500;600;700&amp;display=swap">
+<style>
+body{margin:0}
+a{color:#1D5C80}a:hover{color:#1B3A4B}
+button{font-family:inherit}
+</style>
+</helmet>
+<div style="font-family: 'Public Sans', sans-serif; color: #14213D; background: #F4F6FA; min-height: 100%; display: flex; flex-wrap: wrap; align-items: stretch">
+
+<div style="flex: 1 1 100%; min-width: 0"><dc-import name="AdminBanner" variant="compact" hint-size="100%,64px"></dc-import></div>
+
+<div style="flex: 1 1 264px; background: #1B3A4B">
+<dc-import name="Sidebar" active="users" hint-size="264px,900px"></dc-import>
+</div>
+
+<main style="flex: 999 1 640px; min-width: 0; padding: 28px 32px 48px; box-sizing: border-box; display: flex; flex-direction: column; gap: 22px">
+<div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 16px">
+<div style="display: flex; flex-direction: column; gap: 4px">
+<h1 style="margin: 0; font-family: 'Lato', sans-serif; font-weight: 700; font-size: 32px; color: #1B3A4B">Users &amp; roles</h1>
+<span style="font-size: 15px; color: #4A5568">Who can sign in to this portal. Admins manage everything; Editors update content. Keep at least 2 Admins.</span>
+</div>
+<button type="button" style="min-height: 44px; padding: 0 18px; border: none; border-radius: 10px; background: #1B3A4B; color: #FFFFFF; font-size: 14px; font-weight: 700; cursor: pointer">+ Invite user</button>
+</div>
+
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 16px">
+<sc-for list="{{roles}}" as="r" hint-placeholder-count="2">
+<div style="background: #FFFFFF; border: 1px solid #E1E6EF; border-radius: 16px; padding: 20px; display: flex; flex-direction: column; gap: 10px">
+<div style="display: flex; align-items: center; gap: 10px"><span style="font-size: 12px; font-weight: 800; padding: 4px 10px; border-radius: 999px; background: {{r.bg}}; color: {{r.fg}}">{{r.name}}</span><span style="font-size: 13px; color: #4A5568">{{r.who}}</span></div>
+<sc-for list="{{r.can}}" as="c" hint-placeholder-count="4">
+<span style="display: flex; gap: 8px; font-size: 13px; font-weight: 600; color: #14213D"><span style="color: {{c.fg}}; font-weight: 800">{{c.mark}}</span>{{c.t}}</span>
+</sc-for>
+</div>
+</sc-for>
+</div>
+
+<section style="background: #FFFFFF; border: 1px solid #E1E6EF; border-radius: 18px; overflow: hidden">
+<div style="overflow-x: auto">
+<div style="min-width: 680px">
+<div style="display: grid; grid-template-columns: 2fr 2fr 0.9fr 1fr 0.8fr; gap: 12px; padding: 12px 20px; background: #F8FAFC; font-size: 12px; font-weight: 800; letter-spacing: 0.5px; text-transform: uppercase; color: #4A5568"><span>User</span><span>Email</span><span>Role</span><span>Status</span><span style="text-align: right">Action</span></div>
+<sc-for list="{{users}}" as="u" hint-placeholder-count="3">
+<div style="display: grid; grid-template-columns: 2fr 2fr 0.9fr 1fr 0.8fr; gap: 12px; align-items: center; padding: 14px 20px; border-top: 1px solid #EEF1F6; font-size: 14px">
+<span style="display: flex; align-items: center; gap: 10px"><span style="flex: 0 0 36px; height: 36px; border-radius: 50%; background: {{u.avBg}}; color: #1B3A4B; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 800">{{u.ini}}</span><span style="display: flex; flex-direction: column"><span style="font-weight: 700; color: #1B3A4B">{{u.name}}</span><span style="font-size: 12px; color: #4A5568">{{u.title}}</span></span></span>
+<span style="color: #4A5568">{{u.email}}</span>
+<span style="justify-self: start; font-size: 12px; font-weight: 800; padding: 4px 10px; border-radius: 999px; background: {{u.rBg}}; color: {{u.rFg}}">{{u.role}}</span>
+<span style="font-weight: 600; color: {{u.sFg}}">{{u.status}}</span>
+<a href="#user" style="justify-self: end; font-weight: 700">{{u.action}}</a>
+</div>
+</sc-for>
+</div>
+</div>
+</section>
+
+<div style="display: flex; flex-wrap: wrap; gap: 16px">
+<section style="flex: 1 1 320px; background: #1B3A4B; color: #FFFFFF; border-radius: 18px; padding: 22px; display: flex; gap: 14px">
+<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#FCCC0A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex: 0 0 auto"><path d="M12 2l8 4v6c0 5-3.5 8.5-8 10-4.5-1.5-8-5-8-10V6z M9 12l2 2 4-4"></path></svg>
+<div style="display: flex; flex-direction: column; gap: 6px"><span style="font-size: 16px; font-weight: 700">Email code on new devices: on</span><span style="font-size: 14px; line-height: 1.55; color: #C9D3E6">Every user gets a 6-digit code by email when signing in from a new device.</span></div>
+</section>
+<section style="flex: 1 1 320px; background: #FFFFFF; border: 1px solid #E1E6EF; border-radius: 18px; padding: 22px; display: flex; flex-direction: column; gap: 6px">
+<span style="font-size: 16px; font-weight: 700; color: #1B3A4B">Handover at the start of each Leo Year</span>
+<span style="font-size: 14px; line-height: 1.55; color: #4A5568">Invite the new officers in July and remove access for outgoing ones. Their past edits stay in the activity log.</span>
+<a href="#log" style="font-size: 14px; font-weight: 700">View activity log →</a>
+</section>
+</div>
+</main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":964}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const R = { Admin: ['#1B3A4B', '#FFFFFF'], Editor: ['#FBEFD3', '#6B4B00'] };
+    const u = (ini, name, title, email, role, status, sFg, action, avBg) => ({ ini, name, title, email, role, rBg: R[role][0], rFg: R[role][1], status, sFg, action, avBg });
+    const yes = (t) => ({ t: t, mark: '✓', fg: '#1E6B3A' });
+    const no = (t) => ({ t: t, mark: '—', fg: '#4A5568' });
+    return {
+      roles: [
+        { name: 'Admin', who: 'Website admin + District President (minimum 2 people)', bg: '#1B3A4B', fg: '#FFFFFF', can: [yes('All content: leadership, clubs, resources, site content'), yes('Publish a new Leo Year team'), yes('Read and reply to messages'), yes('Invite, change role and remove users')] },
+        { name: 'Editor', who: 'District Secretary, PRO', bg: '#FBEFD3', fg: '#6B4B00', can: [yes('All content: leadership, clubs, resources, site content'), yes('Publish a new Leo Year team'), yes('Read and reply to messages'), no('Cannot manage users or roles')] }
+      ],
+      users: [
+        u('RG', 'Rabindra Gauli', 'Website developer', 'webadmin@[official-domain]', 'Admin', 'Active', '#1E6B3A', 'Edit', '#FCCC0A'),
+        u('DP', '[District President 2026–27]', 'Invite after installation', 'president@[official-domain]', 'Admin', 'Not invited', '#4A5568', 'Invite', '#EEF1F6'),
+        u('DS', '[District Secretary 2026–27]', 'Main content owner', 'secretary@[official-domain]', 'Editor', 'Not invited', '#4A5568', 'Invite', '#EEF1F6')
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>

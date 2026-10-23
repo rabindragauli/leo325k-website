@@ -1,0 +1,44 @@
+# 05 · Design System (LY 2026–27 theme)
+
+## Colours (Tailwind tokens)
+| Token | Hex | Use |
+|---|---|---|
+| `teal-900` (brand) | `#1B3A4B` | Nav bar, dark sections, headings, primary dark button |
+| `teal-700` | `#244D63` | Cards on dark sections, banner left |
+| `teal-600` | `#2B5266` | Dividers on dark |
+| `teal-400` | `#4F7A90` | Borders on dark |
+| `purple` | `#762B94` | Banner right, accents |
+| `yellow` | `#FCCC0A` | Primary buttons, active nav underline, highlights (dark text on it) |
+| `orange` | `#F6961E` | 4 px divider under banner, footer top line |
+| `gold-text` | `#8A6100` | Eyebrow labels on white |
+| `gold-tint` / `gold-ink` | `#FBEFD3` / `#6B4B00` | Chips, highlights |
+| `ink` | `#14213D` | Body text |
+| `slate` | `#4A5568` | Secondary text |
+| `mist` | `#F4F6FA` | Light section bands |
+| `line` | `#E1E6EF` | Card borders |
+| `on-dark` | `#C9D3E6` / `#D3DCEC` / `#B9C5DC` | Text on dark |
+| status | ok `#1E6B3A`/`#E3F4EA` · warn `#6B4B00`/`#FBEFD3` · error `#8A1F11`/`#FBE4E1` · form error `#A3261A` | |
+
+Banner background: `linear-gradient(90deg, #1A4359 0%, #1A4359 42%, #234569 46%, #2E4A7A 50%, #3D4581 54%, #4B3F86 58%, #5B3889 62%, #6A3290 66%, #712E92 70%, #762B94 74%, #762B94 100%)` plus the SVG swoosh (yellow `#FCCC0A` + blue `#2B6F96` curves) — copy from `design/source/public/SiteHeader.dc.html`.
+
+## Typography
+- Headings: **Lato** 700/900 · Body: **Public Sans** 400–700
+- Display 56–64 / H2 34–40 / card title 17–24 / body 15–18 (line-height 1.6) / eyebrow 13–14 uppercase, letter-spacing 1px
+- Mobile: H1 34–40, H2 26–28
+
+## Header sizes
+| Header | Size |
+|---|---|
+| Desktop banner | full width × 216 px (content max 1440) |
+| Orange line | 4 px |
+| Nav bar | min 60 px (Contact us yellow button right) |
+| Mobile | 68 px bar + 4 px yellow + 3 px blue + 60 px badges row + 3 px orange = 138 px |
+| Admin compact bar | ~64 px (all admin screens except login) |
+Breakpoints: theme words hide < 1300 px · curtains + mountains hide < 1100 px · Leo emblem hides < 900 px · badges hide / mobile header < 860 px.
+
+## Shape & spacing
+Radius: buttons 10–12 px · cards 16–20 px · feature panels 24 px · chips/avatars full. Content width 1240 px. Section padding 80–104 px desktop, 32–56 px mobile. Tap targets ≥ 44 px. Focus ring: 3 px `#FCCC0A`.
+
+## Brand assets (`assets/brand/` → `public/brand/`)
+lions-international-logo, leo-emblem (shown with `filter: brightness(1.9)` on dark), mountains-flag, curtain-left/right, badge-1…5.
+The supplied badges are 160 px tall and curtains 176 px — **ask the council for 2× originals** (banner artwork 2880 × 432) before launch.

@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Edit club — Leo 325 K Admin</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&amp;family=Public+Sans:wght@400;500;600;700&amp;display=swap">
+<style>
+body{margin:0}
+a{color:#1D5C80}a:hover{color:#1B3A4B}
+button,input,select{font-family:inherit}
+button{cursor:pointer}
+input:focus,select:focus{outline:3px solid #FCCC0A;outline-offset:1px}
+</style>
+</helmet>
+<div style="font-family: 'Public Sans', sans-serif; color: #14213D; background: #F4F6FA; min-height: 100%; display: flex; flex-wrap: wrap; align-items: stretch">
+
+<div style="flex: 1 1 100%; min-width: 0"><dc-import name="AdminBanner" variant="compact" hint-size="100%,64px"></dc-import></div>
+
+<div style="flex: 1 1 264px; background: #1B3A4B">
+<dc-import name="Sidebar" active="clubs" hint-size="264px,900px"></dc-import>
+</div>
+
+<main style="flex: 999 1 640px; min-width: 0; padding: 28px 32px 48px; box-sizing: border-box; display: flex; flex-direction: column; gap: 22px">
+<div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 16px">
+<div style="display: flex; flex-direction: column; gap: 6px">
+<span style="font-size: 14px; color: #4A5568"><a href="Clubs.dc.html">Clubs</a> / Edit club</span>
+<h1 style="margin: 0; font-family: 'Lato', sans-serif; font-weight: 700; font-size: 32px; color: #1B3A4B">Leo Club of Kathmandu Machhapokhari</h1>
+</div>
+<div style="display: flex; flex-wrap: wrap; gap: 10px">
+<a href="Clubs.dc.html" style="min-height: 44px; box-sizing: border-box; display: inline-flex; align-items: center; padding: 0 16px; border-radius: 10px; color: #1B3A4B; text-decoration: none; font-size: 14px; font-weight: 700">Cancel</a>
+<button type="button" style="min-height: 44px; padding: 0 18px; border: none; border-radius: 10px; background: #1B3A4B; color: #FFFFFF; font-size: 14px; font-weight: 700">Save club</button>
+</div>
+</div>
+
+<div style="display: flex; flex-wrap: wrap; gap: 24px; align-items: flex-start">
+<div style="flex: 999 1 560px; min-width: 0; display: flex; flex-direction: column; gap: 20px">
+
+<section style="background: #FFFFFF; border: 1px solid #E1E6EF; border-radius: 18px; padding: 24px; display: flex; flex-wrap: wrap; gap: 28px; align-items: center">
+<div style="flex: 0 0 180px; height: 180px; border-radius: 50%; background: #FFF8E6; border: 3px dashed #FCCC0A; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; color: #6B4B00; text-align: center"><svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="4"></rect><circle cx="9" cy="9" r="2"></circle><path d="M21 16l-5-5-9 9"></path></svg><span style="font-size: 13px; font-weight: 800">Club logo</span></div>
+<div style="flex: 1 1 280px; display: flex; flex-direction: column; gap: 10px">
+<span style="font-size: 20px; font-weight: 700; color: #1B3A4B">Club logo</span>
+<span style="font-size: 14px; line-height: 1.6; color: #4A5568">Shown on the club’s card in the public directory and on its Club PVST profiles. Square PNG or SVG with a transparent background works best, at least 500 × 500 px.</span>
+<div style="display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin-top: 4px">
+<button type="button" style="min-height: 46px; padding: 0 20px; border: none; border-radius: 10px; background: #FCCC0A; color: #1B3A4B; font-size: 15px; font-weight: 700">Upload logo</button>
+<span style="font-size: 13px; color: #4A5568">or drag and drop · until then the Leo emblem is shown</span>
+</div>
+</div>
+</section>
+
+<section style="background: #FFFFFF; border: 1px solid #E1E6EF; border-radius: 18px; padding: 24px; display: flex; flex-direction: column; gap: 16px">
+<h2 style="margin: 0; font-size: 18px; font-weight: 700; color: #1B3A4B">Club details</h2>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px">
+<div style="display: flex; flex-direction: column; gap: 6px"><label for="c-name" style="font-size: 14px; font-weight: 700">Club name *</label><input id="c-name" type="text" value="Leo Club of Kathmandu Machhapokhari" style="height: 46px; box-sizing: border-box; border: 1px solid #C9D3E6; border-radius: 10px; padding: 0 12px; font-size: 15px"></div>
+<div style="display: flex; flex-direction: column; gap: 6px"><label for="c-city" style="font-size: 14px; font-weight: 700">City *</label><input id="c-city" type="text" value="Kathmandu" style="height: 46px; box-sizing: border-box; border: 1px solid #C9D3E6; border-radius: 10px; padding: 0 12px; font-size: 15px"></div>
+<div style="display: flex; flex-direction: column; gap: 6px"><label for="c-region" style="font-size: 14px; font-weight: 700">Region *</label><select id="c-region" style="height: 46px; border: 2px solid #FCCC0A; border-radius: 10px; padding: 0 12px; font-size: 15px; background: #FFFFFF; color: #14213D"><option>Choose region…</option><option>[Region names from the council]</option></select></div>
+<div style="display: flex; flex-direction: column; gap: 6px"><label for="c-type" style="font-size: 14px; font-weight: 700">Club type</label><select id="c-type" style="height: 46px; border: 2px solid #FCCC0A; border-radius: 10px; padding: 0 12px; font-size: 15px; background: #FFFFFF; color: #14213D"><option>Choose…</option><option>Alpha (ages 12–18)</option><option>Omega (ages 18–30)</option></select></div>
+<div style="display: flex; flex-direction: column; gap: 6px"><label for="c-charter" style="font-size: 14px; font-weight: 700">Charter year</label><input id="c-charter" type="text" placeholder="e.g. 2015" style="height: 46px; box-sizing: border-box; border: 2px solid #FCCC0A; border-radius: 10px; padding: 0 12px; font-size: 15px"></div>
+<div style="display: flex; flex-direction: column; gap: 6px"><label for="c-sponsor" style="font-size: 14px; font-weight: 700">Sponsoring Lions club</label><input id="c-sponsor" type="text" placeholder="e.g. Lions Club of …" style="height: 46px; box-sizing: border-box; border: 2px solid #FCCC0A; border-radius: 10px; padding: 0 12px; font-size: 15px"></div>
+<div style="display: flex; flex-direction: column; gap: 6px"><label for="c-email" style="font-size: 14px; font-weight: 700">Club contact email</label><input id="c-email" type="email" placeholder="Official club email" style="height: 46px; box-sizing: border-box; border: 1px solid #C9D3E6; border-radius: 10px; padding: 0 12px; font-size: 15px"></div>
+</div>
+<label style="display: flex; justify-content: space-between; align-items: center; gap: 12px; min-height: 48px; padding: 0 14px; background: #F4F6FA; border-radius: 10px; font-size: 14px; font-weight: 700">Show this club on the public directory<input type="checkbox" checked style="width: 20px; height: 20px; accent-color: #1B3A4B"></label>
+</section>
+
+<section style="background: #FFFFFF; border: 1px solid #E1E6EF; border-radius: 18px; padding: 24px; display: flex; flex-direction: column; gap: 16px">
+<div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 12px">
+<div style="display: flex; flex-direction: column; gap: 4px">
+<h2 style="margin: 0; font-size: 18px; font-weight: 700; color: #1B3A4B">Club PVST</h2>
+<span style="font-size: 14px; color: #4A5568">President, Vice President, Secretary and Treasurer of this club</span>
+</div>
+<label for="c-year" style="position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0)">Leo Year</label>
+<select id="c-year" style="height: 44px; border: 1px solid #C9D3E6; border-radius: 10px; padding: 0 12px; font-size: 14px; font-weight: 700; background: #FFFFFF; color: #14213D"><option>Leo Year 2026–27</option><option>Leo Year 2025–26</option></select>
+</div>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 14px">
+<sc-for list="{{pvst}}" as="p" hint-placeholder-count="4">
+<div style="border: 1px solid #E1E6EF; border-radius: 16px; padding: 18px; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 10px">
+<div style="width: 88px; height: 88px; border-radius: 50%; background: #FFF8E6; border: 2px dashed #FCCC0A; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; color: #6B4B00"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 8h3l2-3h6l2 3h3v11H4z"></path><circle cx="12" cy="13" r="3.5"></circle></svg><span style="font-size: 10px; font-weight: 800">Photo</span></div>
+<span style="font-size: 12px; font-weight: 800; letter-spacing: 0.5px; text-transform: uppercase; color: #8A6100">{{p}}</span>
+<span style="font-size: 15px; font-weight: 600; color: #4A5568">Not assigned yet</span>
+<a href="PersonEditor.dc.html" style="width: 100%; min-height: 44px; box-sizing: border-box; display: flex; align-items: center; justify-content: center; border: 1px solid #C9D3E6; border-radius: 10px; text-decoration: none; font-size: 14px; font-weight: 700">+ Add person</a>
+</div>
+</sc-for>
+</div>
+<span style="font-size: 13px; color: #4A5568">Each person’s form records name, membership ID, phone, email, blood group and home club, with a public/private switch for each private detail.</span>
+</section>
+</div>
+
+<aside style="flex: 1 1 300px; min-width: 0; display: flex; flex-direction: column; gap: 20px">
+<section style="background: #FFFFFF; border: 1px solid #E1E6EF; border-radius: 18px; padding: 20px; display: flex; flex-direction: column; gap: 14px">
+<span style="font-size: 13px; font-weight: 800; letter-spacing: 0.5px; text-transform: uppercase; color: #4A5568">Public directory preview</span>
+<div style="border: 1px solid #E1E6EF; border-radius: 16px; padding: 18px; display: flex; flex-direction: column; gap: 12px">
+<div style="display: flex; gap: 12px; align-items: center">
+<div style="flex: 0 0 52px; height: 52px; border-radius: 50%; background: #1B3A4B; color: #FCCC0A; display: flex; align-items: center; justify-content: center; font-family: 'Lato', sans-serif; font-weight: 800; font-size: 12px">LEO</div>
+<div style="display: flex; flex-direction: column; gap: 4px"><span style="font-size: 16px; font-weight: 700; color: #1B3A4B; line-height: 1.3">Leo Club of Kathmandu Machhapokhari</span><span style="align-self: flex-start; font-size: 12px; font-weight: 700; padding: 3px 9px; border-radius: 999px; background: #E7ECF4; color: #1B3A4B">Kathmandu</span></div>
+</div>
+<span style="font-size: 13px; color: #4A5568">Logo appears here once uploaded</span>
+</div>
+</section>
+<section style="background: #FFFFFF; border: 1px solid #E1E6EF; border-radius: 18px; padding: 20px; display: flex; flex-direction: column; gap: 10px">
+<span style="font-size: 13px; font-weight: 800; letter-spacing: 0.5px; text-transform: uppercase; color: #4A5568">Completeness</span>
+<sc-for list="{{checks}}" as="c" hint-placeholder-count="5">
+<span style="display: flex; justify-content: space-between; gap: 10px; font-size: 14px"><span>{{c.k}}</span><span style="font-weight: 700; color: {{c.fg}}">{{c.v}}</span></span>
+</sc-for>
+</section>
+</aside>
+</div>
+</main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1610}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const ok = '#1E6B3A', miss = '#8A1F11';
+    return {
+      pvst: ['Club President', 'Club Vice President', 'Club Secretary', 'Club Treasurer'],
+      checks: [
+        { k: 'Club logo', v: 'Missing', fg: miss },
+        { k: 'Name and city', v: 'Done', fg: ok },
+        { k: 'Region', v: 'Missing', fg: miss },
+        { k: 'Type, charter, sponsor', v: 'Missing', fg: miss },
+        { k: 'Club PVST 2026–27', v: '0 of 4', fg: miss },
+        { k: 'Contact email', v: 'Missing', fg: miss }
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>

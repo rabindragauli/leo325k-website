@@ -1,0 +1,220 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Add or edit person — Leo 325 K Admin</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&amp;family=Public+Sans:wght@400;500;600;700&amp;display=swap">
+<style>
+body{margin:0}
+a{color:#1D5C80}a:hover{color:#1B3A4B}
+button,input,select,textarea{font-family:inherit}
+button{cursor:pointer}
+input:focus,select:focus,textarea:focus,button:focus-visible{outline:3px solid #FCCC0A;outline-offset:1px}
+</style>
+</helmet>
+<div style="font-family: 'Public Sans', sans-serif; color: #14213D; background: #F4F6FA; min-height: 100%; display: flex; flex-wrap: wrap; align-items: stretch">
+
+<div style="flex: 1 1 100%; min-width: 0"><dc-import name="AdminBanner" variant="compact" hint-size="100%,64px"></dc-import></div>
+
+<div style="flex: 1 1 264px; background: #1B3A4B">
+<dc-import name="Sidebar" active="{{side}}" hint-size="264px,900px"></dc-import>
+</div>
+
+<main style="flex: 999 1 640px; min-width: 0; padding: 28px 32px 48px; box-sizing: border-box; display: flex; flex-direction: column; gap: 22px">
+<div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 16px">
+<div style="display: flex; flex-direction: column; gap: 6px">
+<span style="font-size: 14px; color: #4A5568"><a href="{{k.backHref}}">{{k.back}}</a> / {{k.crumb}}</span>
+<h1 style="margin: 0; font-family: 'Lato', sans-serif; font-weight: 700; font-size: 32px; color: #1B3A4B">{{k.title}}</h1>
+</div>
+<div style="display: flex; flex-wrap: wrap; gap: 10px">
+<a href="{{k.backHref}}" style="min-height: 44px; box-sizing: border-box; display: inline-flex; align-items: center; padding: 0 16px; border-radius: 10px; color: #1B3A4B; text-decoration: none; font-size: 14px; font-weight: 700">Cancel</a>
+<button type="button" style="min-height: 44px; padding: 0 18px; border: none; border-radius: 10px; background: #1B3A4B; color: #FFFFFF; font-size: 14px; font-weight: 700">Save person</button>
+</div>
+</div>
+
+<section style="background: #FFFFFF; border: 1px solid #E1E6EF; border-radius: 18px; padding: 18px 20px; display: flex; flex-direction: column; gap: 12px">
+<span style="font-size: 14px; font-weight: 700">Step 1 · Is this person already in our records?</span>
+<span style="font-size: 13px; color: #4A5568">Search first. Leos keep one record across all years, so their history stays together and nothing is typed twice.</span>
+<label for="p-find" style="position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0)">Search people</label>
+<input id="p-find" type="search" placeholder="Search by name or home club…" value="Prativa" style="height: 46px; box-sizing: border-box; border: 1px solid #C9D3E6; border-radius: 10px; padding: 0 14px; font-family: inherit; font-size: 15px">
+<div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; padding: 12px 14px; border: 1px solid #E1E6EF; border-radius: 12px; background: #F8FAFC">
+<span style="display: flex; align-items: center; gap: 12px"><span style="flex: 0 0 40px; height: 40px; border-radius: 50%; background: #FBEFD3; color: #6B4B00; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 800">PS</span><span style="display: flex; flex-direction: column"><span style="font-size: 15px; font-weight: 700">Leo Prativa Shrestha</span><span style="font-size: 13px; color: #4A5568">Leo Club of Kathmandu Machhapokhari · District President 2025–26</span></span></span>
+<button type="button" style="min-height: 44px; padding: 0 16px; border: 1px solid #1B3A4B; border-radius: 10px; background: #FFFFFF; color: #1B3A4B; font-size: 14px; font-weight: 700">Use this person</button>
+</div>
+<button type="button" style="align-self: flex-start; min-height: 44px; padding: 0 16px; border: 1px dashed #4F7A90; border-radius: 10px; background: #FFFFFF; color: #1B3A4B; font-size: 14px; font-weight: 700">+ Not found: add a new person</button>
+</section>
+
+<section style="background: #FFFFFF; border: 1px solid #E1E6EF; border-radius: 18px; padding: 18px 20px; display: flex; flex-direction: column; gap: 12px">
+<span style="font-size: 14px; font-weight: 700">Step 2 · Which team is this position in?</span>
+<div role="group" aria-label="Section" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 8px">
+<sc-for list="{{kinds}}" as="t" hint-placeholder-count="4">
+<button type="button" onClick="{{t.pick}}" aria-pressed="{{t.pressed}}" style="min-height: 56px; text-align: left; padding: 10px 14px; border-radius: 12px; border: 2px solid {{t.bd}}; background: {{t.bg}}; display: flex; flex-direction: column; gap: 2px"><span style="font-size: 15px; font-weight: 700; color: #1B3A4B">{{t.label}}</span><span style="font-size: 12px; color: #4A5568">{{t.sub}}</span></button>
+</sc-for>
+</div>
+</section>
+
+<div style="display: flex; flex-wrap: wrap; gap: 24px; align-items: flex-start">
+<div style="flex: 999 1 560px; min-width: 0; display: flex; flex-direction: column; gap: 20px">
+
+<section style="background: #FFFFFF; border: 1px solid #E1E6EF; border-radius: 18px; padding: 24px; display: flex; flex-wrap: wrap; gap: 24px; align-items: center">
+<div style="flex: 0 0 150px; height: 150px; border-radius: 50%; background: #FFF8E6; border: 2px dashed #FCCC0A; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; color: #6B4B00"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 8h3l2-3h6l2 3h3v11H4z"></path><circle cx="12" cy="13" r="3.5"></circle></svg><span style="font-size: 12px; font-weight: 800">Add photo</span></div>
+<div style="flex: 1 1 280px; display: flex; flex-direction: column; gap: 8px">
+<span style="font-size: 17px; font-weight: 700; color: #1B3A4B">Photo</span>
+<span style="font-size: 14px; line-height: 1.55; color: #4A5568">Clear face photo, square, at least 800 × 800 px. JPG or PNG. You can crop it after uploading.</span>
+<div style="display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin-top: 4px">
+<button type="button" style="min-height: 44px; padding: 0 18px; border: none; border-radius: 10px; background: #FCCC0A; color: #1B3A4B; font-size: 14px; font-weight: 700">Upload photo</button>
+<span style="font-size: 13px; color: #4A5568">or drag and drop</span>
+</div>
+</div>
+</section>
+
+<section style="background: #FFFFFF; border: 1px solid #E1E6EF; border-radius: 18px; padding: 24px; display: flex; flex-direction: column; gap: 18px">
+<div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 8px">
+<h2 style="margin: 0; font-size: 18px; font-weight: 700; color: #1B3A4B">Step 3 · Position, Leo Year and details</h2>
+<span style="font-size: 13px; color: #4A5568">Use the switches to choose what appears on the public website</span>
+</div>
+
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px">
+<div style="display: flex; flex-direction: column; gap: 6px">
+<label for="p-role" style="font-size: 14px; font-weight: 700">{{k.roleLabel}} *</label>
+<sc-if value="{{isPride}}" hint-placeholder-val="{{ false }}"><input id="p-role" type="text" placeholder="e.g. DP 325 K 2022–23" style="height: 48px; box-sizing: border-box; border: 1px solid #C9D3E6; border-radius: 10px; padding: 0 14px; font-size: 15px"></sc-if>
+<sc-if value="{{isDistrict}}" hint-placeholder-val="{{ true }}"><select id="p-role" style="height: 48px; border: 1px solid #C9D3E6; border-radius: 10px; padding: 0 12px; font-size: 15px; background: #FFFFFF; color: #14213D"><option>District President</option><option>Vice District President</option><option>District Secretary</option><option>District Treasurer</option></select></sc-if><sc-if value="{{isLions}}" hint-placeholder-val="{{ false }}"><select id="p-role" style="height: 48px; border: 1px solid #C9D3E6; border-radius: 10px; padding: 0 12px; font-size: 15px; background: #FFFFFF; color: #14213D"><option>District Governor</option><option>First Vice District Governor</option><option>Second Vice District Governor</option><option>Cabinet Secretary</option><option>Cabinet Treasurer</option></select></sc-if><sc-if value="{{isClub}}" hint-placeholder-val="{{ false }}"><select id="p-role" style="height: 48px; border: 1px solid #C9D3E6; border-radius: 10px; padding: 0 12px; font-size: 15px; background: #FFFFFF; color: #14213D"><option>Club President</option><option>Club Vice President</option><option>Club Secretary</option><option>Club Treasurer</option></select></sc-if>
+</div>
+<div style="display: flex; flex-direction: column; gap: 6px">
+<label for="p-year" style="font-size: 14px; font-weight: 700">{{k.yearLabel}}</label>
+<select id="p-year" style="height: 48px; border: 1px solid #C9D3E6; border-radius: 10px; padding: 0 12px; font-size: 15px; background: #FFFFFF; color: #14213D"><option>2026–27</option><option>2025–26</option><option>2024–25</option><option>Earlier year…</option></select>
+</div>
+<sc-if value="{{isClub}}" hint-placeholder-val="{{ false }}">
+<div style="display: flex; flex-direction: column; gap: 6px">
+<label for="p-serves" style="font-size: 14px; font-weight: 700">Serving in club *</label>
+<select id="p-serves" style="height: 48px; border: 1px solid #C9D3E6; border-radius: 10px; padding: 0 12px; font-size: 15px; background: #FFFFFF; color: #14213D"><option>Leo Club of Kathmandu Machhapokhari</option><option>Leo Club of Kathmandu Rainbow City</option><option>Leo Club of Pokhara Silver Mountains</option><option>Leo Club of Baglung Kaligandaki</option></select>
+</div>
+</sc-if>
+</div>
+
+<div style="display: flex; flex-direction: column; border: 1px solid #E1E6EF; border-radius: 14px; overflow: hidden">
+
+<div style="display: flex; flex-wrap: wrap; gap: 12px; align-items: flex-end; padding: 16px; border-bottom: 1px solid #EEF1F6">
+<div style="flex: 0 0 140px; display: flex; flex-direction: column; gap: 6px"><label for="p-prefix" style="font-size: 14px; font-weight: 700">Title</label><sc-if value="{{leoPrefix}}" hint-placeholder-val="{{ true }}"><select id="p-prefix" style="height: 46px; border: 1px solid #C9D3E6; border-radius: 10px; padding: 0 10px; font-size: 15px; background: #FFFFFF; color: #14213D"><option>Leo</option><option>Leo-Lion</option></select></sc-if><sc-if value="{{isLions}}" hint-placeholder-val="{{ false }}"><select id="p-prefix" style="height: 46px; border: 1px solid #C9D3E6; border-radius: 10px; padding: 0 10px; font-size: 15px; background: #FFFFFF; color: #14213D"><option>Lion</option><option>MJF Lion</option><option>PMJF Lion</option></select></sc-if><sc-if value="{{isPride}}" hint-placeholder-val="{{ false }}"><select id="p-prefix" style="height: 46px; border: 1px solid #C9D3E6; border-radius: 10px; padding: 0 10px; font-size: 15px; background: #FFFFFF; color: #14213D"><option>Leo</option><option>Leo-Lion</option><option>Lion</option><option>MJF Lion</option><option>PMJF Lion</option></select></sc-if></div>
+<div style="flex: 1 1 240px; display: flex; flex-direction: column; gap: 6px"><label for="p-name" style="font-size: 14px; font-weight: 700">Full name *</label><input id="p-name" type="text" placeholder="e.g. Sita Sharma" style="height: 46px; box-sizing: border-box; border: 1px solid #C9D3E6; border-radius: 10px; padding: 0 14px; font-size: 15px"></div>
+<span style="flex: 0 0 auto; min-height: 46px; display: inline-flex; align-items: center; font-size: 13px; font-weight: 700; color: #1E6B3A">Always public</span>
+</div>
+
+<sc-for list="{{fields}}" as="f" hint-placeholder-count="4">
+<div style="display: flex; flex-wrap: wrap; gap: 12px; align-items: flex-end; padding: 16px; border-bottom: 1px solid #EEF1F6">
+<div style="flex: 1 1 260px; display: flex; flex-direction: column; gap: 6px">
+<label for="{{f.id}}" style="font-size: 14px; font-weight: 700">{{f.label}}</label>
+<input id="{{f.id}}" type="{{f.type}}" placeholder="{{f.ph}}" style="height: 46px; box-sizing: border-box; border: 1px solid #C9D3E6; border-radius: 10px; padding: 0 14px; font-size: 15px">
+</div>
+<sc-if value="{{f.adminOnly}}" hint-placeholder-val="{{ false }}"><span style="flex: 0 0 auto; min-height: 46px; display: inline-flex; align-items: center; padding: 0 12px; border-radius: 10px; background: #EEF1F6; color: #4A5568; font-size: 13px; font-weight: 700">Admin only</span></sc-if>
+<sc-if value="{{f.toggle}}" hint-placeholder-val="{{ true }}">
+<button type="button" role="switch" aria-checked="{{f.on}}" aria-label="Show {{f.label}} on public site" onClick="{{f.flip}}" style="flex: 0 0 auto; min-height: 46px; display: inline-flex; align-items: center; gap: 10px; padding: 0 12px; border: 1px solid #E1E6EF; border-radius: 10px; background: #FFFFFF; font-size: 13px; font-weight: 700; color: {{f.txt}}">
+<span style="width: 40px; height: 24px; border-radius: 999px; background: {{f.track}}; position: relative; display: inline-block"><span style="position: absolute; top: 3px; left: {{f.knob}}; width: 18px; height: 18px; border-radius: 50%; background: #FFFFFF"></span></span>{{f.state}}
+</button>
+</sc-if>
+</div>
+</sc-for>
+<div style="display: flex; flex-wrap: wrap; gap: 12px; align-items: flex-end; padding: 16px">
+<div style="flex: 1 1 260px; display: flex; flex-direction: column; gap: 6px"><label for="p-home" style="font-size: 14px; font-weight: 700">{{homeLabel}}</label>
+<sc-if value="{{notLions}}" hint-placeholder-val="{{ true }}"><select id="p-home" style="height: 46px; border: 1px solid #C9D3E6; border-radius: 10px; padding: 0 12px; font-size: 15px; background: #FFFFFF; color: #14213D"><option>Choose from club directory…</option><option>Leo Club of Kathmandu Machhapokhari</option><option>Leo Club of Kathmandu Rainbow City</option><option>Leo Club of Pokhara Silver Mountains</option><option>Leo Club of Baglung Kaligandaki</option></select></sc-if>
+<sc-if value="{{isLions}}" hint-placeholder-val="{{ false }}"><input id="p-home" type="text" placeholder="e.g. Lions Club of Pokhara Peace Chautari" style="height: 46px; box-sizing: border-box; border: 1px solid #C9D3E6; border-radius: 10px; padding: 0 14px; font-size: 15px"></sc-if>
+</div>
+<span style="flex: 0 0 auto; min-height: 46px; display: inline-flex; align-items: center; font-size: 13px; font-weight: 700; color: #1E6B3A">Always public</span>
+</div>
+</div>
+</section>
+
+<sc-if value="{{notClub}}" hint-placeholder-val="{{ true }}">
+<section style="background: #FFFFFF; border: 1px solid #E1E6EF; border-radius: 18px; padding: 24px; display: flex; flex-direction: column; gap: 14px">
+<h2 style="margin: 0; font-size: 18px; font-weight: 700; color: #1B3A4B">Profile details <span style="font-size: 14px; font-weight: 600; color: #4A5568">· optional</span></h2>
+<div style="display: flex; flex-direction: column; gap: 6px"><label for="p-msg" style="font-size: 14px; font-weight: 700">{{k.msgLabel}}</label><textarea id="p-msg" rows="4" style="box-sizing: border-box; border: 1px solid #C9D3E6; border-radius: 10px; padding: 12px 14px; font-size: 15px; line-height: 1.6; resize: vertical"></textarea></div>
+<div style="display: flex; flex-wrap: wrap; gap: 10px">
+<button type="button" style="min-height: 44px; padding: 0 14px; border: 1px dashed #A9C1CC; border-radius: 10px; background: #FFFFFF; color: #1B3A4B; font-size: 14px; font-weight: 700">+ Add award</button>
+<button type="button" style="min-height: 44px; padding: 0 14px; border: 1px dashed #A9C1CC; border-radius: 10px; background: #FFFFFF; color: #1B3A4B; font-size: 14px; font-weight: 700">+ Add Leo journey step</button>
+</div>
+</section>
+</sc-if>
+</div>
+
+<aside style="flex: 1 1 300px; min-width: 0; display: flex; flex-direction: column; gap: 20px">
+<section style="background: #FFFFFF; border: 1px solid #E1E6EF; border-radius: 18px; padding: 20px; display: flex; flex-direction: column; gap: 14px">
+<span style="font-size: 13px; font-weight: 800; letter-spacing: 0.5px; text-transform: uppercase; color: #4A5568">Public preview</span>
+<div style="border: 1px solid #E1E6EF; border-radius: 16px; padding: 20px; display: flex; flex-direction: column; gap: 8px">
+<div style="width: 72px; height: 72px; border-radius: 50%; background: #E7ECF4; border: 3px solid #FCCC0A; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; color: #4A5568">Photo</div>
+<span style="font-size: 12px; font-weight: 700; text-transform: uppercase; color: #8A6100">{{k.previewRole}}</span>
+<span style="font-size: 18px; font-weight: 700; color: #1B3A4B">{{k.prefix}} [Full name]</span>
+<span style="font-size: 13px; color: #4A5568">{{k.clubLine}}</span>
+<sc-for list="{{shown}}" as="s" hint-placeholder-count="0">
+<span style="font-size: 13px; color: #14213D"><span style="font-weight: 700">{{s.k}}:</span> {{s.v}}</span>
+</sc-for>
+</div>
+<span style="font-size: 13px; line-height: 1.5; color: #4A5568">{{previewNote}}</span>
+</section>
+<section style="background: #1B3A4B; color: #FFFFFF; border-radius: 18px; padding: 20px; display: flex; gap: 12px">
+<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#FCCC0A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex: 0 0 auto"><path d="M12 2l8 4v6c0 5-3.5 8.5-8 10-4.5-1.5-8-5-8-10V6z"></path></svg>
+<span style="font-size: 14px; line-height: 1.55; color: #D3DCEC">Private details are kept for the district’s records and are visible only to signed-in admins.</span>
+</section>
+</aside>
+</div>
+</main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1881}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { kind: 'district', vis: { phone: false, email: false } };
+  }
+  renderVals() {
+    const { kind, vis } = this.state;
+    const K = {
+      district: { label: 'District Leo PVST', sub: 'President, VP, Secretary, Treasurer', title: 'Add District Leo PVST member', back: 'Leadership', backHref: 'Leadership.dc.html', crumb: '2026–27 / District Leo PVST', roleLabel: 'Position', yearLabel: 'Leo Year', roles: ['District President', 'Vice District President', 'District Secretary', 'District Treasurer'], prefixes: ['Leo', 'Leo-Lion'], prefix: 'Leo', previewRole: 'District President', clubLine: 'Home club: Leo Club of …', msgLabel: 'Message for the year (District President)' },
+      lions: { label: 'District Lion PVST', sub: 'Governor, VDGs, Secretary, Treasurer', title: 'Add District Lion PVST member', back: 'Leadership', backHref: 'Leadership.dc.html', crumb: '2026–27 / District Lion PVST', roleLabel: 'Position', yearLabel: 'Lions Year', roles: ['District Governor', 'First Vice District Governor', 'Second Vice District Governor', 'Cabinet Secretary', 'Cabinet Treasurer'], prefixes: ['Lion', 'MJF Lion', 'PMJF Lion'], prefix: 'Lion', previewRole: 'District Governor', clubLine: 'Home club: Lions Club of …', msgLabel: 'Short message (optional)' },
+      club: { label: 'Club PVST', sub: 'A club’s own office bearers', title: 'Add Club PVST member', back: 'Clubs', backHref: 'ClubEditor.dc.html', crumb: 'Leo Club of Kathmandu Machhapokhari / Club PVST 2026–27', roleLabel: 'Position', yearLabel: 'Leo Year', roles: ['Club President', 'Club Vice President', 'Club Secretary', 'Club Treasurer'], prefixes: ['Leo'], prefix: 'Leo', previewRole: 'Club President', clubLine: 'Leo Club of Kathmandu Machhapokhari', msgLabel: '' },
+      pride: { label: 'Our Pride', sub: 'Past leaders of the district', title: 'Add to Our Pride', back: 'Leadership', backHref: 'Leadership.dc.html', crumb: 'Our Pride', roleLabel: 'Honor title', yearLabel: 'Year served', roles: [], prefixes: ['Leo', 'Leo-Lion', 'Lion', 'MJF Lion', 'PMJF Lion'], prefix: 'Leo-Lion', previewRole: 'DP 325 K 2022–23', clubLine: 'Home club: Leo Club of …', msgLabel: 'Short note about their service' }
+    };
+    const k = K[kind];
+    const flip = (key) => () => { const v = Object.assign({}, this.state.vis); v[key] = !v[key]; this.setState({ vis: v }); };
+    const tog = (key, id, label, type, ph) => ({
+      id, label, type, ph, isInput: true, isSelect: false, toggle: true, always: false,
+      on: vis[key] ? 'true' : 'false', state: vis[key] ? 'Public' : 'Private',
+      txt: vis[key] ? '#1E6B3A' : '#4A5568', track: vis[key] ? '#1E6B3A' : '#C9D3E6', knob: vis[key] ? '19px' : '3px',
+      flip: flip(key), adminOnly: false
+    });
+    const home = { id: 'p-home', label: kind === 'lions' ? 'Home Lions club *' : 'Home club *', isInput: false, isSelect: true, toggle: false, always: true,
+      options: kind === 'lions' ? ['Choose Lions club…', 'Lions Club of …'] : ['Choose from club directory…', 'Leo Club of Kathmandu Machhapokhari', 'Leo Club of Kathmandu Rainbow City', 'Leo Club of Pokhara Silver Mountains', 'Leo Club of Baglung Kaligandaki'] };
+    const shown = [];
+    if (vis.phone) shown.push({ k: 'Phone', v: '…' });
+    if (vis.email) shown.push({ k: 'Email', v: '…' });
+    return {
+      side: kind === 'club' ? 'clubs' : 'leadership',
+      k: k,
+      isPride: kind === 'pride', notPride: kind !== 'pride',
+      isClub: kind === 'club', notClub: kind !== 'club',
+      kinds: Object.keys(K).map((key) => ({
+        label: K[key].label, sub: K[key].sub,
+        pressed: key === kind ? 'true' : 'false',
+        bd: key === kind ? '#FCCC0A' : '#E1E6EF', bg: key === kind ? '#FFF8E6' : '#FFFFFF',
+        pick: () => this.setState({ kind: key })
+      })),
+      fields: [
+        Object.assign(tog('mid', 'p-mid', 'Membership ID', 'text', 'e.g. 4703186'), { toggle: false, adminOnly: true }),
+        tog('phone', 'p-phone', 'Phone', 'tel', '98XXXXXXXX'),
+        tog('email', 'p-email', 'Email', 'email', 'name@example.com')
+      ],
+      homeLabel: kind === 'lions' ? 'Home Lions club *' : 'Home club *',
+      isDistrict: kind === 'district', isLions: kind === 'lions', notLions: kind !== 'lions',
+      leoPrefix: kind === 'district' || kind === 'club',
+      shown: shown,
+      previewNote: shown.length ? 'Fields switched to Public appear on the website card.' : 'Only photo, name, position and home club are public right now.'
+    };
+  }
+}
+</script>
+</body>
+</html>

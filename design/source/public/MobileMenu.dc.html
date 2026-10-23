@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Mobile menu — Leo District Council 325 K</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&amp;family=Public+Sans:wght@400;500;600;700;800&amp;display=swap">
+<style>
+body{margin:0}
+</style>
+</helmet>
+<div role="dialog" aria-modal="true" aria-label="Menu" style="width: 390px; height: 844px; box-sizing: border-box; font-family: 'Public Sans', sans-serif; background: #1B3A4B; color: #FFFFFF; display: flex; flex-direction: column">
+<div style="height: 68px; box-sizing: border-box; background: linear-gradient(90deg, #244D63 0%, #244D63 35%, #2E4A7A 52%, #4B3F86 70%, #6A3290 88%, #762B94 100%); padding: 0 12px 0 14px; display: flex; align-items: center; gap: 10px; border-bottom: 4px solid #FCCC0A">
+<div style="flex: 1 1 auto; min-width: 0; display: flex; align-items: center; gap: 10px">
+<img src="/brand/lions-international-logo.png" alt="Lions International" style="height: 42px; width: auto">
+<span style="display: flex; flex-direction: column"><span style="font-family: 'Lato', sans-serif; font-weight: 900; font-size: 15px; line-height: 1.2">Leo District Council 325 K</span><span style="font-family: 'Lato', sans-serif; font-weight: 700; font-size: 12px; color: #FCCC0A">Nepal · LY 2026–27</span></span>
+</div>
+<a href="Mobile.dc.html" aria-label="Close menu" style="flex: 0 0 44px; height: 44px; box-sizing: border-box; border-radius: 10px; border: 1px solid #4F7A90; color: #FFFFFF; display: flex; align-items: center; justify-content: center"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"></path></svg></a>
+</div>
+<nav aria-label="Main" style="display: flex; flex-direction: column; padding: 6px 0">
+<sc-for list="{{nav}}" as="n" hint-placeholder-count="5">
+<a href="{{n.href}}" aria-current="{{n.current}}" style="display: flex; align-items: center; justify-content: space-between; padding: 16px 20px; border-bottom: 1px solid #2B5266; color: {{n.fg}}; text-decoration: none; font-family: 'Lato', sans-serif; font-size: 23px; font-weight: 900">{{n.label}}<span style="font-size: 20px; color: #FCCC0A">→</span></a>
+</sc-for>
+</nav>
+<div style="margin-top: auto; background: linear-gradient(90deg, #1A4359 0%, #2E4A7A 22%, #4B3F86 45%, #6A3290 70%, #762B94 90%); padding: 18px 16px; display: flex; flex-direction: column; align-items: center; gap: 12px">
+<div role="list" aria-label="LY 2026–27 theme badges" style="display: flex; align-items: center; justify-content: center; gap: 10px">
+<img src="/brand/badge-1-we-serve.png" alt="We Serve — Rooted in Service" style="height: 58px; width: auto">
+<img src="/brand/badge-2-lions-325k-round.png" alt="Lions District 325 K: Leading with Purpose (round)" style="height: 58px; width: auto">
+<img src="/brand/badge-3-lions-325k-quatrefoil.png" alt="Lions District 325 K: Leading with Purpose (quatrefoil)" style="height: 58px; width: auto">
+<img src="/brand/badge-4-leo-md325.png" alt="Leo Multiple District 325: Every Step Inspires" style="height: 58px; width: auto">
+<img src="/brand/badge-5-ldc325k-execution.png" alt="Leo District Council 325 K: Execution with Excellence" style="height: 58px; width: auto">
+</div>
+<div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 8px; font-family: 'Lato', sans-serif; font-weight: 900; font-size: 13px; letter-spacing: 0.5px">
+<span>“LEADING WITH PURPOSE”</span>
+<span style="background: #C28B19; text-shadow: 0 1px 2px rgba(0, 0, 0, 0.35); padding: 4px 9px; border-radius: 3px">EXECUTION WITH EXCELLENCE</span>
+</div>
+</div>
+<div style="padding: 20px; display: flex; flex-direction: column; gap: 14px; background: #1B3A4B">
+<a href="MContact.dc.html" style="display: flex; align-items: center; justify-content: center; gap: 10px; min-height: 54px; border-radius: 12px; background: #FCCC0A; color: #1B3A4B; text-decoration: none; font-size: 17px; font-weight: 800"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"></rect><path d="M3 7l9 6 9-6"></path></svg>Contact us</a>
+<div style="display: flex; justify-content: center; gap: 8px">
+<a href="#facebook" style="color: #FFFFFF; text-decoration: none; font-size: 14px; font-weight: 600; padding: 10px 14px; border: 1px solid #4F7A90; border-radius: 999px">Facebook</a>
+<a href="#instagram" style="color: #FFFFFF; text-decoration: none; font-size: 14px; font-weight: 600; padding: 10px 14px; border: 1px solid #4F7A90; border-radius: 999px">Instagram</a>
+<a href="#youtube" style="color: #FFFFFF; text-decoration: none; font-size: 14px; font-weight: 600; padding: 10px 14px; border: 1px solid #4F7A90; border-radius: 999px">YouTube</a>
+</div>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"active":{"editor":"enum","options":["home","about","leadership","clubs","resources"],"default":"home"},"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const active = this.props.active ?? 'home';
+    return {
+      nav: [['home', 'Home', 'Mobile.dc.html'], ['about', 'About', 'MAbout.dc.html'], ['leadership', 'Leadership', 'MLeadership.dc.html'], ['clubs', 'Clubs', 'MClubs.dc.html'], ['resources', 'Resources', 'MResources.dc.html']].map((i) => ({
+        id: i[0], label: i[1], href: i[2],
+        current: i[0] === active ? 'page' : 'false',
+        fg: i[0] === active ? '#FCCC0A' : '#FFFFFF'
+      }))
+    };
+  }
+}
+</script>
+</body>
+</html>

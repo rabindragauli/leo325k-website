@@ -1,0 +1,52 @@
+# Builds the cPanel deploy package on Linux (GitHub's servers), so you never need WSL.
+# Run it: GitHub → Actions → "Build deploy package" → Run workflow (or push to the `release` branch).
+# Download the artifact "leo325k-deploy" → upload the zip to cPanel (see docs/06_DEPLOY_KAILASH_CPANEL.md).
+name: Build deploy package
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [release]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies (Linux binaries for Prisma and sharp)
+        run: npm ci
+
+      - name: Generate Prisma client (includes rhel engines from binaryTargets)
+        run: npx prisma generate
+
+      - name: Lint, type-check, unit tests
+        run: |
+          npm run lint
+          npm run typecheck
+          npm test --if-present
+
+      - name: Build (Next.js standalone)
+        env:
+          NEXT_TELEMETRY_DISABLED: 1
+        run: npm run build
+
+      - name: Assemble package
+        run: |
+          cp -r .next/static .next/standalone/.next/static
+          cp -r public .next/standalone/public
+          ls .next/standalone/node_modules/.prisma/client/ | grep -i rhel || (echo "Prisma rhel engine missing" && exit 1)
+          mkdir -p deploy
+          cp -r .next app.js package.json prisma deploy/
+          cd deploy && zip -qr ../leo325k-deploy.zip .
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: leo325k-deploy
+          path: leo325k-deploy.zip
+          retention-days: 14

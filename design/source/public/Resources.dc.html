@@ -1,0 +1,181 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Resources — Leo District Council 325 K</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&amp;family=Public+Sans:wght@400;500;600;700&amp;display=swap">
+<style>
+body{margin:0}
+a{color:#1B3A4B}a:hover{color:#244D63}
+button{font-family:inherit;cursor:pointer}
+input{font-family:inherit}
+input:focus{outline:3px solid #FCCC0A;outline-offset:1px}
+.menu-btn{display:none}
+@media (max-width:1100px){.nav-desk{display:none !important}.menu-btn{display:flex !important}}
+@media (max-width:600px){h1{font-size:40px !important}h2{font-size:28px !important}section{padding-top:48px !important;padding-bottom:48px !important}.cta-desk{display:none !important}}
+</style>
+</helmet>
+<div style="font-family: 'Public Sans', sans-serif; color: #14213D; background: #FFFFFF; min-height: 100%">
+
+<dc-import name="SiteHeader" active="resources" hint-size="100%,280px"></dc-import>
+
+<section style="background: #1B3A4B; color: #FFFFFF; padding: 56px 24px 64px">
+<div style="max-width: 1240px; margin: 0 auto; display: flex; flex-direction: column; gap: 24px">
+<div style="display: flex; flex-direction: column; gap: 12px; max-width: 700px">
+<span style="font-size: 14px; color: #B9C5DC"><a href="Main.dc.html" style="color: #B9C5DC">Home</a> / Resources</span>
+<h1 style="margin: 0; font-family: 'Lato', sans-serif; font-weight: 800; font-size: 56px; line-height: 1.05">Resources for Leos</h1>
+<p style="margin: 0; font-size: 18px; line-height: 1.6; color: #C9D3E6">Official forms, templates, logos and guides for running your club — all in one place, free to download.</p>
+</div>
+<div style="display: flex; flex-wrap: wrap; gap: 12px; align-items: center">
+<label for="res-search" style="position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0)">Search resources</label>
+<input id="res-search" type="search" placeholder="Search forms, templates, guides…" value="{{q}}" onChange="{{onSearch}}" style="flex: 1 1 420px; min-width: 0; max-width: 640px; height: 54px; box-sizing: border-box; border-radius: 12px; border: 1px solid #3F6A80; background: #FFFFFF; color: #14213D; padding: 0 18px; font-size: 16px">
+</div>
+</div>
+</section>
+
+<section style="padding: 64px 24px 24px">
+<div style="max-width: 1240px; margin: 0 auto; display: flex; flex-direction: column; gap: 24px">
+<div style="display: flex; flex-direction: column; gap: 8px">
+<span style="font-size: 14px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: #8A6100">Start here</span>
+<h2 style="margin: 0; font-family: 'Lato', sans-serif; font-weight: 700; font-size: 34px; color: #1B3A4B">Essentials for every club</h2>
+</div>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px">
+<sc-for list="{{essentials}}" as="e" hint-placeholder-count="3">
+<a href="#download" style="text-decoration: none; background: #1B3A4B; color: #FFFFFF; border-radius: 20px; padding: 26px; display: flex; flex-direction: column; gap: 12px">
+<span style="align-self: flex-start; font-size: 12px; font-weight: 800; letter-spacing: 0.5px; padding: 5px 10px; border-radius: 8px; background: #FCCC0A; color: #1B3A4B">{{e.type}}</span>
+<span style="font-family: 'Lato', sans-serif; font-size: 22px; font-weight: 700; line-height: 1.25">{{e.title}}</span>
+<span style="font-size: 15px; line-height: 1.55; color: #C9D3E6">{{e.desc}}</span>
+<span style="font-size: 15px; font-weight: 700; color: #FCCC0A">Download →</span>
+</a>
+</sc-for>
+</div>
+</div>
+</section>
+
+<section style="padding: 48px 24px 88px">
+<div style="max-width: 1240px; margin: 0 auto; display: flex; flex-wrap: wrap; gap: 40px; align-items: flex-start">
+<nav aria-label="Resource categories" style="flex: 1 1 240px; min-width: 0; display: flex; flex-direction: column; gap: 6px">
+<span style="font-size: 13px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: #8A6100; padding: 0 0 8px 4px">Categories</span>
+<sc-for list="{{cats}}" as="c" hint-placeholder-count="6">
+<button type="button" onClick="{{c.pick}}" aria-pressed="{{c.pressed}}" style="min-height: 46px; display: flex; justify-content: space-between; align-items: center; gap: 12px; text-align: left; padding: 10px 14px; border-radius: 12px; border: none; font-size: 15px; font-weight: 700; background: {{c.bg}}; color: {{c.fg}}"><span>{{c.label}}</span><span style="font-size: 13px; font-weight: 700; opacity: 0.8">{{c.n}}</span></button>
+</sc-for>
+</nav>
+<div style="flex: 999 1 640px; min-width: 0; display: flex; flex-direction: column; gap: 14px">
+<span style="font-size: 15px; font-weight: 600; color: #4A5568">{{count}} resources · {{catLabel}}</span>
+<sc-for list="{{shown}}" as="r" hint-placeholder-count="6">
+<article style="border: 1px solid #E1E6EF; border-radius: 16px; padding: 18px 20px; display: flex; flex-wrap: wrap; gap: 16px; align-items: center">
+<span style="flex: 0 0 52px; height: 52px; border-radius: 12px; background: {{r.tbg}}; color: {{r.tfg}}; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 800; letter-spacing: 0.5px">{{r.type}}</span>
+<div style="flex: 1 1 280px; min-width: 0; display: flex; flex-direction: column; gap: 4px">
+<h3 style="margin: 0; font-size: 17px; font-weight: 700; color: #1B3A4B">{{r.title}}</h3>
+<span style="font-size: 14px; line-height: 1.5; color: #4A5568">{{r.desc}}</span>
+<span style="font-size: 13px; color: #4A5568">{{r.cat}} · {{r.meta}}</span>
+</div>
+<sc-if value="{{r.avail}}" hint-placeholder-val="{{ true }}"><a href="#download" style="flex: 0 0 auto; min-height: 44px; box-sizing: border-box; display: flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 700; padding: 10px 16px; border: 1px solid #C9D3E6; border-radius: 10px; text-decoration: none"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="{{r.icon}}"></path></svg>{{r.action}}</a></sc-if>
+<sc-if value="{{r.soon}}" hint-placeholder-val="{{ false }}"><span style="flex: 0 0 auto; display: inline-flex; align-items: center; min-height: 44px; box-sizing: border-box; padding: 0 16px; border-radius: 10px; background: #F4F6FA; color: #4A5568; font-size: 14px; font-weight: 700">Coming soon</span></sc-if>
+</article>
+</sc-for>
+<sc-if value="{{empty}}" hint-placeholder-val="{{ false }}">
+<div style="background: #F4F6FA; border-radius: 18px; padding: 36px; text-align: center; display: flex; flex-direction: column; gap: 10px; align-items: center">
+<span style="font-size: 18px; font-weight: 700; color: #1B3A4B">Nothing matches your search</span>
+<span style="font-size: 15px; color: #4A5568">Try different words, or ask the district office for the document.</span>
+<button type="button" onClick="{{reset}}" style="margin-top: 6px; min-height: 44px; padding: 10px 18px; border-radius: 10px; border: none; background: #1B3A4B; color: #FFFFFF; font-size: 15px; font-weight: 700">Show all resources</button>
+</div>
+</sc-if>
+</div>
+</div>
+</section>
+
+<section style="background: #F4F6FA; padding: 72px 24px">
+<div style="max-width: 1240px; margin: 0 auto; display: flex; flex-wrap: wrap; gap: 24px">
+<div style="flex: 1 1 360px; min-width: 0; background: #FFFFFF; border: 1px solid #E1E6EF; border-radius: 20px; padding: 32px; display: flex; flex-direction: column; gap: 12px">
+<span style="font-family: 'Lato', sans-serif; font-size: 26px; font-weight: 700; color: #1B3A4B">Can’t find a document?</span>
+<span style="font-size: 16px; line-height: 1.6; color: #4A5568">Email the district office and we’ll send it, or add it here if other clubs need it too.</span>
+<a href="mailto:[official-district-email]" style="align-self: flex-start; color: #1B3A4B; background: #FCCC0A; text-decoration: none; font-size: 15px; font-weight: 700; padding: 13px 20px; border-radius: 12px">Request a document</a>
+</div>
+<div style="flex: 1 1 360px; min-width: 0; background: #1B3A4B; color: #FFFFFF; border-radius: 20px; padding: 32px; display: flex; flex-direction: column; gap: 12px">
+<span style="font-family: 'Lato', sans-serif; font-size: 26px; font-weight: 700">Using the Leo logo correctly</span>
+<span style="font-size: 16px; line-height: 1.6; color: #C9D3E6">Use only the official files from this page. Don’t stretch, recolor or redraw the emblem; keep clear space around it.</span>
+<a href="#brand" style="align-self: flex-start; color: #FFFFFF; font-size: 15px; font-weight: 700">See brand guidelines →</a>
+</div>
+</div>
+</section>
+
+<dc-import name="SiteFooter" hint-size="100%,420px"></dc-import>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":3266}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { cat: 'All', q: '' };
+  }
+  renderVals() {
+    const DL = 'M12 3v12m0 0l-5-5m5 5l5-5M4 21h16';
+    const EXT = 'M14 4h6v6M20 4l-9 9M18 14v6H4V6h6';
+    const types = {
+      PDF: { tbg: '#FBE4E1', tfg: '#8A1F11' },
+      DOCX: { tbg: '#E1EAFB', tfg: '#1D5C80' },
+      ZIP: { tbg: '#FBEFD3', tfg: '#6B4B00' },
+      LINK: { tbg: '#E7ECF4', tfg: '#1B3A4B' }
+    };
+    const all = [
+      { cat: 'Forms', type: 'DOCX', title: 'Leo Club Charter Application', desc: 'Application to charter a new Leo club, signed by the sponsoring Lions club.', meta: '[size] · Updated [date]' },
+      { cat: 'Forms', type: 'DOCX', title: 'New Member Registration Form', desc: 'Details for adding new Leos to your club roster.', meta: '[size] · Updated [date]' },
+      { cat: 'Forms', type: 'DOCX', title: 'Club Officers Report Form', desc: 'Report your newly elected club officers for the Leo Year.', meta: '[size] · Updated [date]' },
+      { cat: 'Club Administration', type: 'DOCX', title: 'Monthly Club Report Template', desc: 'Standard monthly report format for club secretaries.', meta: '[size] · Updated [date]' },
+      { cat: 'Club Administration', type: 'PDF', title: 'Club Secretary & Treasurer Handbook', desc: 'Record keeping, minutes, dues and simple accounts for club officers.', meta: '[size] · Updated [date]' },
+      { cat: 'Club Administration', type: 'DOCX', title: 'Meeting Minutes Template', desc: 'Ready-to-use format for recording club meetings.', meta: '[size] · Updated [date]' },
+      { cat: 'District Documents', type: 'PDF', title: 'District Constitution & By-laws', desc: 'Official rules governing Leo District Council 325 K.', meta: 'Being prepared', soon: true },
+      { cat: 'District Documents', type: 'PDF', title: 'District Policy & Code of Conduct', desc: 'Expected conduct for Leos, officers and district programs.', meta: 'Being prepared', soon: true },
+      { cat: 'Brand & Logos', type: 'ZIP', title: 'Official Leo Logo Pack', desc: 'Emblem files in PNG and SVG, in color, white and black versions.', meta: '[size] · Updated [date]' },
+      { cat: 'Brand & Logos', type: 'DOCX', title: 'District Letterhead Template', desc: 'Official letterhead for district and club correspondence.', meta: '[size] · Updated [date]' },
+      { cat: 'Brand & Logos', type: 'DOCX', title: 'Certificate of Appreciation Template', desc: 'Editable certificate for recognizing members and partners.', meta: '[size] · Updated [date]' },
+      { cat: 'Training & Guides', type: 'PDF', title: 'New Leo Orientation Guide', desc: 'What every new member should know about the Leo program.', meta: '[size] · Updated [date]' },
+      { cat: 'Training & Guides', type: 'PDF', title: 'Club President’s Leadership Guide', desc: 'Planning the year, running meetings and leading your team.', meta: 'Being prepared', soon: true },
+      { cat: 'Official Links', type: 'LINK', title: 'Leo Club Program — Lions Clubs International', desc: 'Global Leo resources, awards and program information.', meta: 'External website' },
+      { cat: 'Official Links', type: 'LINK', title: 'Leo Multiple District 325, Nepal', desc: 'Our multiple district’s official page.', meta: 'External website' }
+    ];
+    const res = all.filter((r) => !r.soon).map((r) => Object.assign({}, r, { meta: r.type === 'LINK' ? r.meta : r.type + ' file' }));
+    const order = ['All', 'Forms', 'Club Administration', 'Brand & Logos', 'Training & Guides', 'Official Links'];
+    const { cat, q } = this.state;
+    const ql = q.trim().toLowerCase();
+    const match = (r) => !ql || (r.title + ' ' + r.desc).toLowerCase().indexOf(ql) !== -1;
+    const shown = res.filter((r) => (cat === 'All' || r.cat === cat) && match(r)).map((r) => Object.assign({}, r, types[r.type], {
+      avail: !r.soon,
+      soon: !!r.soon,
+      action: r.type === 'LINK' ? 'Visit' : 'Download',
+      icon: r.type === 'LINK' ? EXT : DL
+    }));
+    return {
+      q: q,
+      onSearch: (e) => this.setState({ q: e.target.value }),
+      reset: () => this.setState({ cat: 'All', q: '' }),
+      shown: shown,
+      count: shown.length,
+      empty: shown.length === 0,
+      catLabel: cat === 'All' ? 'All categories' : cat,
+      cats: order.map((c) => ({
+        label: c === 'All' ? 'All resources' : c,
+        n: c === 'All' ? res.filter(match).length : res.filter((r) => r.cat === c && match(r)).length,
+        pressed: c === cat ? 'true' : 'false',
+        bg: c === cat ? '#1B3A4B' : '#F4F6FA',
+        fg: c === cat ? '#FFFFFF' : '#14213D',
+        pick: () => this.setState({ cat: c })
+      })),
+      essentials: [
+        { type: 'ZIP', title: 'Official Leo Logo Pack', desc: 'Correct emblem files for banners, posts and documents.' },
+        { type: 'DOCX', title: 'Monthly Club Report Template', desc: 'The one report every club secretary needs each month.' },
+        { type: 'PDF', title: 'New Leo Orientation Guide', desc: 'Share with every new member on day one.' }
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>

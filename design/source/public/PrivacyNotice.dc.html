@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Privacy notice — Leo District Council 325 K</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&amp;family=Public+Sans:wght@400;500;600;700&amp;display=swap">
+<style>
+body{margin:0}
+a{color:#1B3A4B}a:hover{color:#244D63}
+@media (max-width:600px){h1{font-size:40px !important}section{padding-top:40px !important;padding-bottom:40px !important}}
+</style>
+</helmet>
+<div style="font-family: 'Public Sans', sans-serif; color: #14213D; background: #FFFFFF; min-height: 100%">
+
+<dc-import name="SiteHeader" active="none" hint-size="100%,280px"></dc-import>
+
+<section style="background: #1B3A4B; color: #FFFFFF; padding: 56px 24px 64px">
+<div style="max-width: 860px; margin: 0 auto; display: flex; flex-direction: column; gap: 14px">
+<span style="font-size: 14px; color: #B9C5DC"><a href="Main.dc.html" style="color: #B9C5DC">Home</a> / Privacy notice</span>
+<h1 style="margin: 0; font-family: 'Lato', sans-serif; font-weight: 900; font-size: 52px; line-height: 1.05">Privacy notice</h1>
+<p style="margin: 0; font-size: 18px; line-height: 1.65; color: #C9D3E6">How Leo District Council 325 K, Nepal uses the personal details shared through this website. Last updated: [date of launch].</p>
+</div>
+</section>
+
+<section style="padding: 64px 24px 88px">
+<div style="max-width: 860px; margin: 0 auto; display: flex; flex-direction: column; gap: 36px">
+
+<div style="display: flex; flex-direction: column; gap: 10px">
+<h2 style="margin: 0; font-family: 'Lato', sans-serif; font-weight: 900; font-size: 26px; color: #1B3A4B">In short</h2>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px">
+<sc-for list="{{short}}" as="s" hint-placeholder-count="3">
+<div style="background: #F4F6FA; border-radius: 16px; padding: 18px; display: flex; flex-direction: column; gap: 6px">
+<span style="font-size: 16px; font-weight: 700; color: #1B3A4B">{{s.t}}</span>
+<span style="font-size: 14px; line-height: 1.55; color: #4A5568">{{s.d}}</span>
+</div>
+</sc-for>
+</div>
+</div>
+
+<sc-for list="{{parts}}" as="p" hint-placeholder-count="6">
+<div style="display: flex; flex-direction: column; gap: 8px; padding-top: 24px; border-top: 1px solid #E1E6EF">
+<h2 style="margin: 0; font-family: 'Lato', sans-serif; font-weight: 900; font-size: 22px; color: #1B3A4B">{{p.t}}</h2>
+<p style="margin: 0; font-size: 16px; line-height: 1.7; color: #14213D">{{p.d}}</p>
+</div>
+</sc-for>
+
+<div style="background: #1B3A4B; color: #FFFFFF; border-radius: 18px; padding: 24px; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 16px">
+<div style="display: flex; flex-direction: column; gap: 4px; max-width: 560px">
+<span style="font-family: 'Lato', sans-serif; font-weight: 900; font-size: 20px">Questions or a request about your data?</span>
+<span style="font-size: 15px; line-height: 1.6; color: #C9D3E6">Write to [official district email]. We reply within [2 working days].</span>
+</div>
+<a href="Contact.dc.html" style="color: #1B3A4B; background: #FCCC0A; text-decoration: none; font-size: 15px; font-weight: 800; padding: 13px 20px; border-radius: 12px">Contact us</a>
+</div>
+
+</div>
+</section>
+
+<dc-import name="SiteFooter" hint-size="100%,420px"></dc-import>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":2316}}'>
+class Component extends DCLogic {
+  renderVals() {
+    return {
+      short: [
+        { t: 'We collect little', d: 'Only what you type into the contact form, and the public profile details of district and club officers.' },
+        { t: 'We never sell or share it', d: 'Your details are used only to reply to you. Messages about a club are forwarded to that club.' },
+        { t: 'You stay in control', d: 'Ask us at any time to see, correct or delete your details.' }
+      ],
+      parts: [
+        { t: 'Who we are', d: 'Leo District Council 325 K, Nepal is the youth program of Lions Clubs International District 325 K. We run this website and decide how the details collected through it are used.' },
+        { t: 'What we collect', d: 'Contact form: your name, email address, optional phone number, topic and message. Leadership and club pages: the name, title, photo and home club of officers, published only after the person agrees. Officers’ phone numbers and membership IDs are kept for district records and are never shown on the website.' },
+        { t: 'Why we use it', d: 'To reply to your message, to forward club enquiries to the right Leo club, and to show who leads the district and its clubs each Leo Year.' },
+        { t: 'How long we keep it', d: 'Contact-form messages are deleted after 12 months. When an officer’s term ends, their private details are removed; the public archive keeps only name, title, photo and home club.' },
+        { t: 'Security and cookies', d: 'The website uses HTTPS. Only signed-in district admins can see messages and private details. We use only the cookies needed for the site to work and Cloudflare Turnstile to block spam on the contact form. [If analytics is added at launch, name it here.]' },
+        { t: 'Your rights', d: 'You can ask to see the details we hold about you, correct them, or have them deleted. We follow the spirit of Nepal’s Individual Privacy Act, 2075 (2018).' }
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>

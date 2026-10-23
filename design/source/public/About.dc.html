@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>About — Leo District Council 325 K</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&amp;family=Public+Sans:wght@400;500;600;700&amp;display=swap">
+<style>
+body{margin:0}
+a{color:#1B3A4B}a:hover{color:#244D63}
+.menu-btn{display:none}
+@media (max-width:1100px){.nav-desk{display:none !important}.menu-btn{display:flex !important}}
+@media (max-width:600px){h1{font-size:40px !important}h2{font-size:28px !important}section{padding-top:48px !important;padding-bottom:48px !important}.cta-desk{display:none !important}}
+</style>
+</helmet>
+<div style="font-family: 'Public Sans', sans-serif; color: #14213D; background: #FFFFFF; min-height: 100%">
+
+<dc-import name="SiteHeader" active="about" hint-size="100%,280px"></dc-import>
+
+<section style="background: #1B3A4B; color: #FFFFFF; padding: 56px 24px 72px">
+<div style="max-width: 1240px; margin: 0 auto; display: flex; flex-wrap: wrap; gap: 48px; align-items: center">
+<div style="flex: 1 1 560px; min-width: 0; display: flex; flex-direction: column; gap: 14px">
+<span style="font-size: 14px; color: #B9C5DC"><a href="Main.dc.html" style="color: #B9C5DC">Home</a> / About</span>
+<h1 style="margin: 0; font-family: 'Lato', sans-serif; font-weight: 800; font-size: 56px; line-height: 1.05">Youth leading service across Nepal</h1>
+<p style="margin: 0; font-size: 18px; line-height: 1.65; color: #C9D3E6; max-width: 620px">Leo District Council 325 K brings together Leo clubs in our district — young volunteers who plan and run real service projects while building leadership skills for life.</p>
+</div>
+<div style="flex: 1 1 400px; min-width: 0; height: 320px; border-radius: 22px; background: #244D63; border: 1px solid #3F6A80; display: flex; align-items: center; justify-content: center; color: #9FB0D0; font-size: 15px; font-weight: 600; text-align: center; padding: 16px">[Photo: Leos from several clubs together]</div>
+</div>
+</section>
+
+<section style="padding: 88px 24px">
+<div style="max-width: 1240px; margin: 0 auto; display: flex; flex-wrap: wrap; gap: 56px; align-items: flex-start">
+<div style="flex: 1 1 560px; min-width: 0; display: flex; flex-direction: column; gap: 18px">
+<span style="font-size: 14px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: #8A6100">Who we are</span>
+<h2 style="margin: 0; font-family: 'Lato', sans-serif; font-weight: 700; font-size: 40px; color: #1B3A4B; line-height: 1.15">The Leo program in District 325 K</h2>
+<p style="margin: 0; font-size: 17px; line-height: 1.7; color: #4A5568">Leo clubs are the youth program of Lions Clubs International. Every Leo club is sponsored by a Lions club, and Leos plan, lead and deliver their own service projects with Lion mentors beside them.</p>
+<p style="margin: 0; font-size: 17px; line-height: 1.7; color: #4A5568">The District Council coordinates clubs across our district: it sets the year’s service focus, trains club officers, organizes district-wide programs and recognizes outstanding Leos. [Add 1–2 sentences on the district’s history, to be confirmed by the council.]</p>
+</div>
+<div style="flex: 1 1 360px; min-width: 0; background: #F4F6FA; border-radius: 20px; padding: 28px; display: flex; flex-direction: column; gap: 18px">
+<span style="font-size: 17px; font-weight: 700; color: #1B3A4B">District at a glance</span>
+<sc-for list="{{facts}}" as="f" hint-placeholder-count="4">
+<div style="display: flex; justify-content: space-between; gap: 16px; padding-bottom: 14px; border-bottom: 1px solid #DCE3EE">
+<span style="font-size: 15px; color: #4A5568">{{f.k}}</span>
+<span style="font-size: 15px; font-weight: 700; color: #1B3A4B; text-align: right">{{f.v}}</span>
+</div>
+</sc-for>
+</div>
+</div>
+</section>
+
+<section style="background: #1B3A4B; color: #FFFFFF; padding: 88px 24px">
+<div style="max-width: 1240px; margin: 0 auto; display: flex; flex-direction: column; gap: 40px">
+<div style="display: flex; flex-direction: column; gap: 8px; max-width: 680px">
+<span style="font-size: 14px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: #FCCC0A">Our motto</span>
+<h2 style="margin: 0; font-family: 'Lato', sans-serif; font-weight: 700; font-size: 40px">Leadership. Experience. Opportunity.</h2>
+</div>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px">
+<sc-for list="{{pillars}}" as="p" hint-placeholder-count="3">
+<div style="background: #244D63; border: 1px solid #3F6A80; border-radius: 20px; padding: 28px; display: flex; flex-direction: column; gap: 12px">
+<span style="font-family: 'Lato', sans-serif; font-weight: 800; font-size: 56px; line-height: 1; color: #FCCC0A">{{p.l}}</span>
+<span style="font-family: 'Lato', sans-serif; font-size: 24px; font-weight: 700">{{p.t}}</span>
+<span style="font-size: 15px; line-height: 1.6; color: #C9D3E6">{{p.d}}</span>
+</div>
+</sc-for>
+</div>
+</div>
+</section>
+
+<section style="padding: 88px 24px">
+<div style="max-width: 1240px; margin: 0 auto; display: flex; flex-direction: column; gap: 40px">
+<div style="display: flex; flex-direction: column; gap: 8px">
+<span style="font-size: 14px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: #8A6100">Mission &amp; vision</span>
+<h2 style="margin: 0; font-family: 'Lato', sans-serif; font-weight: 700; font-size: 40px; color: #1B3A4B">What guides us</h2>
+</div>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 24px">
+<div style="border: 1px solid #E1E6EF; border-radius: 20px; padding: 32px; display: flex; flex-direction: column; gap: 12px">
+<span style="font-size: 13px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: #8A6100">Mission</span>
+<p style="margin: 0; font-family: 'Lato', sans-serif; font-size: 24px; font-weight: 500; line-height: 1.4; color: #1B3A4B">[District mission statement — one or two sentences approved by the council.]</p>
+</div>
+<div style="border: 1px solid #E1E6EF; border-radius: 20px; padding: 32px; display: flex; flex-direction: column; gap: 12px">
+<span style="font-size: 13px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: #8A6100">Vision</span>
+<p style="margin: 0; font-family: 'Lato', sans-serif; font-size: 24px; font-weight: 500; line-height: 1.4; color: #1B3A4B">[District vision statement — where the district wants to be.]</p>
+</div>
+</div>
+</div>
+</section>
+
+<section style="background: #F4F6FA; padding: 88px 24px">
+<div style="max-width: 1240px; margin: 0 auto; display: flex; flex-direction: column; gap: 40px">
+<div style="display: flex; flex-direction: column; gap: 8px">
+<span style="font-size: 14px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: #8A6100">Where we serve</span>
+<h2 style="margin: 0; font-family: 'Lato', sans-serif; font-weight: 700; font-size: 40px; color: #1B3A4B">Our service focus</h2>
+</div>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px">
+<sc-for list="{{focus}}" as="c" hint-placeholder-count="6">
+<div style="background: #FFFFFF; border: 1px solid #E1E6EF; border-radius: 18px; padding: 24px; display: flex; flex-direction: column; gap: 10px">
+<span style="width: 44px; height: 44px; border-radius: 12px; background: #FBEFD3; color: #6B4B00; display: flex; align-items: center; justify-content: center; font-family: 'Lato', sans-serif; font-weight: 800; font-size: 17px">{{c.n}}</span>
+<span style="font-size: 19px; font-weight: 700; color: #1B3A4B">{{c.t}}</span>
+<span style="font-size: 15px; line-height: 1.55; color: #4A5568">{{c.d}}</span>
+</div>
+</sc-for>
+</div>
+</div>
+</section>
+
+<section style="padding: 88px 24px">
+<div style="max-width: 1240px; margin: 0 auto; display: flex; flex-direction: column; gap: 40px">
+<div style="display: flex; flex-direction: column; gap: 8px">
+<span style="font-size: 14px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: #8A6100">How we are organized</span>
+<h2 style="margin: 0; font-family: 'Lato', sans-serif; font-weight: 700; font-size: 40px; color: #1B3A4B">From district to club</h2>
+</div>
+<div style="display: flex; flex-wrap: wrap; gap: 16px; align-items: stretch">
+<sc-for list="{{levels}}" as="v" hint-placeholder-count="4">
+<div style="flex: 1 1 220px; min-width: 0; border-radius: 18px; padding: 24px; background: {{v.bg}}; color: {{v.fg}}; display: flex; flex-direction: column; gap: 8px">
+<span style="font-size: 13px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: {{v.ac}}">Level {{v.n}}</span>
+<span style="font-family: 'Lato', sans-serif; font-size: 22px; font-weight: 700">{{v.t}}</span>
+<span style="font-size: 15px; line-height: 1.55">{{v.d}}</span>
+</div>
+</sc-for>
+</div>
+<div style="display: flex; flex-wrap: wrap; gap: 24px">
+<div style="flex: 1 1 320px; border: 1px solid #E1E6EF; border-radius: 18px; padding: 24px; display: flex; flex-direction: column; gap: 8px">
+<span style="font-size: 19px; font-weight: 700; color: #1B3A4B">Alpha Leo clubs</span>
+<span style="font-size: 15px; line-height: 1.55; color: #4A5568">For younger members, usually ages 12–18, focused on personal growth and community service.</span>
+</div>
+<div style="flex: 1 1 320px; border: 1px solid #E1E6EF; border-radius: 18px; padding: 24px; display: flex; flex-direction: column; gap: 8px">
+<span style="font-size: 19px; font-weight: 700; color: #1B3A4B">Omega Leo clubs</span>
+<span style="font-size: 15px; line-height: 1.55; color: #4A5568">For young adults, usually ages 18–30, focused on professional and leadership development through service.</span>
+</div>
+</div>
+</div>
+</section>
+
+<section style="padding: 0 24px 88px">
+<div style="max-width: 1240px; margin: 0 auto; background: #FCCC0A; border-radius: 24px; padding: 48px; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 24px">
+<div style="display: flex; flex-direction: column; gap: 8px; max-width: 640px">
+<span style="font-family: 'Lato', sans-serif; font-size: 34px; font-weight: 800; color: #1B3A4B; line-height: 1.15">Ready to become a Leo?</span>
+<span style="font-size: 17px; line-height: 1.6; color: #2A2410">Find a club near you, or talk to us about starting a new one in your community.</span>
+</div>
+<div style="display: flex; flex-wrap: wrap; gap: 12px">
+<a href="Clubs.dc.html" style="color: #FFFFFF; background: #1B3A4B; text-decoration: none; font-size: 16px; font-weight: 700; padding: 15px 24px; border-radius: 12px">Find a club</a>
+<a href="Contact.dc.html" style="color: #1B3A4B; text-decoration: none; font-size: 16px; font-weight: 700; padding: 14px 24px; border: 2px solid #1B3A4B; border-radius: 12px">Contact the district</a>
+</div>
+</div>
+</section>
+
+<dc-import name="SiteFooter" hint-size="100%,420px"></dc-import>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":4161}}'>
+class Component extends DCLogic {
+  renderVals() {
+    return {
+      facts: [
+        { k: 'Sponsored by', v: 'Lions Clubs International District 325 K' },
+        { k: 'Part of', v: 'Leo Multiple District 325, Nepal' },
+        { k: 'Leo Year', v: 'July – June' },
+        { k: 'Member ages', v: '12 – 30' }
+      ],
+      pillars: [
+        { l: 'L', t: 'Leadership', d: 'Leos run their own clubs and projects, learning to plan, lead teams and make decisions.' },
+        { l: 'E', t: 'Experience', d: 'Hands-on service gives real experience in teamwork, organizing and working with communities.' },
+        { l: 'O', t: 'Opportunity', d: 'Leos gain opportunities to grow, connect across Nepal and the world, and give back.' }
+      ],
+      focus: [
+        { n: '01', t: 'Blood donation', d: 'District-wide drives coordinated with hospitals and blood banks.' },
+        { n: '02', t: 'Environment', d: 'Tree plantation, clean-up campaigns and awareness programs.' },
+        { n: '03', t: 'Education', d: 'Support for schools, students and learning materials.' },
+        { n: '04', t: 'Health & vision', d: 'Health camps, eye screening and awareness programs.' },
+        { n: '05', t: 'Hunger relief', d: 'Food distribution and support for families in need.' },
+        { n: '06', t: 'Youth leadership', d: 'Trainings, seminars and leadership camps for Leos.' }
+      ],
+      levels: [
+        { n: '1', t: 'District Council', d: 'Sets the year’s focus, coordinates programs and trains officers.', bg: '#1B3A4B', fg: '#FFFFFF', ac: '#FCCC0A' },
+        { n: '2', t: 'Regions', d: 'Region coordinators support clubs in their area.', bg: '#244D63', fg: '#FFFFFF', ac: '#FCCC0A' },
+        { n: '3', t: 'Leo clubs', d: 'Each club elects its officers and runs its own service projects.', bg: '#FBEFD3', fg: '#2A2410', ac: '#6B4B00' },
+        { n: '4', t: 'Lion sponsors', d: 'Every Leo club is guided by a sponsoring Lions club and a Leo advisor.', bg: '#F4F6FA', fg: '#14213D', ac: '#8A6100' }
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>

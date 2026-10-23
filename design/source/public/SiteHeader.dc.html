@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Site header — Leo District Council 325 K</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&amp;family=Public+Sans:wght@400;500;600;700;800&amp;display=swap">
+<style>
+body{margin:0}
+.hd-theme{display:flex}
+@media (max-width:1300px){.hd-theme{display:none !important}}
+@media (max-width:1100px){.hd-curtain{display:none !important}.hd-mtn{display:none !important}}
+@media (max-width:900px){.hd-leo{display:none !important}}
+@media (max-width:860px){.hd-badges{display:none !important}}
+</style>
+</helmet>
+<header style="width: 100%; font-family: 'Public Sans', sans-serif; color: #FFFFFF">
+
+<sc-if value="{{full}}" hint-placeholder-val="{{ true }}">
+<div style="position: relative; height: 216px; overflow: hidden; background: linear-gradient(90deg, #244D63 0%, #244D63 45%, #762B94 55%, #762B94 100%)">
+<div style="position: relative; max-width: 1440px; height: 216px; margin: 0 auto; background: linear-gradient(90deg, #1A4359 0%, #1A4359 42%, #234569 46%, #2E4A7A 50%, #3D4581 54%, #4B3F86 58%, #5B3889 62%, #6A3290 66%, #712E92 70%, #762B94 74%, #762B94 100%); overflow: hidden">
+<svg viewBox="0 0 700 216" width="700" height="216" aria-hidden="true" style="position: absolute; left: 0; top: 0">
+<path d="M640 0 C614 100 574 190 484 216 H700 V0 Z" fill="#1A4359"></path>
+<path d="M0 0 H585 C560 100 520 190 430 216 H0 Z" fill="#244D63"></path>
+<path d="M625 0 C600 100 560 190 470 216" fill="none" stroke="#2B6F96" stroke-width="22"></path>
+<path d="M598 0 C573 100 533 190 443 216" fill="none" stroke="#FCCC0A" stroke-width="14"></path>
+</svg>
+<img class="hd-curtain" src="/brand/curtain-left.png" alt="" aria-hidden="true" style="position: absolute; left: 0; top: 0; height: 216px; width: auto">
+<img class="hd-curtain" src="/brand/curtain-right.png" alt="" aria-hidden="true" style="position: absolute; right: 0; top: 0; height: 216px; width: auto">
+<img class="hd-mtn" src="/brand/mountains-flag.png" alt="" aria-hidden="true" style="position: absolute; right: 76px; top: 46px; height: 76px; width: auto">
+
+<a href="Main.dc.html" style="position: absolute; left: 90px; top: 0; bottom: 0; display: flex; align-items: center; gap: 10px; text-decoration: none; color: #FFFFFF">
+<img src="/brand/lions-international-logo.png" alt="Lions International" style="height: 76px; width: auto">
+<span style="display: flex; flex-direction: column; gap: 1px">
+<span style="font-family: 'Lato', sans-serif; font-weight: 900; font-size: 25px; line-height: 1.15">Lions International</span>
+<span style="font-family: 'Lato', sans-serif; font-weight: 400; font-size: 19px; line-height: 1.25">Leo District Council 325 K, Nepal</span>
+<span style="font-family: 'Lato', sans-serif; font-weight: 400; font-size: 19px; line-height: 1.25">LY 2026–27</span>
+</span>
+<img class="hd-leo" src="/brand/leo-emblem.png" alt="LEO emblem" style="height: 70px; width: auto; margin-left: 4px; filter: brightness(1.9)">
+</a>
+
+<div class="hd-theme" style="position: absolute; left: 610px; right: 447px; top: 110px; flex-direction: column; gap: 9px">
+<span style="padding-left: 26px; font-family: 'Lato', sans-serif; font-weight: 900; font-size: 21px; letter-spacing: 0.4px">“LEADING WITH PURPOSE”</span>
+<span style="display: block; background: linear-gradient(90deg, rgba(71, 64, 102, 0) 0%, #7E5E43 9%, #C28B19 22%, #CB8D10 100%); text-shadow: 0 1px 2px rgba(0, 0, 0, 0.35); padding: 5px 0 5px 26px; font-family: 'Lato', sans-serif; font-weight: 900; font-size: 22px; letter-spacing: 0.3px; white-space: nowrap">EXECUTION WITH EXCELLENCE</span>
+</div>
+
+<div class="hd-badges" role="list" aria-label="LY 2026–27 theme badges" style="position: absolute; right: 76px; bottom: 10px; display: flex; align-items: flex-end; gap: 6px">
+<sc-for list="{{badges}}" as="b" hint-placeholder-count="5">
+<img role="listitem" src="{{b.src}}" alt="{{b.alt}}" style="height: 74px; width: auto; filter: drop-shadow(0 3px 6px rgba(0, 0, 0, 0.3))">
+</sc-for>
+</div>
+</div>
+</div>
+
+<div style="background: #1B3A4B; border-top: 4px solid #F6961E">
+<div style="max-width: 1440px; margin: 0 auto; padding: 0 40px; box-sizing: border-box; min-height: 60px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px">
+<nav aria-label="Main" style="display: flex; flex-wrap: wrap; gap: 4px">
+<sc-for list="{{nav}}" as="n" hint-placeholder-count="5">
+<a href="{{n.href}}" aria-current="{{n.current}}" style="color: {{n.fg}}; text-decoration: none; font-size: 15px; font-weight: 700; letter-spacing: 0.3px; padding: 18px 14px 15px; border-bottom: 3px solid {{n.line}}">{{n.label}}</a>
+</sc-for>
+</nav>
+<a href="Contact.dc.html" aria-current="{{contactCurrent}}" style="display: inline-flex; align-items: center; gap: 8px; color: #1B3A4B; background: #FCCC0A; text-decoration: none; font-size: 15px; font-weight: 800; padding: 10px 18px 10px 16px; border-radius: 10px; box-shadow: {{contactRing}}"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"></rect><path d="M3 7l9 6 9-6"></path></svg>Contact us</a>
+</div>
+</div>
+</sc-if>
+<sc-if value="{{compact}}" hint-placeholder-val="{{ false }}">
+<div style="position: sticky; top: 0; z-index: 50; background: linear-gradient(90deg, #1B3A4B 0%, #1B3A4B 40%, #2E4A7A 62%, #4B3F86 80%, #762B94 100%); border-bottom: 4px solid #F6961E">
+<div style="max-width: 1440px; margin: 0 auto; padding: 0 32px; box-sizing: border-box; min-height: 72px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px 24px">
+<a href="Main.dc.html" style="display: flex; align-items: center; gap: 10px; text-decoration: none; color: #FFFFFF">
+<img src="/brand/lions-international-logo.png" alt="Lions International" style="height: 46px; width: auto">
+<span style="display: flex; flex-direction: column">
+<span style="font-family: 'Lato', sans-serif; font-weight: 900; font-size: 16px; line-height: 1.2">Leo District Council 325 K, Nepal</span>
+<span style="font-family: 'Lato', sans-serif; font-weight: 700; font-size: 12px; letter-spacing: 0.5px; color: #FCCC0A">LY 2026–27 · EXECUTION WITH EXCELLENCE</span>
+</span>
+</a>
+<nav aria-label="Main" style="display: flex; flex-wrap: wrap; gap: 2px">
+<sc-for list="{{nav}}" as="n" hint-placeholder-count="5">
+<a href="{{n.href}}" aria-current="{{n.current}}" style="color: {{n.fg}}; text-decoration: none; font-size: 15px; font-weight: 700; padding: 24px 12px 21px; border-bottom: 3px solid {{n.line}}">{{n.label}}</a>
+</sc-for>
+</nav>
+<a href="Contact.dc.html" aria-current="{{contactCurrent}}" style="display: inline-flex; align-items: center; gap: 8px; color: #1B3A4B; background: #FCCC0A; text-decoration: none; font-size: 15px; font-weight: 800; padding: 10px 18px 10px 16px; border-radius: 10px; box-shadow: {{contactRing}}"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"></rect><path d="M3 7l9 6 9-6"></path></svg>Contact us</a>
+</div>
+</div>
+</sc-if>
+</header>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"active":{"editor":"enum","options":["home","about","leadership","clubs","resources","contact"],"default":"home"},"variant":{"editor":"enum","options":["full","compact"],"default":"full"},"$preview":{"width":1440,"height":280}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const active = this.props.active ?? 'home';
+    const compact = (this.props.variant ?? 'full') === 'compact';
+    const items = [['home', 'Home', 'Main.dc.html'], ['about', 'About', 'About.dc.html'], ['leadership', 'Leadership', 'Leadership.dc.html'], ['clubs', 'Clubs', 'Clubs.dc.html'], ['resources', 'Resources', 'Resources.dc.html']];
+    return {
+      full: !compact,
+      compact: compact,
+      nav: items.map((i) => ({
+        label: i[1], href: i[2],
+        current: i[0] === active ? 'page' : 'false',
+        fg: i[0] === active ? '#FFFFFF' : '#CFE0E8',
+        line: i[0] === active ? '#FCCC0A' : 'transparent'
+      })),
+      badges: [
+        { src: '/brand/badge-1-we-serve.png', alt: 'We Serve — Rooted in Service' },
+        { src: '/brand/badge-2-lions-325k-round.png', alt: 'Lions District 325 K: Leading with Purpose, LY 2026–27 (round)' },
+        { src: '/brand/badge-3-lions-325k-quatrefoil.png', alt: 'Lions District 325 K: Leading with Purpose, LY 2026–27 (quatrefoil)' },
+        { src: '/brand/badge-4-leo-md325.png', alt: 'Leo Multiple District 325, Nepal: Every Step Inspires' },
+        { src: '/brand/badge-5-ldc325k-execution.png', alt: 'Leo District Council 325 K: Execution with Excellence' }
+      ],
+      contactCurrent: active === 'contact' ? 'page' : 'false',
+      contactRing: active === 'contact' ? '0 0 0 2px #1B3A4B, 0 0 0 4px #FCCC0A' : 'none'
+    };
+  }
+}
+</script>
+</body>
+</html>

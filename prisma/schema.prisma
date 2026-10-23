@@ -1,0 +1,298 @@
+// Leo District Council 325 K — Phase 1 schema (starter). MySQL / MariaDB on cPanel.
+// Check the server's OpenSSL version (`openssl version` in cPanel Terminal) and keep the matching binary target.
+
+generator client {
+  provider      = "prisma-client-js"
+  binaryTargets = ["native", "rhel-openssl-1.1.x", "rhel-openssl-3.0.x", "debian-openssl-3.0.x"]
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+// ───────────── Admin users & security ─────────────
+
+enum Role {
+  ADMIN
+  EDITOR
+}
+
+model User {
+  id             String          @id @default(cuid())
+  email          String          @unique
+  name           String
+  title          String?
+  role           Role            @default(EDITOR)
+  passwordHash   String?
+  active         Boolean         @default(true)
+  invitedAt      DateTime?
+  lastLoginAt    DateTime?
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
+  sessions       Session[]
+  trustedDevices TrustedDevice[]
+  loginCodes     LoginCode[]
+  activities     ActivityLog[]
+}
+
+model Session {
+  id         String   @id @default(cuid())
+  tokenHash  String   @unique
+  userId     String
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt  DateTime @default(now())
+  lastSeenAt DateTime @default(now())
+  expiresAt  DateTime
+  ipHash     String?
+  userAgent  String?  @db.VarChar(255)
+
+  @@index([userId])
+}
+
+model TrustedDevice {
+  id        String   @id @default(cuid())
+  tokenHash String   @unique
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  label     String?  @db.VarChar(255)
+  createdAt DateTime @default(now())
+  expiresAt DateTime
+}
+
+enum CodePurpose {
+  NEW_DEVICE
+  PASSWORD_RESET
+  INVITE
+}
+
+model LoginCode {
+  id        String      @id @default(cuid())
+  userId    String
+  user      User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  purpose   CodePurpose
+  codeHash  String
+  attempts  Int         @default(0)
+  expiresAt DateTime
+  usedAt    DateTime?
+  createdAt DateTime    @default(now())
+
+  @@index([userId, purpose])
+}
+
+model RateLimit {
+  key       String   @id // e.g. "login:<emailHash>:<ipHash>"
+  count     Int      @default(0)
+  resetAt   DateTime
+}
+
+model ActivityLog {
+  id        String   @id @default(cuid())
+  userId    String?
+  user      User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+  action    String   // e.g. "person.create", "leoYear.publish"
+  entity    String?
+  entityId  String?
+  summary   String   @db.VarChar(500)
+  createdAt DateTime @default(now())
+
+  @@index([createdAt])
+}
+
+// ───────────── Leadership ─────────────
+
+model LeoYear {
+  id          String     @id @default(cuid())
+  label       String     @unique // "2026–27"
+  startsOn    DateTime   // 1 July
+  endsOn      DateTime   // 30 June
+  isCurrent   Boolean    @default(false)
+  published   Boolean    @default(false)
+  publishedAt DateTime?
+  positions   Position[]
+  theme       ThemeSet?
+}
+
+model Person {
+  id            String        @id @default(cuid())
+  prefix        String        // Leo, Leo-Lion, Lion, MJF Lion, PMJF Lion
+  fullName      String
+  photo         String?       // media path
+  homeClubId    String?
+  homeClub      Club?         @relation("HomeClub", fields: [homeClubId], references: [id], onDelete: SetNull)
+  homeLionsClub String?       // free text for Lions members
+  membershipId  String?       // ADMIN ONLY — never public
+  phone         String?
+  phonePublic   Boolean       @default(false)
+  email         String?
+  emailPublic   Boolean       @default(false)
+  consentAt     DateTime?     // person agreed to public profile
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+  positions     Position[]
+  awards        Award[]
+  journey       JourneyStep[]
+  pride         PrideEntry[]
+
+  @@index([fullName])
+}
+
+enum TeamGroup {
+  DISTRICT_LEO   // District Leo PVST
+  DISTRICT_LION  // District Lion PVST
+  CLUB           // Club PVST
+}
+
+model Position {
+  id        String    @id @default(cuid())
+  personId  String
+  person    Person    @relation(fields: [personId], references: [id], onDelete: Cascade)
+  leoYearId String
+  leoYear   LeoYear   @relation(fields: [leoYearId], references: [id], onDelete: Cascade)
+  group     TeamGroup
+  role      String    // "District President", "Club Secretary"...
+  clubId    String?   // required when group = CLUB
+  club      Club?     @relation(fields: [clubId], references: [id], onDelete: Cascade)
+  message   String?   @db.Text // District President's message for the year
+  sortOrder Int       @default(0)
+
+  @@unique([leoYearId, group, role, clubId])
+  @@index([personId])
+}
+
+model Award {
+  id       String @id @default(cuid())
+  personId String
+  person   Person @relation(fields: [personId], references: [id], onDelete: Cascade)
+  title    String
+  year     String // "2024/25"
+  sort     Int    @default(0)
+}
+
+model JourneyStep {
+  id           String @id @default(cuid())
+  personId     String
+  person       Person @relation(fields: [personId], references: [id], onDelete: Cascade)
+  year         String
+  role         String
+  organisation String
+  sort         Int    @default(0)
+}
+
+model PrideEntry {
+  id         String  @id @default(cuid())
+  personId   String
+  person     Person  @relation(fields: [personId], references: [id], onDelete: Cascade)
+  honorTitle String  // "DP 325 K 2022–23"
+  note       String? @db.Text
+  sort       Int     @default(0)
+}
+
+// ───────────── Clubs ─────────────
+
+model Region {
+  id    String @id @default(cuid())
+  name  String @unique
+  sort  Int    @default(0)
+  clubs Club[]
+}
+
+enum ClubType {
+  ALPHA
+  OMEGA
+}
+
+model Club {
+  id           String     @id @default(cuid())
+  name         String     @unique
+  slug         String     @unique
+  regionId     String?
+  region       Region?    @relation(fields: [regionId], references: [id], onDelete: SetNull)
+  city         String
+  type         ClubType?
+  charterYear  Int?
+  sponsor      String?    // sponsoring Lions club
+  email        String?
+  logo         String?
+  visible      Boolean    @default(true)
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+  positions    Position[]
+  members      Person[]   @relation("HomeClub")
+  messages     Message[]
+}
+
+// ───────────── Resources ─────────────
+
+enum ResourceKind {
+  FILE
+  LINK
+}
+
+model ResourceCategory {
+  id        String     @id @default(cuid())
+  name      String     @unique
+  sort      Int        @default(0)
+  resources Resource[]
+}
+
+model Resource {
+  id          String           @id @default(cuid())
+  title       String
+  description String           @db.VarChar(500)
+  categoryId  String
+  category    ResourceCategory @relation(fields: [categoryId], references: [id])
+  kind        ResourceKind
+  filePath    String?
+  fileType    String?          // PDF, DOCX, ZIP
+  fileSize    Int?
+  url         String?
+  featured    Boolean          @default(false)
+  published   Boolean          @default(false) // only published rows appear publicly
+  sort        Int              @default(0)
+  updatedAt   DateTime         @updatedAt
+  createdAt   DateTime         @default(now())
+}
+
+// ───────────── Site content & theme ─────────────
+
+model SiteSetting {
+  key       String   @id // "home", "about", "contact", "social", "branding"
+  value     Json
+  updatedAt DateTime @updatedAt
+}
+
+model ThemeSet {
+  id        String  @id @default(cuid())
+  leoYearId String  @unique
+  leoYear   LeoYear @relation(fields: [leoYearId], references: [id], onDelete: Cascade)
+  line1     String  // “LEADING WITH PURPOSE”
+  line2     String  // EXECUTION WITH EXCELLENCE
+  banner    Json    // { curtainLeft, curtainRight, mountains, background }
+  badges    Json    // [{ src, alt }] up to 5
+}
+
+// ───────────── Contact ─────────────
+
+enum MessageStatus {
+  NEW
+  REPLIED
+  ARCHIVED
+}
+
+model Message {
+  id        String        @id @default(cuid())
+  name      String
+  email     String
+  phone     String?
+  topic     String
+  clubId    String?
+  club      Club?         @relation(fields: [clubId], references: [id], onDelete: SetNull)
+  body      String        @db.Text
+  status    MessageStatus @default(NEW)
+  consentAt DateTime
+  ipHash    String?
+  createdAt DateTime      @default(now())
+
+  @@index([status, createdAt])
+}
