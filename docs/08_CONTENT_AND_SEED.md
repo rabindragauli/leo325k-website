@@ -44,8 +44,13 @@ Seed files as **records without uploaded files** (resources start `published=fal
 ## Sprint 2 static data (`src/data/*`)
 Typed records shaped like the Prisma models; `src/server/queries/public.ts` returns public fields only. Sprint 2 publishes the 12
 “ready” resources (buttons disabled until a file/URL is attached) so the page matches the design; the **Sprint 3 seed follows the rule
-above** (files `published=false` until a real file is attached, except the 2 external links). People have no `consentAt` yet: Sprint 3
-must decide how existing officers' consent is recorded before profiles are filtered on it.
+above** (files `published=false` until a real file is attached, except the 2 external links).
+
+## Consent rule for officers' phone/email (Sprint 3 / admin)
+- Existing officers start **private**: `phonePublic = false`, `emailPublic = false` in the seed.
+- Turning a phone or email public toggle **on** requires a **“consent obtained on” date** (`Person.consentAt`). With no date, the
+  toggle cannot be turned on (validated on the server, not only in the UI).
+- Saving the date/toggle writes an **Activity log** entry with the admin's name, the person and the date.
 
 ## Old URLs → 301 redirects
 `/leo.html` → `/leadership` · `/index.html` → `/` · (Rabindra to send the rest of the old `public_html` file list)
