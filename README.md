@@ -34,9 +34,33 @@ Node.js 22 LTS (see `.node-version`), npm 10, Git. From Sprint 3: XAMPP MariaDB 
 ```powershell
 npm install                       # also generates the Prisma client
 Copy-Item .env.example .env       # then edit .env (never commit it)
-npm run dev                       # http://localhost:3000
 ```
-In your local `.env`, **delete the `NODE_ENV` line** (Next.js sets it), and set `APP_URL=http://localhost:3000` and your local `DATABASE_URL`.
+In your local `.env`, **delete the `NODE_ENV` line** (Next.js sets it), and set `APP_URL=http://localhost:3000`,
+`DATABASE_URL` and `SHADOW_DATABASE_URL` (see below).
+
+### Local database (XAMPP MariaDB)
+1. XAMPP Control Panel → start **MySQL** (port 3306).
+2. Create the databases and the user once, in `C:\xampp\mysql\bin\mysql.exe -u root -p` (choose your own password):
+   ```sql
+   CREATE DATABASE leo325k CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+   CREATE DATABASE leo325k_shadow CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+   CREATE USER 'leo325k_dev'@'localhost' IDENTIFIED BY '<your-local-password>';
+   GRANT ALL PRIVILEGES ON leo325k.* TO 'leo325k_dev'@'localhost';
+   GRANT ALL PRIVILEGES ON leo325k_shadow.* TO 'leo325k_dev'@'localhost';
+   FLUSH PRIVILEGES;
+   ```
+3. In `.env`:
+   `DATABASE_URL="mysql://leo325k_dev:<your-local-password>@127.0.0.1:3306/leo325k"` and
+   `SHADOW_DATABASE_URL="mysql://leo325k_dev:<your-local-password>@127.0.0.1:3306/leo325k_shadow"`.
+4. Create the tables and load the seed, then start the app:
+   ```powershell
+   npx prisma migrate status         # checks the connection (prints no password)
+   npm run db:migrate                # applies prisma/migrations
+   npm run db:seed                   # loads src/data (safe to run again)
+   npm run dev                       # http://localhost:3000
+   ```
+Inspect the data with `npx prisma studio`. Public pages read the database at request time (cached), so `npm run build`
+works without it; `npm run dev`, `npm start` and the e2e tests need MySQL running.
 
 ### Environment variables
 All keys are in `.env.example`: `APP_URL`, `DATABASE_URL`, `ADMIN_SLUG`, `SESSION_SECRET`, `SMTP_HOST/PORT/USER/PASS`, `MAIL_FROM`,
@@ -50,9 +74,11 @@ sharp cannot load on the server. Real values live only in `.env` (local) and cPa
 | `npm run build` | Production build → `.next/standalone` |
 | `npm start` | Serve the production build locally |
 | `npm run lint` / `typecheck` / `format` | ESLint · `tsc --noEmit` · Prettier |
-| `npm test` | Vitest unit tests (`tests/unit`) |
-| `npm run test:e2e` | Playwright smoke tests (`tests/e2e`; first run `npx playwright install chromium`) |
-| `npm run db:migrate` / `db:seed` | Prisma migrate dev · seed (`prisma/seed.ts`) |
+| `npm test` | Vitest unit tests (`tests/unit`, no database; this is what CI runs) |
+| `npm run test:db` | Query privacy/visibility tests against the local seeded DB (`tests/db`, rolled back; local only) |
+| `npm run test:e2e` | Playwright smoke tests against the seeded DB (`tests/e2e`; first run `npx playwright install chromium`) |
+| `npm run db:migrate` / `db:seed` | Prisma migrate dev · seed (`prisma/seed.ts`, create-only, repeatable) |
+| `npm run db:reset` | Drop, re-migrate and re-seed the **local** DB; refuses unless `DATABASE_URL` is localhost/127.0.0.1 |
 | `npm run package:deploy` | Copy static files + `public` into `.next/standalone` for a local test of `server.js` |
 
 ### Deploy

@@ -22,7 +22,11 @@ jobs:
       - name: Install dependencies (Linux binaries for Prisma and sharp)
         run: npm ci
 
+      # CI has no database. The build never queries it (pages read the DB at request time); the
+      # obvious dummy URL only satisfies env("DATABASE_URL") in schema.prisma.
       - name: Generate Prisma client (includes rhel engines from binaryTargets)
+        env:
+          DATABASE_URL: mysql://dummy:dummy@127.0.0.1:3306/dummy
         run: npx prisma generate
 
       - name: Lint, type-check, unit tests
@@ -34,6 +38,7 @@ jobs:
       - name: Build (Next.js standalone)
         env:
           NEXT_TELEMETRY_DISABLED: 1
+          DATABASE_URL: mysql://dummy:dummy@127.0.0.1:3306/dummy
         run: npm run build
 
       - name: Assemble package

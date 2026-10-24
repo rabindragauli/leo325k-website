@@ -88,6 +88,14 @@ Edit club.
 9. If something cannot work on cPanel shared hosting, **stop and tell me** with the reason and options (the fallback plan is PHP/Laravel
    on the same hosting).
 
+## Restraint rules (before writing code)
+1. Does it need to exist? If not, skip it.
+2. Platform/standard library does it? Use it.
+3. Already-installed dependency does it? Use it.
+4. Prefer the smallest change that works; no speculative helpers or abstractions.
+5. Tests: cover behaviour and risks, not every width/permutation.
+6. Never trade away validation, security, accessibility or error handling.
+
 ## 4. Environment variables (create `.env.example`; real values only in cPanel)
 
 See `starter/.env.example`. Includes `DATABASE_URL`, `APP_URL`, `ADMIN_SLUG`, `SESSION_SECRET`, `SMTP_*`, `MAIL_FROM`,

@@ -43,13 +43,18 @@ Seed files as **records without uploaded files** (resources start `published=fal
 |---|---|---|
 | “What we collect”: *“Officers’ phone numbers and membership IDs are kept for district records and are never shown on the website.”* → *“Officers’ personal phone numbers and email addresses are shown only if the officer chooses to make them public. Membership IDs are kept for district records and are never shown on the website.”* (matches the phone/email public toggles) | Privacy | **Needs council approval** |
 
-## Sprint 2 static data (`src/data/*`)
-Typed records shaped like the Prisma models; `src/server/queries/public.ts` returns public fields only. Sprint 2 publishes the 12
-“ready” resources (buttons disabled until a file/URL is attached) so the page matches the design; the **Sprint 3 seed follows the rule
-above** (files `published=false` until a real file is attached, except the 2 external links).
+## Seed source (`src/data/*` → `prisma/seed.ts`)
+Typed records shaped like the Prisma models, loaded by `prisma/seed.ts` (create-only upserts on their ids, so `npm run db:seed`
+can run any number of times). Since Sprint 3 the pages read MySQL, not these files. Resources follow the rule above: only the
+2 official links are published, so `/resources` shows the “Official Links” category only and the “Essentials” section stays
+hidden until featured files are uploaded (`featuredOrder`: Logo Pack, Monthly Club Report, Orientation Guide).
+
+Seeded rows: LeoYear 2 · Person 13 · Position 9 · Award 8 · JourneyStep 9 · PrideEntry 5 · Region 0 · Club 4 ·
+ResourceCategory 6 · Resource 15 (2 published). `SiteSetting`, `ThemeSet` and `User` are not seeded (site text stays in
+`src/data/content.ts` until the Site content screen in Sprint 5; the first admin comes from `npm run admin:create`).
 
 ## Consent rule for officers' phone/email (Sprint 3 / admin)
-- Existing officers start **private**: `phonePublic = false`, `emailPublic = false` in the seed.
+- Existing officers start **private**: `phonePublic = false`, `emailPublic = false`, `consentAt = null` in the seed.
 - Turning a phone or email public toggle **on** requires a **“consent obtained on” date** (`Person.consentAt`). With no date, the
   toggle cannot be turned on (validated on the server, not only in the UI).
 - Saving the date/toggle writes an **Activity log** entry with the admin's name, the person and the date.

@@ -26,6 +26,11 @@
    | Environment variables | all keys from `.env.example` (staging DB, staging UPLOAD_DIR) | production values |
    Note the “Enter to the virtual environment” command cPanel shows, e.g.
    `source /home/<user>/nodevenv/leo325k-app/22/bin/activate && cd /home/<user>/leo325k-app`
+9. **Run one Node process per app.** Public content is cached in the app's memory, and stored `/leadership/<year>` pages are
+   kept by that process; `revalidateTag` after an admin publish (Sprint 5) only clears the process that handled it. Confirm
+   with Kailash support that Passenger runs the app as a single process. (With more than one, other processes catch up
+   within 15 minutes, the cache safety net.)
+10. **Database URL**: add `?connection_limit=5` to `DATABASE_URL` (see `.env.example`) so Prisma stays within shared-hosting limits.
 
 ## B. Build the deploy package — GitHub Actions (recommended, no WSL needed)
 1. Push the code to the private GitHub repo.
@@ -56,6 +61,8 @@ If the Prisma engine is missing from the bundle, add `outputFileTracingIncludes:
    First time only: run the seed (`node prisma/seed.js` compiled, or `npm run db:seed` locally against a DB dump you then import via phpMyAdmin).
 3. **Create the first admin**: `node scripts/create-admin.js` (prompts for email; sends invite code).
 4. **Restart**: Setup Node.js App → Restart (or `mkdir -p tmp && touch tmp/restart.txt`).
+   Every deploy (and restart) clears the content cache and the stored ISR pages; the first visits afterwards read the
+   database again and refill them. No action needed.
 5. **Check**: open the site, `~/leo325k-staging/stderr.log` for errors, cPanel → Resource Usage for CPU/RAM faults.
 
 ## D. Scheduled jobs (cPanel → Cron Jobs)

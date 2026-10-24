@@ -43,9 +43,22 @@ Estimates assume part-time work (evenings + Saturdays) with an AI agent doing mo
 
 ## Sprint 3 — Database + seed + live data
 - Prisma schema (`docs/03_DATA_MODEL.md`), first migration, `prisma/seed.ts` with data from `docs/08_CONTENT_AND_SEED.md`
-- Data-access layer `src/server/queries/*` (server-only); public pages read from DB; ISR with `revalidatePath` tags
+- Data-access layer `src/server/queries/*` (server-only); public pages read from DB; cached by tag (`use cache` + `cacheTag`, refreshed with `revalidateTag`)
 - Prisma `binaryTargets` include the server's OpenSSL target (see deploy doc)
 - **Done when:** pages render from MySQL locally; seed is repeatable (`npm run db:seed` twice = same result).
+- **Decisions (done):**
+  - Prisma 6.19.3 (pinned). MariaDB 10.4 compatible: no Json columns (JSON stored as text, validated with Zod). Seed is
+    create-only upserts on the stable `src/data` ids; `npm run db:reset` (localhost only) reloads it.
+  - Queries: `loaders.ts` (Prisma, explicit `select`, uncached, takes the client) → `public.ts` (`'use cache'` +
+    `cacheLife("publicContent")` + `cacheTag`) → `views.ts` (pure view builders). Never `membershipId`; phone/email only when
+    the public toggle is on **and** `consentAt` is set.
+  - Rendering: `npm run build` needs **no database**. Home, Leadership, Clubs, Resources and Contact call `connection()` and
+    render per request from the in-memory cache as complete HTML (`instant = false`, works without JavaScript).
+    `/leadership/[year]` lists only a placeholder param, renders each year on first visit and stores it (ISR,
+    `ensureStatic = "navigation"`), so 404 and the 307 for the current year are real statuses. The proxy only rejects
+    malformed/implausible years (2015 … current year + 2) without touching the database.
+  - Tags: `leadership` (Leo Years, positions, people, President extras, Our Pride), `clubs` (also refreshes
+    `leadership`, which shows home club names), `resources`. Safety net: content revalidates every 15 minutes.
 
 ## Sprint 4 — Auth, roles, sessions
 - Login page at `/${ADMIN_SLUG}/login`; middleware rewrites `/${ADMIN_SLUG}/*` → internal `/admin/*`; direct `/admin` → 404
@@ -60,8 +73,10 @@ Estimates assume part-time work (evenings + Saturdays) with an AI agent doing mo
 - Layout: compact theme bar + sidebar (`design/screens/admin/*`), mobile layouts for Dashboard/Messages/Leadership/Edit club
 - Screens in `docs/04_ROUTES_AND_SCREENS.md`: Dashboard, Leadership (+ publish year), Person editor (find-first flow), Our Pride, Clubs + Edit club (+ Club PVST), Resources, Site content (incl. Leo Year theme uploads), Users & roles, Activity log
 - Uploads: type + size checks (images ≤ 5 MB, docs ≤ 20 MB, allow-list of MIME/extension), random file names, sharp resize (portraits 800×800, logos 1000 px, hero 1920 px) → WebP
-- Every mutation: Zod → `requireRole` → Prisma → `ActivityLog` entry → `revalidatePath`
-- Leadership pages are prerendered (`/leadership`, `/leadership/[year]` via `generateStaticParams`): publishing/archiving a Leo Year or editing a team must call `revalidatePath("/leadership")` and `revalidatePath("/leadership/[year]", "page")`, and Home (`/`) for the coming-soon card
+- Every mutation: Zod → `requireRole` → Prisma → `ActivityLog` entry → `revalidateTag` (see the `TODO Sprint 5` in `src/server/queries/public.ts`)
+- Public content is cached by tag (Sprint 3): leadership/people/Our Pride edits and publishing/archiving a Leo Year → `revalidateTag("leadership")` (also refreshes Home's coming-soon card and the stored `/leadership/<year>` pages); clubs/regions → `revalidateTag("clubs")`; resources → `revalidateTag("resources")`
+- **Consent rule, enforced on the server** (docs/08): a phone/email public toggle can only be turned on when `Person.consentAt` ("consent obtained on") is set; saving writes an Activity log entry. The public queries already hide phone/email without a consent date (Sprint 3)
+- Position uniqueness: `@@unique([leoYearId, group, role, clubId])` does not stop a duplicate district role (`clubId` is NULL), so the person editor must check it
 - After publishing a new Leo Year, its URL must stop returning a cached 404 (check that `revalidateTag('leadership')` clears it)
 - **Done when:** a non-technical Editor can publish the 2026–27 team, add a club with logo, upload a PDF, and see it live within a minute.
 
@@ -77,6 +92,7 @@ Estimates assume part-time work (evenings + Saturdays) with an AI agent doing mo
 - Security headers + CSP (allow Turnstile only), HSTS, `X-Content-Type-Options`, `Referrer-Policy`, `Permissions-Policy`, `frame-ancestors 'none'`
 - SEO: per-page `metadata`, Open Graph image, `sitemap.ts`, `robots.ts` (disallow admin), canonical URLs, 301s for old `.html` URLs
 - Performance: `next/image` sizes, lazy images, font subsetting, no layout shift; check PageSpeed mobile
+- Home/About mobile perf 85–87 on a busy machine; re-measure on an idle machine, then fonts + shared JS chunk.
 - Accessibility pass; Playwright smoke tests (all public pages 200, login flow, contact validation)
 - `npm audit` clean of high/critical
 - **Done when:** every item in the Plan v2 pre-launch checklist that is code-related is ticked.
