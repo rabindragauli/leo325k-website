@@ -1,7 +1,7 @@
 // Resource library (design/source/public/Resources.dc.html, `all` array).
-// Sprint 2: the 12 "ready" items are published so the page matches the design; no file or URL is
-// attached yet, so their buttons render as disabled placeholders. The 3 "being prepared" items stay
-// unpublished. Sprint 3 seed follows docs/08 instead (files unpublished until a file is uploaded).
+// Seed rule (docs/08): files stay unpublished until a real file is uploaded; only the 2 official
+// links are published (their URLs are an open placeholder, so the buttons render disabled).
+// "Essentials" order (featuredOrder) follows the design: Logo Pack, Monthly Report, Orientation Guide.
 import type { Resource, ResourceCategory } from "./types";
 
 export const resourceCategories: ResourceCategory[] = [
@@ -20,23 +20,23 @@ type Row = [
   type: "PDF" | "DOCX" | "ZIP" | "LINK",
   title: string,
   description: string,
-  options?: { soon?: boolean; featured?: boolean },
+  options?: { featuredOrder?: number },
 ];
 
 const rows: Row[] = [
   ["Forms", "DOCX", "Leo Club Charter Application", "Application to charter a new Leo club, signed by the sponsoring Lions club."],
   ["Forms", "DOCX", "New Member Registration Form", "Details for adding new Leos to your club roster."],
   ["Forms", "DOCX", "Club Officers Report Form", "Report your newly elected club officers for the Leo Year."],
-  ["Club Administration", "DOCX", "Monthly Club Report Template", "Standard monthly report format for club secretaries.", { featured: true }],
+  ["Club Administration", "DOCX", "Monthly Club Report Template", "Standard monthly report format for club secretaries.", { featuredOrder: 2 }],
   ["Club Administration", "PDF", "Club Secretary & Treasurer Handbook", "Record keeping, minutes, dues and simple accounts for club officers."],
   ["Club Administration", "DOCX", "Meeting Minutes Template", "Ready-to-use format for recording club meetings."],
-  ["District Documents", "PDF", "District Constitution & By-laws", "Official rules governing Leo District Council 325 K.", { soon: true }],
-  ["District Documents", "PDF", "District Policy & Code of Conduct", "Expected conduct for Leos, officers and district programs.", { soon: true }],
-  ["Brand & Logos", "ZIP", "Official Leo Logo Pack", "Emblem files in PNG and SVG, in color, white and black versions.", { featured: true }],
+  ["District Documents", "PDF", "District Constitution & By-laws", "Official rules governing Leo District Council 325 K."],
+  ["District Documents", "PDF", "District Policy & Code of Conduct", "Expected conduct for Leos, officers and district programs."],
+  ["Brand & Logos", "ZIP", "Official Leo Logo Pack", "Emblem files in PNG and SVG, in color, white and black versions.", { featuredOrder: 1 }],
   ["Brand & Logos", "DOCX", "District Letterhead Template", "Official letterhead for district and club correspondence."],
   ["Brand & Logos", "DOCX", "Certificate of Appreciation Template", "Editable certificate for recognizing members and partners."],
-  ["Training & Guides", "PDF", "New Leo Orientation Guide", "What every new member should know about the Leo program.", { featured: true }],
-  ["Training & Guides", "PDF", "Club President’s Leadership Guide", "Planning the year, running meetings and leading your team.", { soon: true }],
+  ["Training & Guides", "PDF", "New Leo Orientation Guide", "What every new member should know about the Leo program.", { featuredOrder: 3 }],
+  ["Training & Guides", "PDF", "Club President’s Leadership Guide", "Planning the year, running meetings and leading your team."],
   ["Official Links", "LINK", "Leo Club Program — Lions Clubs International", "Global Leo resources, awards and program information."],
   ["Official Links", "LINK", "Leo Multiple District 325, Nepal", "Our multiple district’s official page."],
 ];
@@ -51,7 +51,8 @@ export const resources: Resource[] = rows.map(([category, type, title, descripti
   fileType: type === "LINK" ? null : type,
   fileSize: null,
   url: null,
-  featured: options.featured ?? false,
-  published: !options.soon,
+  featured: options.featuredOrder !== undefined,
+  featuredOrder: options.featuredOrder ?? null,
+  published: type === "LINK",
   sort,
 }));

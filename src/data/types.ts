@@ -90,6 +90,7 @@ export type Resource = {
   fileSize: number | null;
   url: string | null;
   featured: boolean;
+  featuredOrder: number | null; // "Essentials for every club" order
   published: boolean;
   sort: number;
 };

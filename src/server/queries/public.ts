@@ -305,6 +305,10 @@ export async function getResourceLibrary(
       .filter((c) => items.some((i) => i.category === c.name))
       .map((c) => c.name),
     items,
-    featured: items.filter((i) => i.featured),
+    // "Essentials for every club": featured published items in featuredOrder (docs/03)
+    featured: db.resources
+      .filter((r) => r.published && r.featured)
+      .sort((a, b) => (a.featuredOrder ?? Infinity) - (b.featuredOrder ?? Infinity))
+      .flatMap((r) => items.find((i) => i.id === r.id) ?? []),
   };
 }

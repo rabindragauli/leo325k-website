@@ -143,26 +143,26 @@ describe("getClubs", () => {
 });
 
 describe("getResourceLibrary", () => {
-  it("shows only published resources and hides empty categories", async () => {
+  it("publishes only the 2 official links until files are uploaded (docs/08)", async () => {
     const lib = await getResourceLibrary();
-    expect(lib.items).toHaveLength(12);
-    expect(lib.items.some((i) => i.title.startsWith("District Constitution"))).toBe(false);
-    expect(lib.categories).toEqual([
-      "Forms",
-      "Club Administration",
-      "Brand & Logos",
-      "Training & Guides",
-      "Official Links",
+    expect(lib.items.map((i) => i.title)).toEqual([
+      "Leo Club Program — Lions Clubs International",
+      "Leo Multiple District 325, Nepal",
     ]);
+    expect(lib.categories).toEqual(["Official Links"]);
+    // Featured items are all files, so there are no essentials yet
+    expect(lib.featured).toEqual([]);
+    // Link URLs are an open placeholder: nothing to link to yet
+    expect(lib.items.every((i) => i.href === null)).toBe(true);
   });
 
-  it("lists the three essentials and leaves unattached items without a link", async () => {
-    const lib = await getResourceLibrary();
+  it("orders essentials by featuredOrder once they are published", async () => {
+    const db = { ...staticSource, resources: staticSource.resources.map((r) => ({ ...r, published: true })) };
+    const lib = await getResourceLibrary(db);
     expect(lib.featured.map((i) => i.title)).toEqual([
-      "Monthly Club Report Template",
       "Official Leo Logo Pack",
+      "Monthly Club Report Template",
       "New Leo Orientation Guide",
     ]);
-    expect(lib.items.every((i) => i.href === null)).toBe(true);
   });
 });

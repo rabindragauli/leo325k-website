@@ -7,9 +7,12 @@ generator client {
 }
 
 datasource db {
-  provider = "mysql"
-  url      = env("DATABASE_URL")
+  provider          = "mysql"
+  url               = env("DATABASE_URL")
+  shadowDatabaseUrl = env("SHADOW_DATABASE_URL") // local `prisma migrate dev` only
 }
+
+// MariaDB 10.4 (XAMPP) compatible: no Json columns; JSON is stored as text and validated with Zod.
 
 // ───────────── Admin users & security ─────────────
 
@@ -81,16 +84,16 @@ model LoginCode {
 }
 
 model RateLimit {
-  key       String   @id // e.g. "login:<emailHash>:<ipHash>"
-  count     Int      @default(0)
-  resetAt   DateTime
+  key     String   @id // e.g. "login:<emailHash>:<ipHash>"
+  count   Int      @default(0)
+  resetAt DateTime
 }
 
 model ActivityLog {
   id        String   @id @default(cuid())
   userId    String?
   user      User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
-  action    String   // e.g. "person.create", "leoYear.publish"
+  action    String // e.g. "person.create", "leoYear.publish"
   entity    String?
   entityId  String?
   summary   String   @db.VarChar(500)
@@ -104,8 +107,8 @@ model ActivityLog {
 model LeoYear {
   id          String     @id @default(cuid())
   label       String     @unique // "2026–27"
-  startsOn    DateTime   // 1 July
-  endsOn      DateTime   // 30 June
+  startsOn    DateTime   @db.Date // 1 July
+  endsOn      DateTime   @db.Date // 30 June
   isCurrent   Boolean    @default(false)
   published   Boolean    @default(false)
   publishedAt DateTime?
@@ -115,18 +118,18 @@ model LeoYear {
 
 model Person {
   id            String        @id @default(cuid())
-  prefix        String        // Leo, Leo-Lion, Lion, MJF Lion, PMJF Lion
+  prefix        String // Leo, Leo-Lion, Lion, MJF Lion, PMJF Lion
   fullName      String
-  photo         String?       // media path
+  photo         String? // media path
   homeClubId    String?
   homeClub      Club?         @relation("HomeClub", fields: [homeClubId], references: [id], onDelete: SetNull)
-  homeLionsClub String?       // free text for Lions members
-  membershipId  String?       // ADMIN ONLY — never public
+  homeLionsClub String? // free text for Lions members
+  membershipId  String? // ADMIN ONLY — never public
   phone         String?
   phonePublic   Boolean       @default(false)
   email         String?
   emailPublic   Boolean       @default(false)
-  consentAt     DateTime?     // person agreed to public profile
+  consentAt     DateTime? // "consent obtained on": required before phone/email can be public (docs/08)
   createdAt     DateTime      @default(now())
   updatedAt     DateTime      @updatedAt
   positions     Position[]
@@ -138,9 +141,9 @@ model Person {
 }
 
 enum TeamGroup {
-  DISTRICT_LEO   // District Leo PVST
-  DISTRICT_LION  // District Lion PVST
-  CLUB           // Club PVST
+  DISTRICT_LEO // District Leo PVST
+  DISTRICT_LION // District Lion PVST
+  CLUB // Club PVST
 }
 
 model Position {
@@ -150,12 +153,14 @@ model Position {
   leoYearId String
   leoYear   LeoYear   @relation(fields: [leoYearId], references: [id], onDelete: Cascade)
   group     TeamGroup
-  role      String    // "District President", "Club Secretary"...
-  clubId    String?   // required when group = CLUB
+  role      String // "District President", "Club Secretary"...
+  clubId    String? // required when group = CLUB
   club      Club?     @relation(fields: [clubId], references: [id], onDelete: Cascade)
   message   String?   @db.Text // District President's message for the year
   sortOrder Int       @default(0)
 
+  // clubId is NULL for district roles and MySQL allows repeated NULLs, so this does not stop a
+  // duplicate district role: Sprint 5 validates that in the person editor.
   @@unique([leoYearId, group, role, clubId])
   @@index([personId])
 }
@@ -183,7 +188,7 @@ model PrideEntry {
   id         String  @id @default(cuid())
   personId   String
   person     Person  @relation(fields: [personId], references: [id], onDelete: Cascade)
-  honorTitle String  // "DP 325 K 2022–23"
+  honorTitle String // "DP 325 K 2022–23"
   note       String? @db.Text
   sort       Int     @default(0)
 }
@@ -203,23 +208,23 @@ enum ClubType {
 }
 
 model Club {
-  id           String     @id @default(cuid())
-  name         String     @unique
-  slug         String     @unique
-  regionId     String?
-  region       Region?    @relation(fields: [regionId], references: [id], onDelete: SetNull)
-  city         String
-  type         ClubType?
-  charterYear  Int?
-  sponsor      String?    // sponsoring Lions club
-  email        String?
-  logo         String?
-  visible      Boolean    @default(true)
-  createdAt    DateTime   @default(now())
-  updatedAt    DateTime   @updatedAt
-  positions    Position[]
-  members      Person[]   @relation("HomeClub")
-  messages     Message[]
+  id          String     @id @default(cuid())
+  name        String     @unique
+  slug        String     @unique
+  regionId    String?
+  region      Region?    @relation(fields: [regionId], references: [id], onDelete: SetNull)
+  city        String
+  type        ClubType?
+  charterYear Int?
+  sponsor     String? // sponsoring Lions club
+  email       String?
+  logo        String?
+  visible     Boolean    @default(true)
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+  positions   Position[]
+  members     Person[]   @relation("HomeClub")
+  messages    Message[]
 }
 
 // ───────────── Resources ─────────────
@@ -237,28 +242,29 @@ model ResourceCategory {
 }
 
 model Resource {
-  id          String           @id @default(cuid())
-  title       String
-  description String           @db.VarChar(500)
-  categoryId  String
-  category    ResourceCategory @relation(fields: [categoryId], references: [id])
-  kind        ResourceKind
-  filePath    String?
-  fileType    String?          // PDF, DOCX, ZIP
-  fileSize    Int?
-  url         String?
-  featured    Boolean          @default(false)
-  published   Boolean          @default(false) // only published rows appear publicly
-  sort        Int              @default(0)
-  updatedAt   DateTime         @updatedAt
-  createdAt   DateTime         @default(now())
+  id            String           @id @default(cuid())
+  title         String
+  description   String           @db.VarChar(500)
+  categoryId    String
+  category      ResourceCategory @relation(fields: [categoryId], references: [id])
+  kind          ResourceKind
+  filePath      String?
+  fileType      String? // PDF, DOCX, ZIP
+  fileSize      Int?
+  url           String?
+  featured      Boolean          @default(false)
+  featuredOrder Int? // order of the "Essentials for every club" cards (featured = true, ascending)
+  published     Boolean          @default(false) // only published rows appear publicly
+  sort          Int              @default(0)
+  updatedAt     DateTime         @updatedAt
+  createdAt     DateTime         @default(now())
 }
 
 // ───────────── Site content & theme ─────────────
 
 model SiteSetting {
   key       String   @id // "home", "about", "contact", "social", "branding"
-  value     Json
+  value     String   @db.LongText // JSON text, validated per key with Zod
   updatedAt DateTime @updatedAt
 }
 
@@ -266,10 +272,10 @@ model ThemeSet {
   id        String  @id @default(cuid())
   leoYearId String  @unique
   leoYear   LeoYear @relation(fields: [leoYearId], references: [id], onDelete: Cascade)
-  line1     String  // “LEADING WITH PURPOSE”
-  line2     String  // EXECUTION WITH EXCELLENCE
-  banner    Json    // { curtainLeft, curtainRight, mountains, background }
-  badges    Json    // [{ src, alt }] up to 5
+  line1     String // “LEADING WITH PURPOSE”
+  line2     String // EXECUTION WITH EXCELLENCE
+  banner    String  @db.Text // JSON text: { curtainLeft, curtainRight, mountains, background }
+  badges    String  @db.Text // JSON text: [{ src, alt }] up to 5
 }
 
 // ───────────── Contact ─────────────

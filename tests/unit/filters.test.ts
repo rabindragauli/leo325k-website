@@ -1,6 +1,29 @@
 import { describe, expect, it } from "vitest";
 import { ALL, countByCategory, distinct, filterClubs, filterResources, matchesQuery } from "@/lib/filters";
-import { getClubs, getResourceLibrary } from "@/server/queries/public";
+import { getClubs, type ResourceItem } from "@/server/queries/public";
+
+// Own fixture: independent of which resources are published in the seed data
+const resource = (title: string, description: string, category: string): ResourceItem => ({
+  id: title,
+  title,
+  description,
+  category,
+  kind: "FILE",
+  fileType: "DOCX",
+  fileSize: null,
+  href: null,
+  featured: false,
+});
+
+const categories = ["Forms", "Club Administration", "Brand & Logos", "Official Links"];
+const items: ResourceItem[] = [
+  resource("New Member Registration Form", "Details for adding new Leos.", "Forms"),
+  resource("Club Officers Report Form", "Report your club officers.", "Forms"),
+  resource("Monthly Club Report Template", "Standard monthly report format for club secretaries.", "Club Administration"),
+  resource("Meeting Minutes Template", "Format for recording club meetings.", "Club Administration"),
+  resource("District Letterhead Template", "Official letterhead.", "Brand & Logos"),
+  { ...resource("Leo Multiple District 325, Nepal", "Official page.", "Official Links"), kind: "LINK", fileType: null },
+];
 
 describe("matchesQuery", () => {
   it("is case-insensitive, ignores extra spaces and needs every word", () => {
@@ -32,22 +55,22 @@ describe("filterClubs", () => {
 });
 
 describe("filterResources / countByCategory", () => {
-  it("searches title and description within a category", async () => {
-    const { items, categories } = await getResourceLibrary();
-    expect(filterResources(items, { query: "", category: ALL })).toHaveLength(12);
-    expect(filterResources(items, { query: "", category: "Forms" })).toHaveLength(3);
+  it("searches title and description within a category", () => {
+    expect(filterResources(items, { query: "", category: ALL })).toHaveLength(6);
+    expect(filterResources(items, { query: "", category: "Forms" })).toHaveLength(2);
     expect(filterResources(items, { query: "letterhead", category: ALL }).map((i) => i.title)).toEqual([
       "District Letterhead Template",
     ]);
     // "secretaries" only appears in a description
     expect(filterResources(items, { query: "secretaries", category: ALL })).toHaveLength(1);
 
+    expect(filterResources(items, { query: "template", category: "Forms" })).toHaveLength(0);
+
     expect(countByCategory(items, categories, "template")).toEqual({
-      [ALL]: 4,
+      [ALL]: 3,
       Forms: 0,
       "Club Administration": 2,
-      "Brand & Logos": 2,
-      "Training & Guides": 0,
+      "Brand & Logos": 1,
       "Official Links": 0,
     });
   });
