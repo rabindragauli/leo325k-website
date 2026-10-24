@@ -27,7 +27,7 @@ export default function NotFound() {
             <ButtonLink href="/" size="lg">
               Go to the home page
             </ButtonLink>
-            <ButtonLink href={contactHref} size="lg" variant="outline-dark">
+            <ButtonLink href={`${contactHref}?topic=feedback`} size="lg" variant="outline-dark">
               Tell us about a broken link
             </ButtonLink>
           </div>

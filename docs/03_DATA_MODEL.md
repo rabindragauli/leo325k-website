@@ -10,7 +10,7 @@ Start from `starter/prisma/schema.prisma`. Key ideas:
 | Our Pride | `PrideEntry` | Not tied to a Leo Year. |
 | District President extras | `Position.message`, `Award`, `JourneyStep` | Shown on the Leadership page. |
 | Clubs | `Club` + `Region` | `visible=false` hides from the public directory. Club PVST = `Position` with `group=CLUB` + `clubId`. |
-| Resources | `Resource` + `ResourceCategory` | Public site shows **only `published=true`**; category hidden if it has none. |
+| Resources | `Resource` + `ResourceCategory` | Public site shows **only `published=true`**; category hidden if it has none. **Sprint 3: add `featuredOrder Int?`** — order of the “Essentials for every club” cards (`featured=true`, ascending; design order: Logo Pack, Monthly Club Report Template, New Leo Orientation Guide). Essentials reuse the resource's own `description` (no separate blurb). |
 | Editable site text | `SiteSetting` (JSON per key) | Validate each key's JSON with a Zod schema. |
 | Yearly theme | `ThemeSet` per `LeoYear` | Header reads the current year's theme. |
 | Contact | `Message` | Requires `consentAt`; auto-delete after 12 months. |

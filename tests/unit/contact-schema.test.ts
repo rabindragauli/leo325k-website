@@ -29,6 +29,12 @@ describe("contactSchema", () => {
     });
   });
 
+  it("reports the missing club together with the other errors", () => {
+    expect(Object.keys(errors({ topic: CLUB_TOPIC, name: "", email: "", message: "", consent: false })).sort()).toEqual(
+      ["club", "consent", "email", "message", "name"],
+    );
+  });
+
   it("requires a club for the club topic", () => {
     expect(errors({ ...valid, topic: CLUB_TOPIC })).toHaveProperty("club");
     expect(contactSchema.safeParse({ ...valid, topic: CLUB_TOPIC, club: "baglung-kaligandaki" }).success).toBe(true);

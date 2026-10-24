@@ -68,6 +68,7 @@ Estimates assume part-time work (evenings + Saturdays) with an AI agent doing mo
 - Server action: Zod + Turnstile verify + consent required + rate limit (5 / hour / IP) → save `Message` → email to `CONTACT_INBOX` (club topic includes club name) → success state
 - Admin Messages inbox: filters, mark replied, archive, `mailto:` reply
 - Dashboard “Send a test message” button
+- **TODO (from Sprint 2):** remove the “[Demo — form not connected until Sprint 6]” note and its `data-demo-note` from `src/components/public/ContactForm.tsx` once the server action is connected (and the e2e check that no POST is made)
 - Scheduled cleanup endpoint `/api/cron/daily?key=CRON_SECRET`: delete messages > 12 months, expired codes/sessions
 - **Done when:** a real email arrives in the district inbox from staging; spam test without Turnstile token is rejected.
 

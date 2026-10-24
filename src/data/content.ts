@@ -171,3 +171,41 @@ export const resourcesPage = {
   // "See brand guidelines →" target: not supplied yet (docs/08); the link is hidden while null
   brandGuidelinesUrl: null as string | null,
 };
+
+export const contactPage = {
+  lead: "Questions about joining a club, starting one, partnering with us or anything else — send us a message and the right person will reply.",
+  replyTime: "[2 working days]",
+  desks: [
+    {
+      title: "District President’s office",
+      text: "Official communication and partnerships",
+      email: "[president@official-domain]",
+    },
+    { title: "District Secretary", text: "Notices, records and documents", email: "[secretary@official-domain]" },
+    { title: "Membership & new clubs", text: "Joining or starting a Leo club", email: "[membership@official-domain]" },
+  ],
+  faqs: [
+    {
+      question: "How do I join a Leo club?",
+      answer: "Find a club near you in our directory and contact them, or write to us and we’ll connect you.",
+      link: { label: "Browse clubs →", href: "/clubs" },
+    },
+    {
+      question: "Can we start a new Leo club in our area?",
+      answer:
+        "Yes. You need a group of interested young people and a sponsoring Lions club. We guide you through each step.",
+      link: { label: "How to start a club →", href: "/clubs#start-club" },
+    },
+    {
+      question: "Where can I find forms and logos?",
+      answer: "All official forms, templates and logo files are on our Resources page.",
+      link: { label: "Open resources →", href: "/resources" },
+    },
+    {
+      question: "Can our organization partner with the district?",
+      answer:
+        "We welcome partners for service projects. Choose “Partnership & sponsorship” in the form above and tell us your idea.",
+      link: null,
+    },
+  ] as { question: string; answer: string; link: { label: string; href: string } | null }[],
+};

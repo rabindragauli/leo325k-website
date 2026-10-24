@@ -44,7 +44,8 @@ export function PlaceholderMedia({
       className={cn(
         "flex items-center justify-center rounded-[22px] border p-4 text-center text-[15px] font-semibold",
         tone === "dark"
-          ? "border-teal-500 bg-teal-700 text-on-dark-muted"
+          ? // on-dark-2: the design's #9FB0D0 is only 4.14:1 on teal-700 (WCAG AA needs 4.5)
+          "border-teal-500 bg-teal-700 text-on-dark-2"
           : "border-line bg-mist text-slate",
         className,
       )}

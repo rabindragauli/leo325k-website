@@ -24,6 +24,17 @@ export function normalizeNepalMobile(input: string): string {
 
 export const CLUB_TOPIC = "Contact a Leo club" satisfies (typeof contactTopics)[number];
 
+/** Short ?topic= keys for links into the form, e.g. /contact?topic=club&club=<slug> (Clubs page). */
+export const topicKeys: Record<string, (typeof contactTopics)[number]> = {
+  general: "General inquiry",
+  club: CLUB_TOPIC,
+  join: "Join or start a club",
+  partnership: "Partnership & sponsorship",
+  media: "Media & press",
+  feedback: "Website feedback",
+  other: "Other",
+};
+
 // Messages match the design's inline errors. Shared by the form (Sprint 2) and the server action (Sprint 6).
 export const contactSchema = z
   .object({
@@ -41,9 +52,15 @@ export const contactSchema = z
     message: z.string().trim().min(1, "Please write a short message.").max(5000),
     consent: z.literal(true, "Please tick the box so we can reply to you."),
   })
-  .refine((v) => v.topic !== CLUB_TOPIC || !!v.club, {
+  .refine((v) => v.topic !== CLUB_TOPIC || !!v.club?.trim(), {
     path: ["club"],
     message: "Please choose a club.",
+    // Zod 4 skips object refinements while other fields have issues; run it anyway so every
+    // error shows on the first submit (the check only reads topic and club)
+    when: (payload) => {
+      const v = payload.value as { topic?: unknown; club?: unknown };
+      return typeof v === "object" && v !== null;
+    },
   });
 
 export type ContactInput = z.input<typeof contactSchema>;
