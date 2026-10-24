@@ -1,3 +1,4 @@
+import { connection } from "next/server";
 import Link from "next/link";
 import { leadershipHref } from "@/components/public/Leadership";
 import { OurPride } from "@/components/public/OurPride";
@@ -6,6 +7,11 @@ import { Placeholder, PlaceholderMedia } from "@/components/ui/Placeholder";
 import { home } from "@/data/content";
 import { socialLinks } from "@/lib/site";
 import { getCurrentLeoYear, getLeadershipView, getPrideEntries } from "@/server/queries/public";
+
+// Rendered per request from the cached queries (src/server/queries/public.ts) and sent as complete
+// HTML (no streamed shell), so it works without JavaScript. `instant = false` allows this blocking
+// render and opts the page out of the static-shell check.
+export const instant = false;
 
 function PhotoIcon() {
   return (
@@ -19,6 +25,7 @@ function PhotoIcon() {
 
 // design/source/public/Main.dc.html (desktop) · Mobile.dc.html (mobile, same content stacked)
 export default async function HomePage() {
+  await connection(); // request time, from the cache: the build never needs the database
   const [current, leadership, pride] = await Promise.all([
     getCurrentLeoYear(),
     getLeadershipView(),

@@ -1,13 +1,38 @@
 import { describe, expect, it } from "vitest";
+import { clubs, regions } from "@/data/clubs";
+import { awards, journeySteps, leoYears, people, positions, prideEntries } from "@/data/leadership";
+import { resourceCategories, resources } from "@/data/resources";
 import {
-  getArchivedYearSlugs,
-  getClubs,
-  getLeadershipView,
-  getPrideEntries,
-  getResourceLibrary,
-  staticSource,
-  type DataSource,
-} from "@/server/queries/public";
+  archivedYearSlugs,
+  clubCards,
+  leadershipView,
+  prideCards,
+  resourceLibrary,
+  toPublicPerson,
+} from "@/server/queries/views";
+
+// The seed rows (src/data) as the loaders would return them, with people still raw so tests can
+// set private fields; toSource applies the same public filter as src/server/queries/loaders.ts.
+const staticSource = {
+  leoYears,
+  people,
+  positions,
+  awards,
+  journeySteps,
+  prideEntries,
+  clubs,
+  regions,
+  resourceCategories,
+  resources,
+};
+type DataSource = typeof staticSource;
+
+const toSource = (db: DataSource) => ({ ...db, people: db.people.map(toPublicPerson) });
+const getLeadershipView = async (year?: string | null, db = staticSource) => leadershipView(toSource(db), year);
+const getArchivedYearSlugs = async (db = staticSource) => archivedYearSlugs(db);
+const getPrideEntries = async (db = staticSource) => prideCards(toSource(db));
+const getClubs = async (db = staticSource) => clubCards(db);
+const getResourceLibrary = async (db = staticSource) => resourceLibrary(db);
 
 describe("getLeadershipView (seed data)", () => {
   it("defaults to the unpublished current year: coming soon + latest published team", async () => {
@@ -62,18 +87,21 @@ describe("getLeadershipView (seed data)", () => {
     }
   });
 
-  it("shows phone/email only for people who made them public", async () => {
-    const db: DataSource = {
+  it("shows phone/email only for people who made them public with a consent date", async () => {
+    const ashishWith = (consentAt: string | null): DataSource => ({
       ...staticSource,
       people: staticSource.people.map((p) =>
         p.id === "p-ashish-lamichhane"
-          ? { ...p, phone: "98", phonePublic: true, email: "x@y.org", emailPublic: false, membershipId: "M1" }
+          ? { ...p, phone: "98", phonePublic: true, email: "x@y.org", emailPublic: false, membershipId: "M1", consentAt }
           : p,
       ),
-    };
-    const ashish = (await getLeadershipView("2025-26", db))!.team!.leos[1];
+    });
+    const ashish = (await getLeadershipView("2025-26", ashishWith("2026-09-01")))!.team!.leos[1];
     expect(ashish).toMatchObject({ phone: "98", email: null });
     expect(JSON.stringify(ashish)).not.toContain("M1");
+    // Toggle on but no consent date: still private
+    const noConsent = (await getLeadershipView("2025-26", ashishWith(null)))!.team!.leos[1];
+    expect(noConsent).toMatchObject({ phone: null, email: null });
   });
 
   it("shows the current year once it is published", async () => {

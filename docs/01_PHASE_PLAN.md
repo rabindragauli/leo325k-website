@@ -62,6 +62,7 @@ Estimates assume part-time work (evenings + Saturdays) with an AI agent doing mo
 - Uploads: type + size checks (images ≤ 5 MB, docs ≤ 20 MB, allow-list of MIME/extension), random file names, sharp resize (portraits 800×800, logos 1000 px, hero 1920 px) → WebP
 - Every mutation: Zod → `requireRole` → Prisma → `ActivityLog` entry → `revalidatePath`
 - Leadership pages are prerendered (`/leadership`, `/leadership/[year]` via `generateStaticParams`): publishing/archiving a Leo Year or editing a team must call `revalidatePath("/leadership")` and `revalidatePath("/leadership/[year]", "page")`, and Home (`/`) for the coming-soon card
+- After publishing a new Leo Year, its URL must stop returning a cached 404 (check that `revalidateTag('leadership')` clears it)
 - **Done when:** a non-technical Editor can publish the 2026–27 team, add a club with logo, upload a PDF, and see it live within a minute.
 
 ## Sprint 6 — Contact form, messages, email

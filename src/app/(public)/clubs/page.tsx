@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { connection } from "next/server";
 import { ClubDirectory } from "@/components/public/ClubDirectory";
 import { Section } from "@/components/public/Section";
 import { ButtonLink } from "@/components/ui/Button";
@@ -13,8 +14,14 @@ export const metadata: Metadata = {
   description: "Find an approved Leo club in District 325 K by name, region or city, or start a new one.",
 };
 
-// design/source/public/Clubs.dc.html (desktop) · MClubs.dc.html (mobile). Prerendered.
+// Rendered per request from the cached queries (src/server/queries/public.ts) and sent as complete
+// HTML (no streamed shell), so it works without JavaScript. `instant = false` allows this blocking
+// render and opts the page out of the static-shell check.
+export const instant = false;
+
+// design/source/public/Clubs.dc.html (desktop) · MClubs.dc.html (mobile).
 export default async function ClubsPage() {
+  await connection(); // request time, from the cache: the build never needs the database
   const [clubs, current] = await Promise.all([getClubs(), getCurrentLeoYear()]);
   const regions = distinct(clubs.map((c) => c.region));
 

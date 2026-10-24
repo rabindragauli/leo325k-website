@@ -1,22 +1,16 @@
 import { NextResponse, type NextRequest } from "next/server";
-import { getArchivedYearSlugs, getCurrentLeoYear } from "@/server/queries/public";
+import { isPlausibleLeoYearSlug } from "@/lib/people";
 
-// Runs before rendering (Node.js runtime). Only /leadership/<year> is matched.
+// Runs before rendering. Only /leadership/<year> is matched, and no database is used here.
 //
-// Why: with Cache Components, a year that generateStaticParams did not list is rendered on request
-// behind the static public layout, so the 200 status is sent before the page can call notFound().
-// Checking the year here returns a real 404 instead. (We run one Node server on cPanel, so importing
-// the data layer is fine; Sprint 3 swaps it to a small Prisma query.)
+// A malformed or implausible year (not "2025-26" style, or outside 2015 … current year + 2) gets
+// the branded 404 straight away, so junk URLs never render or fill the ISR cache with stored 404s.
+// Plausible years are handled by the page itself from the cached query: archived → page,
+// current → 307 to /leadership, unknown → 404.
 // Sprint 4 adds the ADMIN_SLUG rewrite and the direct /admin → 404 here as well.
-export async function proxy(request: NextRequest) {
+export function proxy(request: NextRequest) {
   const year = request.nextUrl.pathname.split("/")[2] ?? "";
-  if ((await getArchivedYearSlugs()).includes(year)) return NextResponse.next();
-
-  // The current year lives at /leadership. Temporary (307): next year this URL becomes an archive page.
-  const current = await getCurrentLeoYear();
-  if (current && current.slug === year) {
-    return NextResponse.redirect(new URL("/leadership", request.url));
-  }
+  if (isPlausibleLeoYearSlug(year, new Date())) return NextResponse.next();
 
   // Unmatched internal path → the branded not-found page with status 404
   return NextResponse.rewrite(new URL("/__leadership-year-not-found", request.url));

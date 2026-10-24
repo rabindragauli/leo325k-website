@@ -14,6 +14,11 @@ const nextConfig: NextConfig = {
   poweredByHeader: false,
   cacheComponents: true,
   partialPrefetching: true,
+  // Public DB content (src/server/queries/public.ts). Admin publishes refresh it at once with
+  // revalidateTag (Sprint 5); the 15-minute revalidate is only a safety net.
+  cacheLife: {
+    publicContent: { stale: 300, revalidate: 900, expire: 86400 },
+  },
   images: {
     formats: ["image/webp"],
     // Fallback if sharp cannot load on the server (MASTER_PROMPT §1, Images)

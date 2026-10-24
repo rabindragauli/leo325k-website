@@ -1,5 +1,12 @@
 import { describe, expect, it } from "vitest";
-import { displayName, initials, leoYearSlug, publicContact } from "@/lib/people";
+import {
+  displayName,
+  initials,
+  isLeoYearSlug,
+  isPlausibleLeoYearSlug,
+  leoYearSlug,
+  publicContact,
+} from "@/lib/people";
 import { isPlaceholder, splitPlaceholders } from "@/lib/placeholders";
 
 describe("initials", () => {
@@ -23,7 +30,13 @@ describe("displayName", () => {
 });
 
 describe("publicContact", () => {
-  const base = { phone: "9800000000", email: "a@b.org", phonePublic: false, emailPublic: false };
+  const base = {
+    phone: "9800000000",
+    email: "a@b.org",
+    phonePublic: false,
+    emailPublic: false,
+    consentAt: "2026-09-01",
+  };
 
   it("hides phone and email unless the toggle is on", () => {
     expect(publicContact(base)).toEqual({ phone: null, email: null });
@@ -36,14 +49,51 @@ describe("publicContact", () => {
 
   it("returns nothing for a public toggle on an empty value", () => {
     expect(
-      publicContact({ phone: "  ", email: null, phonePublic: true, emailPublic: true }),
+      publicContact({ phone: "  ", email: null, phonePublic: true, emailPublic: true, consentAt: "2026-09-01" }),
     ).toEqual({ phone: null, email: null });
+  });
+
+  it("keeps both private without a consent date, even with the toggles on", () => {
+    expect(publicContact({ ...base, phonePublic: true, emailPublic: true, consentAt: null })).toEqual({
+      phone: null,
+      email: null,
+    });
   });
 });
 
 describe("leoYearSlug", () => {
   it("turns the en dash into a hyphen", () => {
     expect(leoYearSlug("2025–26")).toBe("2025-26");
+  });
+});
+
+describe("isLeoYearSlug", () => {
+  it("accepts consecutive years only", () => {
+    expect(isLeoYearSlug("2025-26")).toBe(true);
+    expect(isLeoYearSlug("2099-00")).toBe(true);
+    for (const slug of ["2025-27", "2025–26", "25-26", "2025-26x", "__placeholder__", "", "<script>"]) {
+      expect(isLeoYearSlug(slug), slug).toBe(false);
+    }
+  });
+});
+
+describe("isPlausibleLeoYearSlug", () => {
+  const now = new Date("2026-10-24T12:00:00Z");
+
+  it("accepts 2015 up to the current year + 2", () => {
+    for (const slug of ["2015-16", "2025-26", "2026-27", "2028-29"]) {
+      expect(isPlausibleLeoYearSlug(slug, now), slug).toBe(true);
+    }
+  });
+
+  it("rejects years outside the range and malformed slugs", () => {
+    for (const slug of ["2014-15", "1999-00", "2029-30", "2099-00", "2025-27", "__placeholder__"]) {
+      expect(isPlausibleLeoYearSlug(slug, now), slug).toBe(false);
+    }
+  });
+
+  it("moves the upper bound with the clock", () => {
+    expect(isPlausibleLeoYearSlug("2029-30", new Date("2027-01-01T00:00:00Z"))).toBe(true);
   });
 });
 

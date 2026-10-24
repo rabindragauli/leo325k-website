@@ -1,6 +1,9 @@
 import { describe, expect, it } from "vitest";
 import { ALL, countByCategory, distinct, filterClubs, filterResources, matchesQuery } from "@/lib/filters";
-import { getClubs, type ResourceItem } from "@/server/queries/public";
+import { clubs as clubRows, regions } from "@/data/clubs";
+import { clubCards, type ResourceItem } from "@/server/queries/views";
+
+const getClubs = async () => clubCards({ clubs: clubRows, regions });
 
 // Own fixture: independent of which resources are published in the seed data
 const resource = (title: string, description: string, category: string): ResourceItem => ({

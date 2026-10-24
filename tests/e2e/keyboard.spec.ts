@@ -39,11 +39,12 @@ test("Clubs: search, then Tab through region select and city chips", async ({ pa
 
 test("Resources: category with Space", async ({ page }) => {
   await page.goto("/resources");
-  const forms = page.getByRole("group", { name: "Categories" }).getByRole("button", { name: /^Forms/ });
-  await forms.focus();
+  // Only the 2 official links are published until files are uploaded (docs/08)
+  const links = page.getByRole("group", { name: "Categories" }).getByRole("button", { name: /^Official Links/ });
+  await links.focus();
   await page.keyboard.press("Space");
-  await expect(forms).toHaveAttribute("aria-pressed", "true");
-  await expect(page.getByText("3 resources · Forms")).toBeVisible();
+  await expect(links).toHaveAttribute("aria-pressed", "true");
+  await expect(page.getByText("2 resources · Official Links")).toBeVisible();
 });
 
 test("FAQ: Enter and Space toggle the native disclosure", async ({ page }) => {

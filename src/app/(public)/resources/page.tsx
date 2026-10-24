@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { connection } from "next/server";
 import Link from "next/link";
 import { ResourceLibrary } from "@/components/public/ResourceLibrary";
 import { ButtonLink } from "@/components/ui/Button";
@@ -13,6 +14,11 @@ export const metadata: Metadata = {
   title: "Resources",
   description: "Official forms, templates, logos and guides for Leo clubs in District 325 K.",
 };
+
+// Rendered per request from the cached queries (src/server/queries/public.ts) and sent as complete
+// HTML (no streamed shell), so it works without JavaScript. `instant = false` allows this blocking
+// render and opts the page out of the static-shell check.
+export const instant = false;
 
 function EssentialCard({ item }: { item: ResourceItem }) {
   const action = item.kind === "LINK" ? "Visit" : "Download";
@@ -40,9 +46,10 @@ function EssentialCard({ item }: { item: ResourceItem }) {
   );
 }
 
-// design/source/public/Resources.dc.html (desktop) · MResources.dc.html (mobile). Prerendered.
+// design/source/public/Resources.dc.html (desktop) · MResources.dc.html (mobile).
 // Only published resources are listed; categories without one are hidden (getResourceLibrary).
 export default async function ResourcesPage() {
+  await connection(); // request time, from the cache: the build never needs the database
   const library = await getResourceLibrary();
 
   return (

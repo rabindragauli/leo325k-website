@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { connection } from "next/server";
 import Link from "next/link";
 import { ContactForm } from "@/components/public/ContactForm";
 import { Breadcrumb } from "@/components/ui/Breadcrumb";
@@ -13,6 +14,11 @@ export const metadata: Metadata = {
   description:
     "Contact Leo District Council 325 K: joining or starting a club, partnerships, media and general questions.",
 };
+
+// Rendered per request from the cached queries (src/server/queries/public.ts) and sent as complete
+// HTML (no streamed shell), so it works without JavaScript. `instant = false` allows this blocking
+// render and opts the page out of the static-shell check.
+export const instant = false;
 
 const MAIL = "M3 7l9 6 9-6 M5 5h14a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2z";
 const CLOCK = "M12 7v5l3 2 M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18z";
@@ -30,9 +36,10 @@ function OfficeIcon({ path }: { path: string }) {
   );
 }
 
-// design/source/public/Contact.dc.html (desktop) · MContact.dc.html (mobile). Prerendered; the form
+// design/source/public/Contact.dc.html (desktop) · MContact.dc.html (mobile). The form
 // applies ?topic=&club= in the browser.
 export default async function ContactPage() {
+  await connection(); // request time, from the cache: the build never needs the database
   const clubs = (await getClubs()).map(({ slug, name }) => ({ slug, name }));
   const office = [
     { label: "Email", value: contactDetails.email, icon: MAIL },
