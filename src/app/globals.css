@@ -43,6 +43,10 @@
   --color-error-tint: #fbe4e1;
   --color-form-error: #a3261a;
 
+  /* Resource file-type badges (Resources.dc.html): PDF = error, ZIP = gold, LINK = line */
+  --color-doc: #1d5c80; /* DOCX text */
+  --color-doc-tint: #e1eafb; /* DOCX background */
+
   /* Header breakpoints (min-width). Mobile header/footer at ≤ 860 px. */
   --breakpoint-desk: 53.8125rem; /* 861px */
   --breakpoint-leo: 56.3125rem; /* 901px: Leo emblem in banner */

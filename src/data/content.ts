@@ -149,3 +149,25 @@ export const home = {
     },
   ],
 };
+
+export const clubsPage = {
+  startSteps: [
+    {
+      title: "Gather interested youth",
+      text: "Bring together a group of young people who want to serve their community.",
+    },
+    {
+      title: "Find a sponsoring Lions club",
+      text: "Every Leo club needs a Lions club sponsor. The district can connect you with one nearby.",
+    },
+    {
+      title: "Charter your club",
+      text: "Elect officers, complete the charter paperwork and join the district family.",
+    },
+  ],
+};
+
+export const resourcesPage = {
+  // "See brand guidelines →" target: not supplied yet (docs/08); the link is hidden while null
+  brandGuidelinesUrl: null as string | null,
+};

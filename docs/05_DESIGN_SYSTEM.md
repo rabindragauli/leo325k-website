@@ -66,7 +66,7 @@ Radius: buttons 10–12 px · cards 16–20 px · feature panels 24 px · chips/
 
 ## Tailwind tokens (`src/app/globals.css`, Tailwind v4 `@theme`)
 The default Tailwind palette is cleared (`--color-*: initial`); only these colours exist (`inherit`, `transparent`, `current` still work).
-- Colours: `teal-900/800/700/600/500/400` (800 = `#1A4359` banner left, 500 = `#3F6A80` pill borders), `purple`, `yellow`, `orange`, `blue` (`#2B6F96` swoosh), `blue-bright` (`#156FAC` mobile line), `gold-text`, `gold-tint`, `gold-ink`, `gold-band` (`#C28B19`), `ink`, `slate`, `mist`, `line`, `on-dark`, `on-dark-2`, `on-dark-3`, `on-dark-muted` (`#9FB0D0`), `nav` (`#CFE0E8` inactive nav), `ok`/`ok-tint`, `warn`/`warn-tint`, `error`/`error-tint`, `form-error`
+- Colours: `teal-900/800/700/600/500/400` (800 = `#1A4359` banner left, 500 = `#3F6A80` pill borders), `purple`, `yellow`, `orange`, `blue` (`#2B6F96` swoosh), `blue-bright` (`#156FAC` mobile line), `gold-text`, `gold-tint`, `gold-ink`, `gold-band` (`#C28B19`), `ink`, `slate`, `mist`, `line`, `on-dark`, `on-dark-2`, `on-dark-3`, `on-dark-muted` (`#9FB0D0`), `nav` (`#CFE0E8` inactive nav), `ok`/`ok-tint`, `warn`/`warn-tint`, `error`/`error-tint`, `form-error`, `doc`/`doc-tint` (`#1D5C80`/`#E1EAFB`, DOCX badges)
 - Fonts: `font-heading` (Lato 400/700/900), `font-sans` (Public Sans, default), both via `next/font/google` (self-hosted)
 - Breakpoints (min-width): `desk` 861 px (desktop header/footer; `max-desk:` = mobile ≤ 860), `leo` 901 px, `art` 1101 px, `theme` 1440 px. Tailwind's `sm`/`md`/`lg`/`xl` remain for page layouts.
 - Radius: `rounded-btn` 10 px, `rounded-card` 18 px, `rounded-panel` 24 px · Width: `max-w-content` 1240 px, `max-w-banner` 1440 px

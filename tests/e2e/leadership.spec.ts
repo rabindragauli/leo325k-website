@@ -44,8 +44,16 @@ test.describe("Leadership", () => {
     await expect(page.getByRole("heading", { name: /coming soon/ })).toBeVisible();
   });
 
-  test("unknown or current year path is a 404", async ({ page }) => {
-    for (const path of ["/leadership/1999-00", "/leadership/2026-27", "/leadership/%3Cscript%3E"]) {
+  test("current year path redirects to /leadership", async ({ page, request }) => {
+    const response = await request.get("/leadership/2026-27", { maxRedirects: 0 });
+    expect(response.status()).toBe(307);
+    expect(response.headers()["location"]).toMatch(/\/leadership$/);
+    await page.goto("/leadership/2026-27");
+    await expect(page).toHaveURL(/\/leadership$/);
+  });
+
+  test("unknown year path is a 404", async ({ page }) => {
+    for (const path of ["/leadership/1999-00", "/leadership/%3Cscript%3E", "/leadership/2025-26/extra"]) {
       const response = await page.goto(path);
       expect(response?.status(), path).toBe(404);
     }

@@ -7,7 +7,8 @@ const pages = [
   { path: "/leadership", status: 200, h1: "District leadership", title: /^Leadership ·/ },
   { path: "/leadership/2025-26", status: 200, h1: "District leadership", title: /^Leadership 2025–26 ·/ },
   { path: "/leadership/1999-00", status: 404, h1: "This page has moved or no longer exists" },
-  { path: "/leadership/2026-27", status: 404, h1: "This page has moved or no longer exists" },
+  { path: "/clubs", status: 200, h1: "Find a Leo club", title: /^Clubs ·/ },
+  { path: "/resources", status: 200, h1: "Resources for Leos", title: /^Resources ·/ },
   { path: "/about", status: 200, h1: "Youth leading service across Nepal", title: /^About ·/ },
   { path: "/privacy", status: 200, h1: "Privacy notice", title: /^Privacy notice ·/ },
   {
@@ -20,7 +21,7 @@ const pages = [
 
 // TEMPORARY (Sprint 2 batches): production builds prefetch the nav links, and these pages do not
 // exist yet, so their prefetch 404s. Remove each route as its batch lands; empty after Batch 4.
-const NOT_BUILT_YET = ["/clubs", "/resources", "/contact"];
+const NOT_BUILT_YET = ["/contact"];
 const isPrefetchOfUnbuiltPage = (url: URL) =>
   url.searchParams.has("_rsc") && NOT_BUILT_YET.includes(url.pathname);
 

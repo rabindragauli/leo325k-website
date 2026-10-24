@@ -35,6 +35,8 @@ Seed files as **records without uploaded files** (resources start `published=fal
 | `[If analytics is added at launch, name it here.]` | Privacy (Security and cookies) |
 | Resource file sizes and update dates (`[size] · Updated [date]`), the files themselves, and the URLs of the 2 official links | Resources |
 | `[Map: District office location — embedded Google Map]` | Contact |
+| Brand guidelines document/URL (“See brand guidelines →” stays hidden until set: `resourcesPage.brandGuidelinesUrl`) | Resources |
+| “Request a document” uses the contact form until `[official district email]` is set (design: `mailto:`) | Resources |
 
 ## Wording changes that need council approval
 | Change | Where | Status |

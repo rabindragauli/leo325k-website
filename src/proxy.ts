@@ -1,5 +1,5 @@
 import { NextResponse, type NextRequest } from "next/server";
-import { getArchivedYearSlugs } from "@/server/queries/public";
+import { getArchivedYearSlugs, getCurrentLeoYear } from "@/server/queries/public";
 
 // Runs before rendering (Node.js runtime). Only /leadership/<year> is matched.
 //
@@ -11,6 +11,12 @@ import { getArchivedYearSlugs } from "@/server/queries/public";
 export async function proxy(request: NextRequest) {
   const year = request.nextUrl.pathname.split("/")[2] ?? "";
   if ((await getArchivedYearSlugs()).includes(year)) return NextResponse.next();
+
+  // The current year lives at /leadership. Temporary (307): next year this URL becomes an archive page.
+  const current = await getCurrentLeoYear();
+  if (current && current.slug === year) {
+    return NextResponse.redirect(new URL("/leadership", request.url));
+  }
 
   // Unmatched internal path → the branded not-found page with status 404
   return NextResponse.rewrite(new URL("/__leadership-year-not-found", request.url));
