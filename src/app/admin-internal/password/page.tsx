@@ -5,6 +5,8 @@ import { requireUser } from "@/server/auth/guards";
 
 export const metadata: Metadata = { title: "Change my password" };
 
+export const instant = false; // reads the session cookie on every request (see ../page.tsx)
+
 export default async function ChangePasswordPage() {
   const { base, user } = await requireUser();
   return (

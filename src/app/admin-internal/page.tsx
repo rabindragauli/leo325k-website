@@ -6,6 +6,10 @@ import { getSession } from "@/server/auth/session";
 
 export const metadata: Metadata = { title: "Admin portal" };
 
+// Reads the session cookie on every request, so the page blocks on the server (also for navigations
+// between admin pages, which the layout's `instant = false` does not cover).
+export const instant = false;
+
 // /<ADMIN_SLUG>: the sign-in screen without a session, the dashboard with one.
 export default async function AdminHomePage() {
   const { base } = await assertAdminGate();

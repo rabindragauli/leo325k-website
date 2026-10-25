@@ -31,6 +31,20 @@
    with Kailash support that Passenger runs the app as a single process. (With more than one, other processes catch up
    within 15 minutes, the cache safety net.)
 10. **Database URL**: add `?connection_limit=5` to `DATABASE_URL` (see `.env.example`) so Prisma stays within shared-hosting limits.
+11. **Admin portal env (Sprint 4)**: set `ADMIN_SLUG` (8–64 characters `a-z 0-9 -`, different for staging and production)
+    and `AUTH_SECRET` (32+ random characters, different per app) in the Node.js app's environment variables. Never
+    `NEXT_PUBLIC_`. Missing/invalid → admin returns 404 and `stderr.log` names the variable (never its value).
+    The site must be served over **HTTPS** (AutoSSL, step 5): the session cookie is `__Host-leo_session` (Secure).
+
+### Client IP behind LiteSpeed (login throttle)
+The login throttle needs the visitor's IP. LiteSpeed (in front of Passenger) appends the connecting client's address to
+`X-Forwarded-For`, so the **rightmost** entry is the one the server added; everything to its left came from the visitor
+and can be forged. `src/lib/auth/client-ip.ts` is the only place that reads it, and it trusts only that rightmost entry
+(Next.js fills the header from the socket only when it is absent). If no valid IP arrives, the IP-based locks are skipped
+and only the per-username backoff applies.
+**Check on staging (Sprint 8):** sign in from two different networks (e.g. office Wi-Fi and mobile data) with a wrong
+password 5 times from one of them; the other must still be able to sign in. If both get locked, the rightmost entry is not
+the client (e.g. an extra proxy such as Cloudflare in front): stop and adjust `client-ip.ts` before go-live.
 
 ## B. Build the deploy package — GitHub Actions (recommended, no WSL needed)
 1. Push the code to the private GitHub repo.
@@ -59,7 +73,13 @@ If the Prisma engine is missing from the bundle, add `outputFileTracingIncludes:
    cd ~/leo325k-staging && DATABASE_URL="<staging url>" ~/leo325k-tools/node_modules/.bin/prisma migrate deploy --schema prisma/schema.prisma
    ```
    First time only: run the seed (`node prisma/seed.js` compiled, or `npm run db:seed` locally against a DB dump you then import via phpMyAdmin).
-3. **Create the first admin**: `node scripts/create-admin.js` (prompts for email; sends invite code).
+3. **Create the admin accounts** (first deploy only; the app's env sets `NODE_ENV=production`, so the flag is required):
+   ```bash
+   node scripts/create-user.mjs --allow-production   # asks username, display name, role, password (hidden, twice)
+   ```
+   It reads `DATABASE_URL` from the environment and prints no secrets. The deploy package must contain
+   `scripts/create-user.mjs` and `src/lib/auth/password.mjs` at those relative paths (**Sprint 8: add both to the
+   GitHub Actions package**); `@prisma/client` and `bcryptjs` are already in the standalone `node_modules`.
 4. **Restart**: Setup Node.js App → Restart (or `mkdir -p tmp && touch tmp/restart.txt`).
    Every deploy (and restart) clears the content cache and the stored ISR pages; the first visits afterwards read the
    database again and refill them. No action needed.

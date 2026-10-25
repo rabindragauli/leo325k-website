@@ -63,9 +63,20 @@ Inspect the data with `npx prisma studio`. Public pages read the database at req
 works without it; `npm run dev`, `npm start` and the e2e tests need MySQL running.
 
 ### Environment variables
-All keys are in `.env.example`: `APP_URL`, `DATABASE_URL`, `ADMIN_SLUG`, `SESSION_SECRET`, `SMTP_HOST/PORT/USER/PASS`, `MAIL_FROM`,
+All keys are in `.env.example`: `APP_URL`, `DATABASE_URL`, `ADMIN_SLUG`, `AUTH_SECRET`, `SMTP_HOST/PORT/USER/PASS`, `MAIL_FROM`,
 `CONTACT_INBOX`, `TURNSTILE_SITE_KEY`, `TURNSTILE_SECRET_KEY`, `UPLOAD_DIR`, `CRON_SECRET`. Optional: `IMAGES_UNOPTIMIZED=true` if
 sharp cannot load on the server. Real values live only in `.env` (local) and cPanel → Setup Node.js App (server).
+
+### Admin portal (Sprint 4)
+- `ADMIN_SLUG` (8–64 characters: `a-z`, `0-9`, `-`) is the unlisted admin path: sign in at `http://localhost:3000/<ADMIN_SLUG>`.
+  `AUTH_SECRET` (32+ random characters) is required too. If either is missing or invalid, admin is disabled (404) and the
+  server logs which variable is wrong (never its value). Both are server-only: never prefix them with `NEXT_PUBLIC_`.
+- Accounts are created only from the terminal: `npm run user:create` asks for username, display name, role and password
+  (typed twice, hidden). Passwords: 12+ characters, at most 72 bytes, not common, without the username, “leo”, “lions”,
+  “325k” or “leodistrict”. No users are seeded. Password reset by email comes in Sprint 6; until then an Admin can only
+  change their own password (“Change my password”).
+- Sessions: 2 h idle, 12 h maximum. Locally the cookie is `leo_session` (http); in production `__Host-leo_session` (HTTPS only,
+  so `npm start` over plain http cannot sign in).
 
 ### Scripts
 | Script | Does |
@@ -75,8 +86,9 @@ sharp cannot load on the server. Real values live only in `.env` (local) and cPa
 | `npm start` | Serve the production build locally |
 | `npm run lint` / `typecheck` / `format` | ESLint · `tsc --noEmit` · Prettier |
 | `npm test` | Vitest unit tests (`tests/unit`, no database; this is what CI runs) |
-| `npm run test:db` | Query privacy/visibility tests against the local seeded DB (`tests/db`, rolled back; local only) |
-| `npm run test:e2e` | Playwright smoke tests against the seeded DB (`tests/e2e`; first run `npx playwright install chromium`) |
+| `npm run test:db` | Query privacy/visibility and session/throttle tests against the local DB (`tests/db`; cleans up after itself; local only) |
+| `npm run test:e2e` | Playwright tests against the seeded DB (`tests/e2e`; first run `npx playwright install chromium`). Starts its own dev server with a random throwaway admin slug and secret and throwaway users (deleted afterwards), so **stop any running `npm run dev` first** |
+| `npm run user:create` | Create an admin portal account interactively (refuses `NODE_ENV=production` without `--allow-production`) |
 | `npm run db:migrate` / `db:seed` | Prisma migrate dev · seed (`prisma/seed.ts`, create-only, repeatable) |
 | `npm run db:reset` | Drop, re-migrate and re-seed the **local** DB; refuses unless `DATABASE_URL` is localhost/127.0.0.1 |
 | `npm run package:deploy` | Copy static files + `public` into `.next/standalone` for a local test of `server.js` |

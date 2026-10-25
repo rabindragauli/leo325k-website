@@ -14,7 +14,19 @@ Start from `starter/prisma/schema.prisma`. Key ideas:
 | Editable site text | `SiteSetting` (JSON per key) | Validate each key's JSON with a Zod schema. |
 | Yearly theme | `ThemeSet` per `LeoYear` | Header reads the current year's theme. |
 | Contact | `Message` | Requires `consentAt`; auto-delete after 12 months. |
-| Security | `User`, `Session`, `TrustedDevice`, `LoginCode`, `RateLimit`, `ActivityLog` | Store only **hashes** of tokens/codes; IPs stored as salted hashes. |
+| Security | `User`, `Session`, `LoginThrottle`, `ActivityLog` (+ `TrustedDevice`, `LoginCode`, `RateLimit` kept for Sprint 6) | Store only **hashes** of tokens/codes; usernames and IPs in throttle keys only as HMACs. |
+
+## Sprint 4 changes (auth)
+- `User`: `username` (unique, `VarChar(32)`, trimmed + lowercase, `[a-z0-9._-]{3,32}`), `displayName`, `email` optional
+  (empty until Sprint 6), `passwordHash` required (bcrypt cost 12), `role` ADMIN|EDITOR, `active`, `lastLoginAt`.
+  `name`, `title` and `invitedAt` were dropped. No users are seeded (`npm run user:create`).
+- `Session`: `tokenHash` = SHA-256 of the cookie token; `lastSeenAt` (idle 2 h, written at most every 5 min);
+  `expiresAt` = absolute end (12 h). `ipHash`/`userAgent` are unused.
+- `LoginThrottle`: `key` = `u:`/`ip:`/`uip:` + HMAC-SHA256 (`AUTH_SECRET`) of the username and/or IP; `failures`,
+  `lastFailureAt`, `nextAllowedAt` (username backoff, never a lock), `lockedUntil` (IP and username+IP, 15 min after 5
+  failures). Expired sessions and throttle rows older than 24 h are deleted on sign-in.
+- `ActivityLog` actions: `auth.login`, `auth.login_failed`, `auth.lockout`, `auth.logout`, `auth.password_change`
+  (never passwords, tokens, the slug, or the typed name of an unknown account).
 
 ## Sprint 3 changes to the starter schema
 - `datasource` has `shadowDatabaseUrl = env("SHADOW_DATABASE_URL")` (local `prisma migrate dev` only).

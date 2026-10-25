@@ -19,8 +19,10 @@ Screens: `design/screens/public/*.png`, `design/screens/admin/*.png` (rendered a
 ## Admin portal (served at `/${ADMIN_SLUG}/…`)
 | Route | Design | Who |
 |---|---|---|
-| `/login`, `/verify`, `/reset` | `01_Login` | public |
-| `/` (dashboard) | `02_Main`, mobile `04_MobileDashboard` | Admin, Editor |
+| `/` without a session: sign-in (Sprint 4) | `01_Login` (username instead of email; no “Forgot password?”, “Keep me signed in” or code note until Sprint 6) | public |
+| `/` (dashboard; Sprint 4: empty shell with the slim bar) | `02_Main`, mobile `04_MobileDashboard` | Admin, Editor |
+| `/password` (“Change my password”, Sprint 4) | (simple form) | Admin, Editor |
+| `/reset` (Sprint 6) | `01_Login` | public |
 | `/messages` | `03_Messages` | Admin, Editor |
 | `/leadership` | `07_Leadership` | Admin, Editor |
 | `/people/new`, `/people/[id]` | `08_PersonEditor` | Admin, Editor |
@@ -30,3 +32,8 @@ Screens: `design/screens/public/*.png`, `design/screens/admin/*.png` (rendered a
 | `/users` | `13_Users` | **Admin only** |
 | `/activity` | (simple table) | Admin, Editor |
 | Shared | `05_Sidebar`, `06_AdminBanner` (compact bar on all screens except login) | |
+
+How it is served (Sprint 4): `src/proxy.ts` rewrites `/<ADMIN_SLUG>/…` to the internal route `src/app/admin-internal/…`
+and sets a gate header (HMAC of `AUTH_SECRET`) on that rewrite only. `/admin` and `/admin-internal` requested directly → 404.
+Every admin page and server action checks the gate and the session itself (`src/server/auth/guards.ts`): no gate → 404,
+no session → redirect to `/<ADMIN_SLUG>` (sign-in), Editor on an Admin-only screen → 404.
