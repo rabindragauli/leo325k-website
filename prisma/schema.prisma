@@ -21,15 +21,16 @@ enum Role {
   EDITOR
 }
 
+// Accounts are created with `npm run user:create` (never seeded). Username: trimmed, lowercase,
+// [a-z0-9._-]{3,32} (src/lib/auth/password.mjs). Email stays empty until Sprint 6.
 model User {
   id             String          @id @default(cuid())
-  email          String          @unique
-  name           String
-  title          String?
+  username       String          @unique @db.VarChar(32)
+  displayName    String
+  email          String?         @unique
   role           Role            @default(EDITOR)
-  passwordHash   String?
+  passwordHash   String
   active         Boolean         @default(true)
-  invitedAt      DateTime?
   lastLoginAt    DateTime?
   createdAt      DateTime        @default(now())
   updatedAt      DateTime        @updatedAt
@@ -39,6 +40,8 @@ model User {
   activities     ActivityLog[]
 }
 
+// Only the SHA-256 hash of the cookie token is stored. Idle timeout counts from lastSeenAt;
+// expiresAt is the absolute end (src/lib/auth/session-rules.ts).
 model Session {
   id         String   @id @default(cuid())
   tokenHash  String   @unique
@@ -81,6 +84,19 @@ model LoginCode {
   createdAt DateTime    @default(now())
 
   @@index([userId, purpose])
+}
+
+// Login throttle (src/lib/auth/throttle.ts). Keys are HMACs of the username and/or IP, never the
+// plain values: "u:…" (backoff via nextAllowedAt, never locked), "ip:…" and "uip:…" (lockedUntil).
+model LoginThrottle {
+  key           String    @id @db.VarChar(80)
+  failures      Int       @default(0)
+  lastFailureAt DateTime
+  nextAllowedAt DateTime?
+  lockedUntil   DateTime?
+  updatedAt     DateTime  @updatedAt
+
+  @@index([updatedAt])
 }
 
 model RateLimit {
