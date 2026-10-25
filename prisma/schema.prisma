@@ -24,20 +24,23 @@ enum Role {
 // Accounts are created with `npm run user:create` (never seeded). Username: trimmed, lowercase,
 // [a-z0-9._-]{3,32} (src/lib/auth/password.mjs). Email stays empty until Sprint 6.
 model User {
-  id             String          @id @default(cuid())
-  username       String          @unique @db.VarChar(32)
-  displayName    String
-  email          String?         @unique
-  role           Role            @default(EDITOR)
-  passwordHash   String
-  active         Boolean         @default(true)
-  lastLoginAt    DateTime?
-  createdAt      DateTime        @default(now())
-  updatedAt      DateTime        @updatedAt
-  sessions       Session[]
-  trustedDevices TrustedDevice[]
-  loginCodes     LoginCode[]
-  activities     ActivityLog[]
+  id                 String          @id @default(cuid())
+  username           String          @unique @db.VarChar(32)
+  displayName        String
+  email              String?         @unique
+  role               Role            @default(EDITOR)
+  passwordHash       String
+  active             Boolean         @default(true)
+  // Set when an Admin creates the account or resets its password: the user must choose their own
+  // password before any other admin screen opens (Sprint 5a).
+  mustChangePassword Boolean         @default(false)
+  lastLoginAt        DateTime?
+  createdAt          DateTime        @default(now())
+  updatedAt          DateTime        @updatedAt
+  sessions           Session[]
+  trustedDevices     TrustedDevice[]
+  loginCodes         LoginCode[]
+  activities         ActivityLog[]
 }
 
 // Only the SHA-256 hash of the cookie token is stored. Idle timeout counts from lastSeenAt;
@@ -132,52 +135,74 @@ model LeoYear {
   theme       ThemeSet?
 }
 
+// Visibility (docs/07): each *Public switch is null = follow PUBLIC_BY_DEFAULT (src/lib/visibility.ts),
+// true/false = set for this person. under18 hides membership no., cell, landline, email and blood
+// group with no override. address is admin-only and never read by a public query.
 model Person {
-  id            String        @id @default(cuid())
-  prefix        String // Leo, Leo-Lion, Lion, MJF Lion, PMJF Lion
-  fullName      String
-  photo         String? // media path
-  homeClubId    String?
-  homeClub      Club?         @relation("HomeClub", fields: [homeClubId], references: [id], onDelete: SetNull)
-  homeLionsClub String? // free text for Lions members
-  membershipId  String? // ADMIN ONLY — never public
-  phone         String?
-  phonePublic   Boolean       @default(false)
-  email         String?
-  emailPublic   Boolean       @default(false)
-  consentAt     DateTime? // "consent obtained on": required before phone/email can be public (docs/08)
-  createdAt     DateTime      @default(now())
-  updatedAt     DateTime      @updatedAt
-  positions     Position[]
-  awards        Award[]
-  journey       JourneyStep[]
-  pride         PrideEntry[]
+  id                String        @id @default(cuid())
+  title             String        @db.VarChar(20) // PERSON_TITLES in src/lib/people.ts
+  fullName          String
+  photo             String? // file name under UPLOAD_DIR/people
+  photoConsent      Boolean       @default(false) // photo is public only when ticked
+  under18           Boolean       @default(false)
+  homeClubId        String?
+  homeClub          Club?         @relation("HomeClub", fields: [homeClubId], references: [id], onDelete: SetNull)
+  membershipId      String? // membership no.
+  phone             String? // cell
+  landline          String?       @db.VarChar(30)
+  email             String?
+  bloodGroup        String?       @db.VarChar(3) // BLOOD_GROUPS in src/lib/people.ts
+  address           String?       @db.VarChar(300) // ADMIN ONLY
+  designationPublic Boolean?
+  homeClubPublic    Boolean?
+  membershipPublic  Boolean?
+  phonePublic       Boolean?
+  landlinePublic    Boolean?
+  emailPublic       Boolean?
+  bloodGroupPublic  Boolean?
+  createdAt         DateTime      @default(now())
+  updatedAt         DateTime      @updatedAt
+  positions         Position[]
+  awards            Award[]
+  journey           JourneyStep[]
+  pride             PrideEntry[]
 
   @@index([fullName])
 }
 
-enum TeamGroup {
-  DISTRICT_LEO // District Leo PVST
-  DISTRICT_LION // District Lion PVST
-  CLUB // Club PVST
+// Leadership page sections. To add a group: a new value here + its label in src/lib/leadership-groups.ts.
+enum PositionGroup {
+  DISTRICT_BOARD
+  DISTRICT_ADVISORS
+  DISTRICT_PRESIDENT_ADVISORS
+  CLUB // club boards (Sprint 5b)
+}
+
+// Editors save drafts; only Admins publish. Public = PUBLISHED and the Leo Year is published.
+enum PositionStatus {
+  DRAFT
+  PUBLISHED
 }
 
 model Position {
-  id        String    @id @default(cuid())
+  id        String         @id @default(cuid())
   personId  String
-  person    Person    @relation(fields: [personId], references: [id], onDelete: Cascade)
+  person    Person         @relation(fields: [personId], references: [id], onDelete: Cascade)
   leoYearId String
-  leoYear   LeoYear   @relation(fields: [leoYearId], references: [id], onDelete: Cascade)
-  group     TeamGroup
-  role      String // "District President", "Club Secretary"...
+  leoYear   LeoYear        @relation(fields: [leoYearId], references: [id], onDelete: Cascade)
+  group     PositionGroup
+  role      String // designation: "District President", "Advisor"...
   clubId    String? // required when group = CLUB
-  club      Club?     @relation(fields: [clubId], references: [id], onDelete: Cascade)
-  message   String?   @db.Text // District President's message for the year
-  sortOrder Int       @default(0)
+  club      Club?          @relation(fields: [clubId], references: [id], onDelete: Cascade)
+  message   String?        @db.Text // District President's message for the year
+  sortOrder Int            @default(0)
+  status    PositionStatus @default(DRAFT)
+  createdAt DateTime       @default(now())
+  updatedAt DateTime       @updatedAt
 
-  // clubId is NULL for district roles and MySQL allows repeated NULLs, so this does not stop a
-  // duplicate district role: Sprint 5 validates that in the person editor.
-  @@unique([leoYearId, group, role, clubId])
+  // No unique key: advisors may share a designation. The editor blocks the same person holding the
+  // same designation twice in one year and group.
+  @@index([leoYearId, group, sortOrder])
   @@index([personId])
 }
 
@@ -224,23 +249,24 @@ enum ClubType {
 }
 
 model Club {
-  id          String     @id @default(cuid())
-  name        String     @unique
-  slug        String     @unique
-  regionId    String?
-  region      Region?    @relation(fields: [regionId], references: [id], onDelete: SetNull)
-  city        String
-  type        ClubType?
-  charterYear Int?
-  sponsor     String? // sponsoring Lions club
-  email       String?
-  logo        String?
-  visible     Boolean    @default(true)
-  createdAt   DateTime   @default(now())
-  updatedAt   DateTime   @updatedAt
-  positions   Position[]
-  members     Person[]   @relation("HomeClub")
-  messages    Message[]
+  id                String     @id @default(cuid())
+  name              String     @unique
+  slug              String     @unique
+  regionId          String?
+  region            Region?    @relation(fields: [regionId], references: [id], onDelete: SetNull)
+  city              String? // empty only for unlisted clubs added by name as a home club
+  type              ClubType?
+  charterYear       Int?
+  sponsor           String? // sponsoring Lions club
+  email             String?
+  logo              String?
+  // false: selectable as a home club (older or other clubs), never on the Clubs page
+  listedInDirectory Boolean    @default(true)
+  createdAt         DateTime   @default(now())
+  updatedAt         DateTime   @updatedAt
+  positions         Position[]
+  members           Person[]   @relation("HomeClub")
+  messages          Message[]
 }
 
 // ───────────── Resources ─────────────

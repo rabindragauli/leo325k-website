@@ -76,7 +76,9 @@ export function OfficerCard({ person }: { person: PersonCard }) {
   return (
     <article className="flex flex-col gap-3 rounded-[18px] border border-line bg-white p-6">
       <Avatar name={person.name} initials={person.initials} photo={person.photo} size="md" />
-      <p className="text-eyebrow font-bold tracking-[0.5px] text-gold-text uppercase">{person.role}</p>
+      {person.role && (
+        <p className="text-eyebrow font-bold tracking-[0.5px] text-gold-text uppercase">{person.role}</p>
+      )}
       <h3 className="text-[19px] leading-[1.3] font-bold text-teal-900">{person.name}</h3>
       <p className="text-sm leading-[1.5] text-slate">
         <HomeClub name={person.homeClub} />
@@ -97,7 +99,7 @@ export function LionCard({ person }: { person: PersonCard }) {
   return (
     <article className="flex flex-col gap-2.5 rounded-[18px] border border-line p-[22px]">
       <Avatar name={person.name} initials={person.initials} photo={person.photo} size="sm" tone="dark" />
-      <p className="text-xs font-bold tracking-[0.5px] text-gold-text uppercase">{person.role}</p>
+      {person.role && <p className="text-xs font-bold tracking-[0.5px] text-gold-text uppercase">{person.role}</p>}
       <h3 className="text-[17px] leading-[1.3] font-bold text-teal-900">{person.name}</h3>
       <p className="text-sm text-slate">
         <HomeClub name={person.homeClub} />

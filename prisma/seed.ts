@@ -28,13 +28,9 @@ async function main() {
     await prisma.club.upsert({ where: { id }, create: { id, ...data }, update: {} });
   }
 
-  // Officers start private (docs/08 consent rule): no phone/email shown, no consent date.
-  for (const { id, consentAt, ...data } of people) {
-    await prisma.person.upsert({
-      where: { id },
-      create: { id, ...data, consentAt: date(consentAt) },
-      update: {},
-    });
+  // Switches follow the default except phone/email, explicitly hidden (src/data/leadership.ts).
+  for (const { id, ...data } of people) {
+    await prisma.person.upsert({ where: { id }, create: { id, ...data }, update: {} });
   }
 
   for (const { id, startsOn, endsOn, publishedAt, ...data } of leoYears) {
@@ -74,16 +70,28 @@ async function main() {
     LeoYear: await prisma.leoYear.count(),
     Person: await prisma.person.count(),
     Position: await prisma.position.count(),
+    "Position (published)": await prisma.position.count({ where: { status: "PUBLISHED" } }),
     Award: await prisma.award.count(),
     JourneyStep: await prisma.journeyStep.count(),
     PrideEntry: await prisma.prideEntry.count(),
     Region: await prisma.region.count(),
     Club: await prisma.club.count(),
+    "Club (listed)": await prisma.club.count({ where: { listedInDirectory: true } }),
     ResourceCategory: await prisma.resourceCategory.count(),
     Resource: await prisma.resource.count(),
     "Resource (published)": await prisma.resource.count({ where: { published: true } }),
-    "Person (phone/email public)": await prisma.person.count({
-      where: { OR: [{ phonePublic: true }, { emailPublic: true }] },
+    "Person (any switch set to public)": await prisma.person.count({
+      where: {
+        OR: [
+          { designationPublic: true },
+          { homeClubPublic: true },
+          { membershipPublic: true },
+          { phonePublic: true },
+          { landlinePublic: true },
+          { emailPublic: true },
+          { bloodGroupPublic: true },
+        ],
+      },
     }),
   };
   console.table(counts);

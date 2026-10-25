@@ -5,7 +5,6 @@ import {
   isLeoYearSlug,
   isPlausibleLeoYearSlug,
   leoYearSlug,
-  publicContact,
 } from "@/lib/people";
 import { isPlaceholder, splitPlaceholders } from "@/lib/placeholders";
 
@@ -22,42 +21,10 @@ describe("initials", () => {
 });
 
 describe("displayName", () => {
-  it("joins prefix and name", () => {
-    expect(displayName({ prefix: "PMJF Lion", fullName: "Ramesh Adhikari" })).toBe(
+  it("joins title and name", () => {
+    expect(displayName({ title: "PMJF Lion", fullName: "Ramesh Adhikari" })).toBe(
       "PMJF Lion Ramesh Adhikari",
     );
-  });
-});
-
-describe("publicContact", () => {
-  const base = {
-    phone: "9800000000",
-    email: "a@b.org",
-    phonePublic: false,
-    emailPublic: false,
-    consentAt: "2026-09-01",
-  };
-
-  it("hides phone and email unless the toggle is on", () => {
-    expect(publicContact(base)).toEqual({ phone: null, email: null });
-    expect(publicContact({ ...base, phonePublic: true })).toEqual({
-      phone: "9800000000",
-      email: null,
-    });
-    expect(publicContact({ ...base, emailPublic: true })).toEqual({ phone: null, email: "a@b.org" });
-  });
-
-  it("returns nothing for a public toggle on an empty value", () => {
-    expect(
-      publicContact({ phone: "  ", email: null, phonePublic: true, emailPublic: true, consentAt: "2026-09-01" }),
-    ).toEqual({ phone: null, email: null });
-  });
-
-  it("keeps both private without a consent date, even with the toggles on", () => {
-    expect(publicContact({ ...base, phonePublic: true, emailPublic: true, consentAt: null })).toEqual({
-      phone: null,
-      email: null,
-    });
   });
 });
 

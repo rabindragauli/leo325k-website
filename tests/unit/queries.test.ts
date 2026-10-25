@@ -9,10 +9,12 @@ import {
   prideCards,
   resourceLibrary,
   toPublicPerson,
+  toPublicPosition,
+  type LeadershipView,
 } from "@/server/queries/views";
 
 // The seed rows (src/data) as the loaders would return them, with people still raw so tests can
-// set private fields; toSource applies the same public filter as src/server/queries/loaders.ts.
+// set private fields; toSource applies the same visibility rule as src/server/queries/loaders.ts.
 const staticSource = {
   leoYears,
   people,
@@ -27,7 +29,12 @@ const staticSource = {
 };
 type DataSource = typeof staticSource;
 
-const toSource = (db: DataSource) => ({ ...db, people: db.people.map(toPublicPerson) });
+const toSource = (db: DataSource) => ({
+  ...db,
+  people: db.people.map(toPublicPerson),
+  positions: db.positions.map((pos) => toPublicPosition(pos, db.people.find((p) => p.id === pos.personId))),
+});
+const section = (view: LeadershipView, id: string) => view.team?.sections.find((s) => s.id === id)?.people ?? [];
 const getLeadershipView = async (year?: string | null, db = staticSource) => leadershipView(toSource(db), year);
 const getArchivedYearSlugs = async (db = staticSource) => archivedYearSlugs(db);
 const getPrideEntries = async (db = staticSource) => prideCards(toSource(db));
@@ -47,13 +54,14 @@ describe("getLeadershipView (seed data)", () => {
     const view = (await getLeadershipView("2025-26"))!;
     expect(view.comingSoon).toBe(false);
     expect(view.selected.slug).toBe("2025-26");
-    expect(view.team?.leos.map((p) => p.role)).toEqual([
+    expect(view.team?.sections.map((s) => s.label)).toEqual(["District Board", "District Advisors"]);
+    expect(section(view, "district-board").map((p) => p.role)).toEqual([
       "District President",
       "Vice District President",
       "District Secretary",
       "District Treasurer",
     ]);
-    expect(view.team?.lions).toHaveLength(5);
+    expect(section(view, "district-advisors")).toHaveLength(5);
   });
 
   it("falls back to the default view for unknown years", async () => {
@@ -72,36 +80,91 @@ describe("getLeadershipView (seed data)", () => {
     expect(president.journey).toHaveLength(9);
   });
 
-  it("leaves an unknown home club empty (placeholder) and Lions keep their LC", async () => {
-    const lions = (await getLeadershipView("2025-26"))!.team!.lions;
-    expect(lions[0]).toMatchObject({ name: "MJF Lion Durga Prasad Humagain", homeClub: "LC Pokhara Peace Chautari" });
-    expect(lions[4]).toMatchObject({ role: "Cabinet Treasurer", homeClub: null });
+  it("leaves an unknown home club empty (placeholder) and Lions show their unlisted club", async () => {
+    const advisors = section((await getLeadershipView("2025-26"))!, "district-advisors");
+    expect(advisors[0]).toMatchObject({ name: "MJF Lion Durga Prasad Humagain", homeClub: "LC Pokhara Peace Chautari" });
+    expect(advisors[4]).toMatchObject({ role: "Cabinet Treasurer", homeClub: null });
   });
 
-  it("never exposes private fields", async () => {
-    const view = (await getLeadershipView("2025-26"))!;
-    for (const card of [...view.team!.leos, ...view.team!.lions]) {
-      expect(card).not.toHaveProperty("membershipId");
-      expect(card.phone).toBeNull();
-      expect(card.email).toBeNull();
-    }
+  // Ashish with every private value filled in, and the given switches
+  const ashishWith = (switches: Partial<DataSource["people"][number]>): DataSource => ({
+    ...staticSource,
+    people: staticSource.people.map((p) =>
+      p.id === "p-ashish-lamichhane"
+        ? {
+            ...p,
+            phone: "9800000001",
+            landline: "01-0000001",
+            email: "x@y.org",
+            membershipId: "M-TEST",
+            bloodGroup: "AB-",
+            address: "ADDRESS-TEST",
+            ...switches,
+          }
+        : p,
+    ),
   });
+  const ashishCard = async (switches: Partial<DataSource["people"][number]>) =>
+    section((await getLeadershipView("2025-26", ashishWith(switches)))!, "district-board")[1];
 
-  it("shows phone/email only for people who made them public with a consent date", async () => {
-    const ashishWith = (consentAt: string | null): DataSource => ({
-      ...staticSource,
-      people: staticSource.people.map((p) =>
-        p.id === "p-ashish-lamichhane"
-          ? { ...p, phone: "98", phonePublic: true, email: "x@y.org", emailPublic: false, membershipId: "M1", consentAt }
-          : p,
-      ),
+  it("shows only designation and home club by default, never address", async () => {
+    const card = await ashishCard({ phonePublic: null, emailPublic: null });
+    expect(card).toMatchObject({
+      role: "Vice District President",
+      homeClub: "Leo Club of Pokhara Silver Mountains",
+      membershipNo: null,
+      phone: null,
+      landline: null,
+      email: null,
+      bloodGroup: null,
     });
-    const ashish = (await getLeadershipView("2025-26", ashishWith("2026-09-01")))!.team!.leos[1];
-    expect(ashish).toMatchObject({ phone: "98", email: null });
-    expect(JSON.stringify(ashish)).not.toContain("M1");
-    // Toggle on but no consent date: still private
-    const noConsent = (await getLeadershipView("2025-26", ashishWith(null)))!.team!.leos[1];
-    expect(noConsent).toMatchObject({ phone: null, email: null });
+    expect(JSON.stringify(await getLeadershipView("2025-26", ashishWith({})))).not.toMatch(/ADDRESS-TEST|M-TEST|9800000001/);
+  });
+
+  it("shows each value only when its own switch is on", async () => {
+    const card = await ashishCard({ phonePublic: true, emailPublic: false, membershipPublic: true, bloodGroupPublic: true });
+    expect(card).toMatchObject({ phone: "9800000001", email: null, membershipNo: "M-TEST", bloodGroup: "AB-", landline: null });
+  });
+
+  it("hides designation and home club when switched off", async () => {
+    const card = await ashishCard({ designationPublic: false, homeClubPublic: false });
+    expect(card).toMatchObject({ role: null, homeClub: null });
+  });
+
+  it("hides contact, membership no. and blood group for under-18 members, whatever the switches", async () => {
+    const card = await ashishCard({
+      under18: true,
+      phonePublic: true,
+      landlinePublic: true,
+      emailPublic: true,
+      membershipPublic: true,
+      bloodGroupPublic: true,
+    });
+    expect(card).toMatchObject({ phone: null, landline: null, email: null, membershipNo: null, bloodGroup: null });
+    expect(card.role).toBe("Vice District President");
+  });
+
+  it("shows a photo only with photo consent", async () => {
+    expect((await ashishCard({ photo: "abc.webp" })).photo).toBeNull();
+    expect((await ashishCard({ photo: "abc.webp", photoConsent: true })).photo).toBe("abc.webp");
+  });
+
+  it("leaves out draft positions", async () => {
+    const db: DataSource = {
+      ...staticSource,
+      positions: staticSource.positions.map((p) => (p.role === "District Treasurer" ? { ...p, status: "DRAFT" } : p)),
+    };
+    const roles = section((await getLeadershipView("2025-26", db))!, "district-board").map((p) => p.role);
+    expect(roles).not.toContain("District Treasurer");
+    expect(roles).toHaveLength(3);
+  });
+
+  it("finds the District President case-insensitively", async () => {
+    const db: DataSource = {
+      ...staticSource,
+      positions: staticSource.positions.map((p) => (p.sortOrder === 0 && p.group === "DISTRICT_BOARD" ? { ...p, role: " district president " } : p)),
+    };
+    expect((await getLeadershipView("2025-26", db))!.team!.president?.name).toBe("Leo Prativa Shrestha");
   });
 
   it("shows the current year once it is published", async () => {
@@ -112,7 +175,7 @@ describe("getLeadershipView (seed data)", () => {
     const view = (await getLeadershipView(null, db))!;
     expect(view.comingSoon).toBe(false);
     expect(view.team?.year.slug).toBe("2026-27");
-    expect(view.team?.leos).toEqual([]);
+    expect(view.team?.sections).toEqual([]);
   });
 
   it("hides unpublished past years from the switcher", async () => {
@@ -154,7 +217,7 @@ describe("getPrideEntries", () => {
 });
 
 describe("getClubs", () => {
-  it("returns visible clubs A–Z with slugs", async () => {
+  it("returns listed clubs A–Z with slugs (unlisted home clubs never)", async () => {
     const list = await getClubs();
     expect(list.map((c) => c.slug)).toEqual([
       "baglung-kaligandaki",
@@ -164,8 +227,8 @@ describe("getClubs", () => {
     ]);
   });
 
-  it("drops hidden clubs", async () => {
-    const db = { ...staticSource, clubs: staticSource.clubs.map((c, i) => ({ ...c, visible: i !== 0 })) };
+  it("drops clubs not listed in the directory", async () => {
+    const db = { ...staticSource, clubs: staticSource.clubs.map((c, i) => (i === 0 ? { ...c, listedInDirectory: false } : c)) };
     expect(await getClubs(db)).toHaveLength(3);
   });
 });

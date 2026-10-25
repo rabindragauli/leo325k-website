@@ -18,11 +18,11 @@ test.describe("Leadership", () => {
     const journey = page.getByRole("heading", { name: "Leo journey" }).locator("xpath=..").getByRole("listitem");
     await expect(journey).toHaveCount(9);
 
-    const officers = page.getByRole("region", { name: "District officers" }).getByRole("article");
-    await expect(officers).toHaveCount(4);
-    const lions = page.getByRole("region", { name: "District Lion PVST" }).getByRole("article");
-    await expect(lions).toHaveCount(5);
-    await expect(lions.last()).toContainText("[Home club]");
+    const board = page.getByRole("region", { name: "District Board" }).getByRole("article");
+    await expect(board).toHaveCount(4);
+    const advisors = page.getByRole("region", { name: "District Advisors" }).getByRole("article");
+    await expect(advisors).toHaveCount(5);
+    await expect(advisors.last()).toContainText("[Home club]");
 
     // Our Pride comes after the year content, with all 5 entries
     const order = await page.evaluate(() => {
@@ -30,7 +30,8 @@ test.describe("Leadership", () => {
       return ids;
     });
     expect(order.at(-1)).toBe("our-pride");
-    expect(order.indexOf("lions")).toBeLessThan(order.indexOf("our-pride"));
+    expect(order.indexOf("district-board")).toBeLessThan(order.indexOf("district-advisors"));
+    expect(order.indexOf("district-advisors")).toBeLessThan(order.indexOf("our-pride"));
     await expect(page.getByRole("region", { name: "Our District, Our Pride" }).getByRole("listitem")).toHaveCount(5);
   });
 

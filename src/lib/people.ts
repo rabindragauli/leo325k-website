@@ -9,28 +9,22 @@ export function initials(fullName: string): string {
   return (first + last).toUpperCase();
 }
 
-/** Prefix + name as shown publicly: "PMJF Lion Ramesh Adhikari". */
-export function displayName(person: { prefix: string; fullName: string }): string {
-  return [person.prefix, person.fullName].filter(Boolean).join(" ");
-}
+/** Titles shown before the name (Phase 1 decisions; kept separate from the name). */
+export const PERSON_TITLES = [
+  "Mr.",
+  "Ms.",
+  "Leo",
+  "Lion",
+  "Leo-Lion",
+  "MJF Lion",
+  "PMJF Lion",
+] as const;
 
-/**
- * Phone/email only when the person turned the matching public toggle on AND a "consent obtained
- * on" date is recorded (docs/07 privacy rule, docs/08 consent rule). Membership ID is never part
- * of a public view.
- */
-export function publicContact(person: {
-  phone: string | null;
-  phonePublic: boolean;
-  email: string | null;
-  emailPublic: boolean;
-  consentAt: Date | string | null;
-}): { phone: string | null; email: string | null } {
-  const consent = person.consentAt !== null;
-  return {
-    phone: consent && person.phonePublic && person.phone?.trim() ? person.phone.trim() : null,
-    email: consent && person.emailPublic && person.email?.trim() ? person.email.trim() : null,
-  };
+export const BLOOD_GROUPS = ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"] as const;
+
+/** Title + name as shown publicly: "PMJF Lion Ramesh Adhikari". */
+export function displayName(person: { title: string; fullName: string }): string {
+  return [person.title, person.fullName].filter(Boolean).join(" ");
 }
 
 /** A /leadership/<slug> segment in the "2025-26" form, the second year following the first. */

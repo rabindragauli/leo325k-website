@@ -20,7 +20,28 @@ function club(name: string, city: string): Club {
     sponsor: null,
     email: null,
     logo: null,
-    visible: true,
+    listedInDirectory: true,
+  };
+}
+
+/**
+ * A home club that is not in the public directory (here: the Lions' clubs from the design data).
+ * Ids/slugs match what migration 20261025180000_sprint5a created from the old free-text field.
+ */
+function unlistedClub(name: string): Club {
+  const key = name.toLowerCase().replace(/ /g, "-");
+  return {
+    id: `club-unlisted-${key}`,
+    name,
+    slug: `unlisted-${key}`,
+    regionId: null,
+    city: null,
+    type: null,
+    charterYear: null,
+    sponsor: null,
+    email: null,
+    logo: null,
+    listedInDirectory: false,
   };
 }
 
@@ -29,4 +50,8 @@ export const clubs: Club[] = [
   club("Leo Club of Kathmandu Rainbow City", "Kathmandu"),
   club("Leo Club of Pokhara Silver Mountains", "Pokhara"),
   club("Leo Club of Baglung Kaligandaki", "Baglung"),
+  unlistedClub("LC Pokhara Peace Chautari"),
+  unlistedClub("LC Kathmandu Manamaiju"),
+  unlistedClub("LC Kathmandu Metro City"),
+  unlistedClub("LC Kathmandu Dirghajeevi"),
 ];

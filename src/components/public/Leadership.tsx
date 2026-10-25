@@ -163,31 +163,37 @@ function TeamSections({ team }: { team: Team }) {
     <>
       {team.president && <PresidentFeature president={team.president} year={team.year} />}
 
-      {team.leos.length > 0 && (
-        <Section tone="mist" labelledBy="officers" spacing="compact" innerClassName="flex flex-col gap-8">
-          <SectionHeading id="officers" eyebrow={`Leo District Team · ${team.year.label}`} title="District officers" />
-          <ul role="list" className="grid grid-cols-[repeat(auto-fit,minmax(min(260px,100%),1fr))] gap-5">
-            {team.leos.map((person) => (
-              <li key={person.id}>
-                <OfficerCard person={person} />
-              </li>
-            ))}
-          </ul>
-        </Section>
-      )}
-
-      {team.lions.length > 0 && (
-        <Section labelledBy="lions" spacing="compact" innerClassName="flex flex-col gap-8">
-          <SectionHeading id="lions" eyebrow={`Sponsoring Lions · ${team.year.label}`} title="District Lion PVST" />
-          <ul role="list" className="grid grid-cols-[repeat(auto-fit,minmax(min(220px,100%),1fr))] gap-5">
-            {team.lions.map((person) => (
-              <li key={person.id}>
-                <LionCard person={person} />
-              </li>
-            ))}
-          </ul>
-        </Section>
-      )}
+      {/* Sections in the configured order (Batch 4 redesigns this page) */}
+      {team.sections.map((section, index) => {
+        const board = section.group === "DISTRICT_BOARD";
+        const Card = board ? OfficerCard : LionCard;
+        return (
+          <Section
+            key={section.id}
+            tone={index % 2 === 0 ? "mist" : undefined}
+            labelledBy={section.id}
+            spacing="compact"
+            innerClassName="flex flex-col gap-8"
+          >
+            <SectionHeading id={section.id} eyebrow={`Leo Year ${team.year.label}`} title={section.label} />
+            <ul
+              role="list"
+              className={cn(
+                "grid gap-5",
+                board
+                  ? "grid-cols-[repeat(auto-fit,minmax(min(260px,100%),1fr))]"
+                  : "grid-cols-[repeat(auto-fit,minmax(min(220px,100%),1fr))]",
+              )}
+            >
+              {section.people.map((person) => (
+                <li key={`${section.id}-${person.id}`}>
+                  <Card person={person} />
+                </li>
+              ))}
+            </ul>
+          </Section>
+        );
+      })}
     </>
   );
 }

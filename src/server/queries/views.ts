@@ -14,46 +14,90 @@ import type {
   Resource,
   ResourceCategory,
 } from "@/data/types";
-import { displayName, initials, leoYearSlug, publicContact } from "@/lib/people";
+import {
+  DEFAULT_GROUP_ORDER,
+  GROUP_LABELS,
+  groupSlug,
+  isPresidentDesignation,
+  type DistrictGroup,
+} from "@/lib/leadership-groups";
+import { displayName, initials, leoYearSlug } from "@/lib/people";
+import { isFieldPublic, type VisibilitySubject } from "@/lib/visibility";
 
 // ── Rows ─────────────────────────────────────────────────────────────────────
 
 /**
- * A person as the public site may hold them: no membershipId, and phone/email already cleared
- * unless the person made them public with consent (toPublicPerson).
+ * A person as the public site may hold them: never address or the switches; every other value
+ * only when its switch (or the default) makes it public (src/lib/visibility.ts).
  */
-export type PublicPerson = Pick<Person, "id" | "prefix" | "fullName" | "photo" | "homeClubId" | "homeLionsClub"> & {
+export type PublicPerson = {
+  id: string;
+  title: string;
+  fullName: string;
+  photo: string | null;
+  homeClubId: string | null;
+  membershipNo: string | null;
   phone: string | null;
+  landline: string | null;
   email: string | null;
+  bloodGroup: string | null;
 };
 
+/** A published position; role (designation) is null when the person hides it. */
+export type PublicPosition = Omit<Position, "role"> & { role: string | null };
+
 export type YearRow = Pick<LeoYear, "id" | "label" | "startsOn" | "isCurrent" | "published">;
-export type ClubRow = Pick<Club, "id" | "name" | "slug" | "regionId" | "city" | "type" | "charterYear" | "sponsor" | "logo" | "visible">;
+export type ClubRow = Pick<
+  Club,
+  "id" | "name" | "slug" | "regionId" | "city" | "type" | "charterYear" | "sponsor" | "logo" | "listedInDirectory"
+>;
 
 export type LeadershipSource = {
   leoYears: YearRow[];
   people: PublicPerson[];
-  positions: Position[];
+  positions: PublicPosition[];
   awards: Award[];
   journeySteps: JourneyStep[];
   prideEntries: PrideEntry[];
-  clubs: Pick<Club, "id" | "name">[]; // home club names
+  clubs: Pick<Club, "id" | "name">[]; // home club names (listed or not)
 };
 export type ClubSource = { clubs: ClubRow[]; regions: Region[] };
 export type ResourceSource = { resourceCategories: ResourceCategory[]; resources: Resource[] };
 
-type PersonInput = Pick<Person, "id" | "prefix" | "fullName" | "photo" | "homeClubId" | "homeLionsClub"> & {
-  phone: string | null;
-  phonePublic: boolean;
-  email: string | null;
-  emailPublic: boolean;
-  consentAt: Date | string | null;
-};
+/** The switches plus whichever values were read (./loaders reads a value only when it is public). */
+export type PersonInput = VisibilitySubject &
+  Pick<Person, "id" | "title" | "fullName" | "photoConsent"> &
+  Partial<Pick<Person, "photo" | "homeClubId" | "membershipId" | "phone" | "landline" | "email" | "bloodGroup">>;
 
-/** Drops the public toggles and keeps phone/email only when public with a consent date. */
+/**
+ * The visibility rule, applied again to whatever the loader read (defence in depth) and to raw rows
+ * in unit tests. Empty strings count as missing.
+ */
 export function toPublicPerson(person: PersonInput): PublicPerson {
-  const { id, prefix, fullName, photo, homeClubId, homeLionsClub } = person;
-  return { id, prefix, fullName, photo, homeClubId, homeLionsClub, ...publicContact(person) };
+  const value = (v: string | null | undefined) => v?.trim() || null;
+  const ifPublic = (field: Parameters<typeof isFieldPublic>[1], v: string | null | undefined) =>
+    isFieldPublic(person, field) ? value(v) : null;
+  return {
+    id: person.id,
+    title: person.title,
+    fullName: person.fullName,
+    photo: person.photoConsent ? value(person.photo) : null,
+    homeClubId: ifPublic("homeClub", person.homeClubId),
+    membershipNo: ifPublic("membershipNo", person.membershipId),
+    phone: ifPublic("cell", person.phone),
+    landline: ifPublic("landline", person.landline),
+    email: ifPublic("email", person.email),
+    bloodGroup: ifPublic("bloodGroup", person.bloodGroup),
+  };
+}
+
+/** Keeps the designation only when the person shows it. */
+export function toPublicPosition(
+  position: Omit<Position, "role"> & { role?: string | null },
+  person: VisibilitySubject | undefined,
+): PublicPosition {
+  const show = person !== undefined && isFieldPublic(person, "designation");
+  return { ...position, role: show ? (position.role?.trim() || null) : null };
 }
 
 // ── People ───────────────────────────────────────────────────────────────────
@@ -62,19 +106,21 @@ export type PersonCard = {
   id: string;
   name: string;
   initials: string;
-  role: string;
-  homeClub: string | null; // null → "[Home club]" placeholder
+  role: string | null; // null: designation hidden
+  homeClub: string | null; // null → "[Home club]" placeholder (Batch 4: no placeholder when hidden)
   photo: string | null;
+  membershipNo: string | null;
   phone: string | null;
+  landline: string | null;
   email: string | null;
+  bloodGroup: string | null;
 };
 
 function homeClubName(person: PublicPerson, db: LeadershipSource): string | null {
-  if (person.homeClubId) return db.clubs.find((c) => c.id === person.homeClubId)?.name ?? null;
-  return person.homeLionsClub;
+  return person.homeClubId ? (db.clubs.find((c) => c.id === person.homeClubId)?.name ?? null) : null;
 }
 
-function personCard(person: PublicPerson, role: string, db: LeadershipSource): PersonCard {
+function personCard(person: PublicPerson, role: string | null, db: LeadershipSource): PersonCard {
   return {
     id: person.id,
     name: displayName(person),
@@ -82,8 +128,11 @@ function personCard(person: PublicPerson, role: string, db: LeadershipSource): P
     role,
     homeClub: homeClubName(person, db),
     photo: person.photo,
+    membershipNo: person.membershipNo,
     phone: person.phone,
+    landline: person.landline,
     email: person.email,
+    bloodGroup: person.bloodGroup,
   };
 }
 
@@ -97,11 +146,13 @@ export type President = PersonCard & {
   journey: { year: string; role: string; organisation: string }[];
 };
 
+export type TeamSection = { group: DistrictGroup; id: string; label: string; people: PersonCard[] };
+
 export type Team = {
   year: YearRef;
   president: President | null;
-  leos: PersonCard[];
-  lions: PersonCard[];
+  /** Non-empty groups in the configured order. */
+  sections: TeamSection[];
 };
 
 export type LeadershipView = {
@@ -124,17 +175,17 @@ const yearRef = (y: YearRow): YearRef => ({
 const newestFirst = (a: YearRow, b: YearRow) => b.startsOn.localeCompare(a.startsOn);
 
 function team(year: YearRow, db: LeadershipSource): Team {
-  const group = (g: Position["group"]) =>
+  // Only published positions of a published year (the loader already filters; kept here too).
+  const group = (g: DistrictGroup) =>
     db.positions
-      .filter((p) => p.leoYearId === year.id && p.group === g)
+      .filter((p) => p.leoYearId === year.id && p.group === g && p.status === "PUBLISHED" && year.published)
       .sort((a, b) => a.sortOrder - b.sortOrder)
       .flatMap((p) => {
         const person = db.people.find((x) => x.id === p.personId);
         return person ? [{ position: p, person }] : [];
       });
 
-  const leoRows = group("DISTRICT_LEO");
-  const lead = leoRows.find((r) => r.position.role === "District President");
+  const lead = group("DISTRICT_BOARD").find((r) => isPresidentDesignation(r.position.role));
   const president: President | null = lead
     ? {
         ...personCard(lead.person, lead.position.role, db),
@@ -153,8 +204,12 @@ function team(year: YearRow, db: LeadershipSource): Team {
   return {
     year: yearRef(year),
     president,
-    leos: leoRows.map((r) => personCard(r.person, r.position.role, db)),
-    lions: group("DISTRICT_LION").map((r) => personCard(r.person, r.position.role, db)),
+    sections: DEFAULT_GROUP_ORDER.map((g) => ({
+      group: g,
+      id: groupSlug(g),
+      label: GROUP_LABELS[g],
+      people: group(g).map((r) => personCard(r.person, r.position.role, db)),
+    })).filter((s) => s.people.length > 0),
   };
 }
 
@@ -238,16 +293,16 @@ export type ClubCard = {
   logo: string | null;
 };
 
-/** Visible clubs only, A–Z. */
+/** Clubs listed in the directory only, A–Z. */
 export function clubCards(db: ClubSource): ClubCard[] {
   return db.clubs
-    .filter((c) => c.visible)
+    .filter((c) => c.listedInDirectory)
     .sort((a, b) => a.name.localeCompare(b.name))
     .map((c) => ({
       id: c.id,
       slug: c.slug,
       name: c.name,
-      city: c.city,
+      city: c.city ?? "",
       region: db.regions.find((r) => r.id === c.regionId)?.name ?? null,
       type: c.type,
       charterYear: c.charterYear,

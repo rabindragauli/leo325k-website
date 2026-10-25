@@ -24,42 +24,43 @@ export const leoYears: LeoYear[] = [
   },
 ];
 
-function person(
-  id: string,
-  prefix: string,
-  fullName: string,
-  home: { clubId?: string; lionsClub?: string } = {},
-): Person {
+// Switches follow the default (null), except phone/email: explicitly hidden (false) as in migration
+// 20261025180000_sprint5a, because nobody here consented under the old rule.
+function person(id: string, title: string, fullName: string, homeClubId: string | null = null): Person {
   return {
     id,
-    prefix,
+    title,
     fullName,
     photo: null,
-    homeClubId: home.clubId ?? null,
-    homeLionsClub: home.lionsClub ?? null,
+    photoConsent: false,
+    under18: false,
+    homeClubId,
     membershipId: null,
     phone: null,
-    phonePublic: false,
+    landline: null,
     email: null,
+    bloodGroup: null,
+    address: null,
+    designationPublic: null,
+    homeClubPublic: null,
+    membershipPublic: null,
+    phonePublic: false,
+    landlinePublic: null,
     emailPublic: false,
-    consentAt: null,
+    bloodGroupPublic: null,
   };
 }
 
 // One record per human: Prativa Shrestha is both 2025–26 District President and in Our Pride.
 export const people: Person[] = [
-  person("p-prativa-shrestha", "Leo", "Prativa Shrestha", { clubId: "club-kathmandu-machhapokhari" }),
-  person("p-ashish-lamichhane", "Leo", "Ashish Lamichhane", { clubId: "club-pokhara-silver-mountains" }),
-  person("p-smarika-thapa", "Leo", "Smarika Thapa", { clubId: "club-kathmandu-rainbow-city" }),
-  person("p-sugam-khadka", "Leo", "Sugam Khadka", { clubId: "club-baglung-kaligandaki" }),
-  person("p-durga-prasad-humagain", "MJF Lion", "Durga Prasad Humagain", {
-    lionsClub: "LC Pokhara Peace Chautari",
-  }),
-  person("p-ramesh-adhikari", "PMJF Lion", "Ramesh Adhikari", { lionsClub: "LC Kathmandu Manamaiju" }),
-  person("p-bishnu-hari-phuyal", "PMJF Lion", "Bishnu Hari Phuyal", {
-    lionsClub: "LC Kathmandu Metro City",
-  }),
-  person("p-triza-dhakal", "PMJF Lion", "Triza Dhakal", { lionsClub: "LC Kathmandu Dirghajeevi" }),
+  person("p-prativa-shrestha", "Leo", "Prativa Shrestha", "club-kathmandu-machhapokhari"),
+  person("p-ashish-lamichhane", "Leo", "Ashish Lamichhane", "club-pokhara-silver-mountains"),
+  person("p-smarika-thapa", "Leo", "Smarika Thapa", "club-kathmandu-rainbow-city"),
+  person("p-sugam-khadka", "Leo", "Sugam Khadka", "club-baglung-kaligandaki"),
+  person("p-durga-prasad-humagain", "MJF Lion", "Durga Prasad Humagain", "club-unlisted-lc-pokhara-peace-chautari"),
+  person("p-ramesh-adhikari", "PMJF Lion", "Ramesh Adhikari", "club-unlisted-lc-kathmandu-manamaiju"),
+  person("p-bishnu-hari-phuyal", "PMJF Lion", "Bishnu Hari Phuyal", "club-unlisted-lc-kathmandu-metro-city"),
+  person("p-triza-dhakal", "PMJF Lion", "Triza Dhakal", "club-unlisted-lc-kathmandu-dirghajeevi"),
   person("p-ram-kumar-lamichhane", "Lion", "Ram Kumar Lamichhane"), // home club: open placeholder
   person("p-shekhar-karki", "Lion", "Shekhar Karki"),
   person("p-rajendra-baral", "Leo-Lion", "Rajendra Baral"),
@@ -70,15 +71,19 @@ export const people: Person[] = [
 const presidentMessage2025 =
   "Welcome to Leo District Council 325 K Nepal. This year our focus is practical service, stronger district coordination, youth leadership development, and better public visibility of club impact. I invite every club and every Leo to serve with discipline, creativity, and compassion.";
 
+// Ids keep the Sprint 3 form ("district_leo" / "district_lion") so `db:seed` stays create-only on
+// databases seeded before the groups were renamed.
+const legacyIdGroup = { DISTRICT_BOARD: "district_leo", DISTRICT_ADVISORS: "district_lion" } as const;
+
 function position(
   personId: string,
-  group: Position["group"],
+  group: keyof typeof legacyIdGroup,
   role: string,
   sortOrder: number,
   message: string | null = null,
 ): Position {
   return {
-    id: `pos-2025-26-${group.toLowerCase()}-${sortOrder}`,
+    id: `pos-2025-26-${legacyIdGroup[group]}-${sortOrder}`,
     personId,
     leoYearId: "ly-2025-26",
     group,
@@ -86,19 +91,20 @@ function position(
     clubId: null,
     message,
     sortOrder,
+    status: "PUBLISHED",
   };
 }
 
 export const positions: Position[] = [
-  position("p-prativa-shrestha", "DISTRICT_LEO", "District President", 0, presidentMessage2025),
-  position("p-ashish-lamichhane", "DISTRICT_LEO", "Vice District President", 1),
-  position("p-smarika-thapa", "DISTRICT_LEO", "District Secretary", 2),
-  position("p-sugam-khadka", "DISTRICT_LEO", "District Treasurer", 3),
-  position("p-durga-prasad-humagain", "DISTRICT_LION", "District Governor", 0),
-  position("p-ramesh-adhikari", "DISTRICT_LION", "First Vice District Governor", 1),
-  position("p-bishnu-hari-phuyal", "DISTRICT_LION", "Second Vice District Governor", 2),
-  position("p-triza-dhakal", "DISTRICT_LION", "Cabinet Secretary", 3),
-  position("p-ram-kumar-lamichhane", "DISTRICT_LION", "Cabinet Treasurer", 4),
+  position("p-prativa-shrestha", "DISTRICT_BOARD", "District President", 0, presidentMessage2025),
+  position("p-ashish-lamichhane", "DISTRICT_BOARD", "Vice District President", 1),
+  position("p-smarika-thapa", "DISTRICT_BOARD", "District Secretary", 2),
+  position("p-sugam-khadka", "DISTRICT_BOARD", "District Treasurer", 3),
+  position("p-durga-prasad-humagain", "DISTRICT_ADVISORS", "District Governor", 0),
+  position("p-ramesh-adhikari", "DISTRICT_ADVISORS", "First Vice District Governor", 1),
+  position("p-bishnu-hari-phuyal", "DISTRICT_ADVISORS", "Second Vice District Governor", 2),
+  position("p-triza-dhakal", "DISTRICT_ADVISORS", "Cabinet Secretary", 3),
+  position("p-ram-kumar-lamichhane", "DISTRICT_ADVISORS", "Cabinet Treasurer", 4),
 ];
 
 export const awards: Award[] = [

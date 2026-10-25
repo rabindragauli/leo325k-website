@@ -2,7 +2,9 @@
 // the same rows into MySQL and swap src/server/queries/* to Prisma without touching the pages.
 // Dates are ISO strings here (Prisma returns Date objects).
 
-export type TeamGroup = "DISTRICT_LEO" | "DISTRICT_LION" | "CLUB";
+export type PositionGroup =
+  "DISTRICT_BOARD" | "DISTRICT_ADVISORS" | "DISTRICT_PRESIDENT_ADVISORS" | "CLUB";
+export type PositionStatus = "DRAFT" | "PUBLISHED";
 export type ClubType = "ALPHA" | "OMEGA";
 export type ResourceKind = "FILE" | "LINK";
 
@@ -16,30 +18,40 @@ export type LeoYear = {
   publishedAt: string | null;
 };
 
+// *Public switches: null = follow PUBLIC_BY_DEFAULT (src/lib/visibility.ts). address is admin-only.
 export type Person = {
   id: string;
-  prefix: string; // Leo, Leo-Lion, Lion, MJF Lion, PMJF Lion
+  title: string; // PERSON_TITLES (src/lib/people.ts)
   fullName: string;
   photo: string | null;
+  photoConsent: boolean;
+  under18: boolean;
   homeClubId: string | null;
-  homeLionsClub: string | null;
-  membershipId: string | null; // admin only, never public
-  phone: string | null;
-  phonePublic: boolean;
+  membershipId: string | null;
+  phone: string | null; // cell
+  landline: string | null;
   email: string | null;
-  emailPublic: boolean;
-  consentAt: string | null;
+  bloodGroup: string | null;
+  address: string | null;
+  designationPublic: boolean | null;
+  homeClubPublic: boolean | null;
+  membershipPublic: boolean | null;
+  phonePublic: boolean | null;
+  landlinePublic: boolean | null;
+  emailPublic: boolean | null;
+  bloodGroupPublic: boolean | null;
 };
 
 export type Position = {
   id: string;
   personId: string;
   leoYearId: string;
-  group: TeamGroup;
-  role: string;
+  group: PositionGroup;
+  role: string; // designation
   clubId: string | null;
   message: string | null; // District President's message for the year
   sortOrder: number;
+  status: PositionStatus;
 };
 
 export type Award = { id: string; personId: string; title: string; year: string; sort: number };
@@ -68,13 +80,13 @@ export type Club = {
   name: string;
   slug: string;
   regionId: string | null;
-  city: string;
+  city: string | null; // null only for unlisted clubs
   type: ClubType | null;
   charterYear: number | null;
   sponsor: string | null;
   email: string | null;
   logo: string | null;
-  visible: boolean;
+  listedInDirectory: boolean;
 };
 
 export type ResourceCategory = { id: string; name: string; sort: number };

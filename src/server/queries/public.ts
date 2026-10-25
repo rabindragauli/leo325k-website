@@ -24,12 +24,13 @@ export type {
   ResourceItem,
   ResourceLibrary,
   Team,
+  TeamSection,
   YearRef,
 } from "./views";
 
-// Public data access for the pages. Only public fields leave ./loaders (explicit `select`, no
-// membershipId, phone/email only when public with consent), and only visible clubs, published
-// resources and current/published Leo Years.
+// Public data access for the pages. Only public fields leave ./loaders (person values are read only
+// when their visibility switch makes them public; address never), and only clubs listed in the
+// directory, published resources, current/published Leo Years and published positions.
 //
 // Caching (Cache Components): each source is a 'use cache' function with the "publicContent"
 // lifetime (next.config.ts) and a tag. Pages that call these after `connection()` render per request
@@ -81,7 +82,7 @@ export async function getPrideEntries(): Promise<PrideCard[]> {
   return prideCards(await leadershipSource());
 }
 
-/** Visible clubs only, A–Z. */
+/** Clubs listed in the directory only, A–Z. */
 export async function getClubs(): Promise<ClubCard[]> {
   return clubCards(await clubSource());
 }

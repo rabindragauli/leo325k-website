@@ -16,6 +16,23 @@ Start from `starter/prisma/schema.prisma`. Key ideas:
 | Contact | `Message` | Requires `consentAt`; auto-delete after 12 months. |
 | Security | `User`, `Session`, `LoginThrottle`, `ActivityLog` (+ `TrustedDevice`, `LoginCode`, `RateLimit` kept for Sprint 6) | Store only **hashes** of tokens/codes; usernames and IPs in throttle keys only as HMACs. |
 
+## Sprint 5a changes (migrations `20261025180000_sprint5a`, `20261025181000_position_updatedat_default`)
+- `User.mustChangePassword` (default false): set when an Admin creates a user or resets a password.
+- `Person`: `prefix` → `title` (Mr., Ms., Leo, Lion, Leo-Lion, MJF Lion, PMJF Lion; `PERSON_TITLES`), new `landline`,
+  `bloodGroup`, `address` (admin-only, never read by a public query), `under18`, `photoConsent`.
+  Visibility switches `designationPublic`, `homeClubPublic`, `membershipPublic`, `phonePublic`, `landlinePublic`,
+  `emailPublic`, `bloodGroupPublic`: **null = follow `PUBLIC_BY_DEFAULT`** (`src/lib/visibility.ts`), true/false = set
+  for that person. The migration set phone/email to explicit `false` for everyone without the old consent date.
+  `consentAt` and `homeLionsClub` are gone (the Lions' clubs became unlisted `Club` rows).
+- `Club.visible` → `listedInDirectory`; `city` is optional (unlisted clubs added by name only).
+- `Position.group`: `PositionGroup` = `DISTRICT_BOARD`, `DISTRICT_ADVISORS`, `DISTRICT_PRESIDENT_ADVISORS`, `CLUB`
+  (was District Leo / Lion PVST); `status` DRAFT|PUBLISHED (existing rows PUBLISHED); `createdAt`/`updatedAt`. The
+  `@@unique([leoYearId, group, role, clubId])` key is replaced by an index (advisors may share a designation).
+- Public = `PUBLISHED` position **and** published Leo Year. Public loaders read people in two steps: switches first,
+  then each private value only for the rows where it is public (`src/server/queries/loaders.ts`).
+- MariaDB 10.4 notes: renames use `CHANGE` (no `RENAME COLUMN`); `ALTER COLUMN … DROP DEFAULT` was silently ignored,
+  so the second migration redefines `Position.updatedAt` with `MODIFY`.
+
 ## Sprint 4 changes (auth)
 - `User`: `username` (unique, `VarChar(32)`, trimmed + lowercase, `[a-z0-9._-]{3,32}`), `displayName`, `email` optional
   (empty until Sprint 6), `passwordHash` required (bcrypt cost 12), `role` ADMIN|EDITOR, `active`, `lastLoginAt`.
