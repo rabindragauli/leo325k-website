@@ -12,11 +12,44 @@ Estimates assume part-time work (evenings + Saturdays) with an AI agent doing mo
 | 2 | Public pages with seed data | 1 week |
 | 3 | Database + seed + live data | 3–4 evenings |
 | 4 | Auth, roles, sessions | 3–4 evenings |
-| 5 | Admin portal CRUD | 1.5–2 weeks |
-| 6 | Contact form, messages, email | 2–3 evenings |
+| 5a | Admin: district board + advisors, site settings in the DB | 1 week |
+| 5b | Admin: regions, clubs, club pages + boards, photos, CSV import | 1 week |
+| 6 | Contact form, messages, email, password reset | 2–3 evenings |
 | 7 | Hardening: security, SEO, performance, tests | 1 week |
 | 8 | Deploy to staging on Kailash Cloud | 2–3 evenings |
 | 9 | Content load, District President review, go-live | depends on council |
+
+## Phase 1 decisions (Oct 2026)
+These replace `MASTER_PROMPT.md` §2 and the older notes in these docs wherever they differ.
+- **Scope is final.** Events/news are **out** (Phase 2, together with club login and online submissions).
+- **Regions** are stored as numbers 1–5 and displayed in Roman numerals (Region I–V). Each region has a **Region Coordinator
+  per Leo Year**, which is a `Position` (not a field on Region).
+- **Clubs:** 35 clubs come from an Excel import in Sprint 5b (converted to CSV first; only public columns are committed).
+  Each club has a public **Club ID** and **charter date**, and its own page with the **current-year board only**
+  (P, V, S, T, M = President, Vice President, Secretary, Treasurer, Membership Chairperson) with photos, plus plain-text club
+  info written by an admin (about, meeting day/place, Facebook link, sponsoring Lions club, logo). Board history stays in
+  the DB and is not shown.
+- **Home club** may be a club that is not in the public directory (older or other clubs): Club gets a **"listed in
+  directory"** flag; unlisted clubs can be chosen as home clubs but never appear on the Clubs page.
+- **Leadership page** sections per Leo Year, in this order: **District Board, District Advisors, District President
+  Advisors**. All are `Position`s with a group; the order is configurable by an Admin.
+- **Person fields:** title (Mr., Leo, Lion, Leo-Lion; separate from the name), name, designation, membership no., cell,
+  optional landline, email, blood group, home club, optional address, photo, under-18 flag.
+- **Person visibility** (details in docs/07): per-person and per-field "public" switches for designation, home club,
+  membership no., cell, landline, email and blood group. Until the District President confirms in writing, all default to
+  **hidden except designation and home club**. The council's proposal is "public by default": **pending DP written
+  confirmation**; changing the default later is a single config value. Under-18 members: contact fields, membership no. and
+  blood group always hidden, no override. Address is admin-only. Public queries read a field only when it is public
+  (filtered in the query, not the UI). This replaces the earlier "no blood group / consent before public" rule.
+- **Photos:** resized to WebP, EXIF/GPS stripped; a **"photo consent confirmed"** checkbox must be ticked before a photo is
+  public (needed for under-18 members).
+- **Nepali:** Devanagari text is allowed in fields, with a Devanagari font fallback (system fonts first; any webfont is a
+  subset with `font-display: swap`). The site stays in English.
+- **Publishing:** only Admins publish; Editors create and edit drafts only (enforced on the server, not just hidden in the UI).
+- **Admin sign-in:** username + password (no email code in Sprint 4). The new-device email code is decided in Sprint 6, once
+  SMTP works; password reset by email is Sprint 6.
+- **Sprint 5 split:** 5a (district board + advisors, site settings moved from `src/data/content.ts` to the DB, font
+  fallback) and 5b (regions, clubs, club pages, club boards, photos, CSV import).
 
 ---
 
@@ -61,26 +94,53 @@ Estimates assume part-time work (evenings + Saturdays) with an AI agent doing mo
     `leadership`, which shows home club names), `resources`. Safety net: content revalidates every 15 minutes.
 
 ## Sprint 4 — Auth, roles, sessions
-- Login page at `/${ADMIN_SLUG}/login`; middleware rewrites `/${ADMIN_SLUG}/*` → internal `/admin/*`; direct `/admin` → 404
-- Password (bcryptjs, cost 12) → if device not trusted, send 6-digit code (10 min expiry, 5 attempts) → trusted-device cookie 30 days
-- DB sessions (random 32-byte token, store SHA-256 hash), 8 h idle / 7 day absolute expiry, logout everywhere
-- `requireUser()`, `requireRole('ADMIN')` helpers used by every admin page/action; forgot-password via emailed one-time link
-- Rate limits (DB-backed): login 5 / 15 min per email+IP, code 5 tries, password reset 3 / hour
-- First admin created by `npm run admin:create` CLI (prompts for email), never by a public page
-- **Done when:** Editor cannot reach Users & roles (UI and server both); tests cover role checks.
+- Accounts: `User` (username, display name, role Admin|Editor, password hash, active, optional email). Usernames are trimmed,
+  lowercase, unique, `[a-z0-9._-]{3,32}`. No users in the seed: `npm run user:create` (interactive, hidden password typed
+  twice, bcryptjs cost 12, prints no secrets; refuses `NODE_ENV=production` without `--allow-production`)
+- Passwords: min 12 characters, max 72 UTF-8 bytes (bcrypt limit), small targeted blocklist (docs/07), new ≠ current
+- Sessions without an auth library: random 32-byte token in an httpOnly cookie (`__Host-leo_session` in production), only its
+  SHA-256 hash in `Session`; 2 h idle / 12 h absolute, `lastSeen` written at most every 5 min, new token on every login,
+  logout deletes the row, deactivating a user ends their sessions
+- Login protection (DB-backed): one generic error; bcrypt compare always runs; per-username backoff only (never a hard
+  lock); per IP and per username+IP 5 failures → 15 min lock; unknown usernames throttled the same; client IP from one
+  helper (rightmost `X-Forwarded-For`); successes, failures, lockouts and logouts in `ActivityLog`
+- Hidden admin path: `proxy.ts` rewrites `/${ADMIN_SLUG}/…` to an internal route; direct `/admin` and the internal route → 404;
+  the slug never appears in client bundles, robots, sitemap, logs or responses to unauthenticated users (except the
+  sign-in page at the slug itself)
+- Defence in depth: `proxy.ts` is not the security boundary; every admin page, layout, route handler and server action calls
+  `requireUser()` / `requireAdmin()` itself (server actions can be POSTed to any URL)
+- Screens: sign-in (full banner) at `/${ADMIN_SLUG}`, empty dashboard shell (slim bar, name, sign out, change my password).
+  No email code or password reset yet (Sprint 6)
+- **Done when:** the e2e and unit tests in the Sprint 4 plan pass, and `npm run build` still works without a database.
 
-## Sprint 5 — Admin portal CRUD
+## Sprint 5a — Admin: district leadership + site settings
+- District Board, District Advisors, District President Advisors per Leo Year (Positions with a group, Admin-set order),
+  Person editor with the new fields and visibility switches (Phase 1 decisions above), publish a year (Admin only)
+- Site settings moved from `src/data/content.ts` to `SiteSetting` (Zod per key); Devanagari font fallback
+
+## Sprint 5b — Admin: regions, clubs, photos, import
+- Regions I–V with a Region Coordinator per Leo Year; clubs with Club ID, charter date, "listed in directory" flag, admin
+  club info; a public page per club with the current-year P/V/S/T/M board
+- Photos: WebP, EXIF/GPS stripped, "photo consent confirmed" before public
+- CSV import of the 35 clubs (from the council's Excel file; only public columns committed)
+
+## Sprint 5 — shared rules (5a and 5b)
 - Layout: compact theme bar + sidebar (`design/screens/admin/*`), mobile layouts for Dashboard/Messages/Leadership/Edit club
 - Screens in `docs/04_ROUTES_AND_SCREENS.md`: Dashboard, Leadership (+ publish year), Person editor (find-first flow), Our Pride, Clubs + Edit club (+ Club PVST), Resources, Site content (incl. Leo Year theme uploads), Users & roles, Activity log
 - Uploads: type + size checks (images ≤ 5 MB, docs ≤ 20 MB, allow-list of MIME/extension), random file names, sharp resize (portraits 800×800, logos 1000 px, hero 1920 px) → WebP
 - Every mutation: Zod → `requireRole` → Prisma → `ActivityLog` entry → `revalidateTag` (see the `TODO Sprint 5` in `src/server/queries/public.ts`)
 - Public content is cached by tag (Sprint 3): leadership/people/Our Pride edits and publishing/archiving a Leo Year → `revalidateTag("leadership")` (also refreshes Home's coming-soon card and the stored `/leadership/<year>` pages); clubs/regions → `revalidateTag("clubs")`; resources → `revalidateTag("resources")`
-- **Consent rule, enforced on the server** (docs/08): a phone/email public toggle can only be turned on when `Person.consentAt` ("consent obtained on") is set; saving writes an Activity log entry. The public queries already hide phone/email without a consent date (Sprint 3)
+- **Visibility rules, enforced on the server** (docs/07, Phase 1 decisions above): per-field public switches with the
+  configured defaults, under-18 override, address admin-only, filtering inside the public queries; changes write an
+  Activity log entry. This replaces the Sprint 3 `consentAt` rule
+- **Publishing:** Editors save drafts only; every publish action calls `requireAdmin()`
 - Position uniqueness: `@@unique([leoYearId, group, role, clubId])` does not stop a duplicate district role (`clubId` is NULL), so the person editor must check it
 - After publishing a new Leo Year, its URL must stop returning a cached 404 (check that `revalidateTag('leadership')` clears it)
 - **Done when:** a non-technical Editor can publish the 2026–27 team, add a club with logo, upload a PDF, and see it live within a minute.
 
-## Sprint 6 — Contact form, messages, email
+## Sprint 6 — Contact form, messages, email, password reset
+- Password reset by emailed one-time link (hash stored, short expiry, rate-limited); decide on the new-device email code
+  (`TrustedDevice` / `LoginCode` tables are kept until then)
 - Server action: Zod + Turnstile verify + consent required + rate limit (5 / hour / IP) → save `Message` → email to `CONTACT_INBOX` (club topic includes club name) → success state
 - Admin Messages inbox: filters, mark replied, archive, `mailto:` reply
 - Dashboard “Send a test message” button

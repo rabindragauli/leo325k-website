@@ -23,7 +23,9 @@ Seed files as **records without uploaded files** (resources start `published=fal
 | `[District office address]`, Google Maps link, office hours confirmation (“Sunday – Friday, 10:00 AM – 5:00 PM”) | Footer, Contact |
 | `[2 working days]` reply time | Contact, Privacy |
 | Home numbers: `[##]` clubs, `[###]` members, `[##]` service projects, `[#]` regions | Home |
-| Region names; each club's region, type, charter year, sponsor, email, logo | Clubs |
+| The 35 clubs (Excel → CSV, Sprint 5b): Club ID, name, region (I–V), charter date, sponsoring Lions club, meeting day/place, Facebook link, logo | Clubs, club pages |
+| Region Coordinators per Leo Year (Region I–V) | Clubs / Leadership |
+| Current-year club boards (P, V, S, T, M) with photos and photo consent | Club pages |
 | Mission, vision, 1–2 sentences of district history | About |
 | Hero photo, About photo, portraits (800 × 800) | Home, About, Leadership |
 | Official district logo (PNG + SVG); 2× banner artwork and badges | Header, footer, favicon |
@@ -41,7 +43,7 @@ Seed files as **records without uploaded files** (resources start `published=fal
 ## Wording changes that need council approval
 | Change | Where | Status |
 |---|---|---|
-| “What we collect”: *“Officers’ phone numbers and membership IDs are kept for district records and are never shown on the website.”* → *“Officers’ personal phone numbers and email addresses are shown only if the officer chooses to make them public. Membership IDs are kept for district records and are never shown on the website.”* (matches the phone/email public toggles) | Privacy | **Needs council approval** |
+| “What we collect”: *“Officers’ phone numbers and membership IDs are kept for district records and are never shown on the website.”* → *“Officers’ personal phone numbers and email addresses are shown only if the officer chooses to make them public. Membership IDs are kept for district records and are never shown on the website.”* (matches the phone/email public toggles) | Privacy | **Superseded:** rewrite to match the Phase 1 visibility rules (per-field switches, under-18 rule, blood group collected, address admin-only) once the District President confirms the default in writing; then council approval |
 
 ## Seed source (`src/data/*` → `prisma/seed.ts`)
 Typed records shaped like the Prisma models, loaded by `prisma/seed.ts` (create-only upserts on their ids, so `npm run db:seed`
@@ -51,13 +53,25 @@ hidden until featured files are uploaded (`featuredOrder`: Logo Pack, Monthly Cl
 
 Seeded rows: LeoYear 2 · Person 13 · Position 9 · Award 8 · JourneyStep 9 · PrideEntry 5 · Region 0 · Club 4 ·
 ResourceCategory 6 · Resource 15 (2 published). `SiteSetting`, `ThemeSet` and `User` are not seeded (site text stays in
-`src/data/content.ts` until the Site content screen in Sprint 5; the first admin comes from `npm run admin:create`).
+`src/data/content.ts` until Sprint 5a moves it to the DB). No real users are ever seeded: accounts come from
+`npm run user:create` (Sprint 4), run by Rabindra; placeholders `user1` and `user2` (both Admin) until real names are chosen.
 
-## Consent rule for officers' phone/email (Sprint 3 / admin)
-- Existing officers start **private**: `phonePublic = false`, `emailPublic = false`, `consentAt = null` in the seed.
-- Turning a phone or email public toggle **on** requires a **“consent obtained on” date** (`Person.consentAt`). With no date, the
-  toggle cannot be turned on (validated on the server, not only in the UI).
-- Saving the date/toggle writes an **Activity log** entry with the admin's name, the person and the date.
+## Leadership content (Phase 1 decisions, docs/01)
+- Sections per Leo Year, in this order: **District Board, District Advisors, District President Advisors** (all `Position`s
+  with a group; an Admin can change the order).
+- Person fields: **title** (Mr., Leo, Lion, Leo-Lion; kept separate from the name), name, designation, membership no., cell,
+  optional landline, email, blood group, home club, optional address, photo, under-18 flag.
+- Home club may be an unlisted club (older or other clubs, “listed in directory” off): selectable, never on the Clubs page.
+- Devanagari text is allowed in fields (Devanagari font fallback); the site stays in English.
+
+## Visibility rule for person fields (replaces the Sprint 3 consent rule)
+- Per-person, per-field public switches for designation, home club, membership no., cell, landline, email and blood group.
+- **Default: all hidden except designation and home club**, until the District President confirms in writing. The
+  council proposes “public by default”: **pending DP written confirmation**. The default is one config value.
+- Under-18 members: contact fields, membership no. and blood group always hidden (no override). Address is admin-only.
+- Photos are public only after “photo consent confirmed” is ticked.
+- Public queries filter in the query (docs/07). Changing a switch writes an **Activity log** entry. Seeded officers start
+  with the defaults above.
 
 ## Old URLs → 301 redirects
 `/leo.html` → `/leadership` · `/index.html` → `/` · (Rabindra to send the rest of the old `public_html` file list)
