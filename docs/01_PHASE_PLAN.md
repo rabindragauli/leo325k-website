@@ -93,6 +93,7 @@ Estimates assume part-time work (evenings + Saturdays) with an AI agent doing mo
 - SEO: per-page `metadata`, Open Graph image, `sitemap.ts`, `robots.ts` (disallow admin), canonical URLs, 301s for old `.html` URLs
 - Performance: `next/image` sizes, lazy images, font subsetting, no layout shift; check PageSpeed mobile
 - Home/About mobile perf 85–87 on a busy machine; re-measure on an idle machine, then fonts + shared JS chunk.
+- CI: update GitHub Actions off Node 20 (`actions/checkout`, `actions/setup-node`, `actions/upload-artifact`) and pin `runs-on` to `ubuntu-24.04`.
 - Accessibility pass; Playwright smoke tests (all public pages 200, login flow, contact validation)
 - `npm audit` clean of high/critical
 - **Done when:** every item in the Plan v2 pre-launch checklist that is code-related is ticked.
