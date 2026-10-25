@@ -74,9 +74,7 @@ export async function deleteCurrentSession() {
   store.delete({ name: COOKIE, path: "/", secure: isProd, httpOnly: true, sameSite: "lax" });
 }
 
-/** End a user's sessions (deactivation, password change), optionally keeping one. */
-export async function endUserSessions(userId: string, exceptSessionId?: string) {
-  await db.session.deleteMany({
-    where: { userId, ...(exceptSessionId ? { id: { not: exceptSessionId } } : {}) },
-  });
+/** End all of a user's sessions (deactivation; password change, which then signs in again). */
+export async function endUserSessions(userId: string) {
+  await db.session.deleteMany({ where: { userId } });
 }

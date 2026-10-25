@@ -18,7 +18,7 @@ const BLANK_GIF = "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAA
  * to 1440 it is the fixed-px layout, above it the banner scales as one unit, and past 1800 px the content stays
  * centred while the outer gradient fills the rest. Rule: docs/05_DESIGN_SYSTEM.md.
  */
-export function SiteHeader({ className }: { className?: string }) {
+export function SiteHeader({ className, nav = true }: { className?: string; nav?: boolean }) {
   // Mountains are the largest image in the banner (the LCP on light pages), so they load
   // eagerly, but only where they are visible: the media-gated <source> keeps mobile from
   // downloading them (preload / loading="eager" would fetch them at every width).
@@ -135,12 +135,17 @@ export function SiteHeader({ className }: { className?: string }) {
         </div>
       </div>
 
-      {/* Nav shares the page/footer container (1240 px, 24 px gutters); only the banner art is wider */}
-      <div className="border-t-4 border-orange bg-teal-900 px-6">
-        <div className="mx-auto flex min-h-[60px] max-w-content flex-wrap items-center justify-between gap-3">
-          <MainNav />
+      {/* Nav shares the page/footer container (1240 px, 24 px gutters); only the banner art is wider.
+          The admin sign-in page shows the banner and orange line only (nav={false}). */}
+      {nav ? (
+        <div className="border-t-4 border-orange bg-teal-900 px-6">
+          <div className="mx-auto flex min-h-[60px] max-w-content flex-wrap items-center justify-between gap-3">
+            <MainNav />
+          </div>
         </div>
-      </div>
+      ) : (
+        <div className="h-1 bg-orange" />
+      )}
     </header>
   );
 }
